@@ -20,7 +20,7 @@ Here are some screenshots from my build and detailed description of steps I've t
 
 [Bens SAP-1 build using simulation](doc/Bens8bit.md)
 
-![cpu-EI-part8](../packages/cpu-EI-part8.png)
+![cpu-EI-part8](packages/cpu-EI-part8.png)
 
 ## Getting started
 
