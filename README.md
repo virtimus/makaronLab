@@ -16,20 +16,32 @@ I had to tune it a little bit, add some additional features and to prepare a lib
 
 [Other reasons](doc/reasons.md)
 
+Here are some screenshots from my build and detailed description of steps I've took.
+
+[Bens SAP-1 build using simulation](doc/Bens8bit.md)
+
+![https://www.youtube.com/watch?v=0pVYmsPT2KQ](https://www.youtube.com/watch?v=0pVYmsPT2KQ)
+
 ## Getting started
 
 Currently makaronLab is Linux based - I think that in the era of docker this is no longer any problem.
 
 If You're stucked with Windows (like I was for many years ...) it really a good occasion to leave the cave ... 
 
-You can simply run it using docker image containing Linux Mint Desktop and makaronLab preinstalled:
+### You can simply run it using docker image containing Linux Mint Desktop and makaronLab (release version) preinstalled:
+```
+sudo docker run -d -p 6389:3389 --rm --name mlab-usr virtimus/mlab-usr
+```
+Running container "mlab-usr" can be accesses by standard rdp client (like mstsc under Windows)
 
-[to be done]
+Default user/password is "ths/pass"
 
-If You prefer to go deeper - compile it Yourself - it is as simple as:
-
+### If You prefer to go deeper - compile it Yourself under Ubuntu 18.04 or Linux Mint - it is as simple as:
+```
 mkdir -p /src && cd /src && git clone http://github.com/virtimus/makaronLab && cd makaronLab/install && ./bootstrap-dev.sh
-
-You can also use standarised development environment available as Docker container:
-
-[to be done]
+```
+### You can also use standarised development environment available as Docker container:
+```
+sudo docker run -d -p 5389:3389 --rm --name mlab-usr virtimus/mlab-dev
+```
+it is ok to make a volume at /src and clone fresh sources from github
