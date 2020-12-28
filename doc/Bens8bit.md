@@ -1,4 +1,4 @@
-#Following Ben's build using simulation
+# Following Ben's build using simulation
 
 Series of packages named cpu-* are different parts/elements of building Bens Eater 8bit computer from scratch 
 
