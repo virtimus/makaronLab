@@ -1,0 +1,181 @@
+{
+  "element": {
+    "default_new_input_flags": 63,
+    "default_new_output_flags": 63,
+    "description": "Output enabler - 1bit",
+    "id": 0,
+    "invertH": false,
+    "io": {
+      "inputs": [
+        {
+          "flags": 63,
+          "inFlags": 1,
+          "name": "D0",
+          "siType": "i",
+          "socket": 0,
+          "type": "bool"
+        },
+        {
+          "flags": 63,
+          "inFlags": 1,
+          "name": "EN",
+          "siType": "i",
+          "socket": 1,
+          "type": "bool"
+        }
+      ],
+      "outputs": [
+        {
+          "flags": 63,
+          "inFlags": 2,
+          "name": "O0",
+          "siType": "o",
+          "socket": 0,
+          "type": "bool"
+        },
+        {
+          "flags": 63,
+          "inFlags": 2,
+          "name": "I0",
+          "siType": "o",
+          "socket": 1,
+          "type": "bool"
+        }
+      ]
+    },
+    "max_inputs": 255,
+    "max_outputs": 255,
+    "min_inputs": 0,
+    "min_outputs": 0,
+    "name": "w64-OE-1bit-ei",
+    "rotate": false,
+    "type": "logic/package"
+  },
+  "node": {
+    "iconify": true,
+    "iconifying_hides_central_widget": false,
+    "inputs_position": {
+      "x": -120.0,
+      "y": -90.0
+    },
+    "outputs_position": {
+      "x": 140.0,
+      "y": -0.0
+    },
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    }
+  },
+  "package": {
+    "connections": [
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 1
+        }
+      }
+    ],
+    "description": "A package",
+    "elements": [
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 1,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "AND (Bool)",
+          "rotate": false,
+          "type": "gates/and"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 40.0,
+            "y": -90.0
+          }
+        }
+      }
+    ],
+    "icon": ":/unknown.png",
+    "path": ""
+  }
+}

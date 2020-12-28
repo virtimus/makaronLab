@@ -1,0 +1,6 @@
+[submodule "externalTools/chips"]
+	path = externalTools/chips
+	url = https://github.com/floooh/chips
+[submodule "externalTools/spaghetti"]
+	path = externalTools/spaghetti
+	url = https://github.com/virtimus/spaghetti

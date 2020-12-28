@@ -1,0 +1,643 @@
+{
+  "element": {
+    "default_new_input_flags": 15,
+    "default_new_output_flags": 15,
+    "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+    "id": 0,
+    "invertH": false,
+    "io": {
+      "inputs": [
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A0",
+          "siType": "i",
+          "socket": 0,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A1",
+          "siType": "i",
+          "socket": 1,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A2",
+          "siType": "i",
+          "socket": 2,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A3",
+          "siType": "i",
+          "socket": 3,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "B0",
+          "siType": "i",
+          "socket": 4,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "B1",
+          "siType": "i",
+          "socket": 5,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "B2",
+          "siType": "i",
+          "socket": 6,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "B3",
+          "siType": "i",
+          "socket": 7,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "SEL",
+          "siType": "i",
+          "socket": 8,
+          "type": "bool"
+        }
+      ],
+      "outputs": [
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O0",
+          "siType": "o",
+          "socket": 0,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O1",
+          "siType": "o",
+          "socket": 1,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O2",
+          "siType": "o",
+          "socket": 2,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O3",
+          "siType": "o",
+          "socket": 3,
+          "type": "bool"
+        }
+      ]
+    },
+    "max_inputs": 255,
+    "max_outputs": 255,
+    "min_inputs": 0,
+    "min_outputs": 0,
+    "name": "4bit-select",
+    "rotate": false,
+    "type": "logic/package"
+  },
+  "node": {
+    "iconify": true,
+    "iconifying_hides_central_widget": false,
+    "inputs_position": {
+      "x": -310.0,
+      "y": -160.0
+    },
+    "outputs_position": {
+      "x": 370.0,
+      "y": -100.0
+    },
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    }
+  },
+  "package": {
+    "connections": [
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 2,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 2,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 8
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 8
+        },
+        "to": {
+          "flags": 1,
+          "id": 2,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 8
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 8
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 3,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 4,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 3
+        }
+      }
+    ],
+    "description": "A package",
+    "elements": [
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+          "id": 1,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "SEL",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "1bit-select",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -310.0,
+            "y": -90.0
+          },
+          "outputs_position": {
+            "x": 220.0,
+            "y": -90.0
+          },
+          "position": {
+            "x": 40.0,
+            "y": -230.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-RAM-1bit-select.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+          "id": 2,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "SEL",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "1bit-select",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -310.0,
+            "y": -90.0
+          },
+          "outputs_position": {
+            "x": 220.0,
+            "y": -90.0
+          },
+          "position": {
+            "x": 50.0,
+            "y": -130.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-RAM-1bit-select.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+          "id": 3,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "SEL",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "1bit-select",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -310.0,
+            "y": -90.0
+          },
+          "outputs_position": {
+            "x": 220.0,
+            "y": -90.0
+          },
+          "position": {
+            "x": 50.0,
+            "y": -30.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-RAM-1bit-select.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+          "id": 4,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "SEL",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "1bit-select",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -310.0,
+            "y": -90.0
+          },
+          "outputs_position": {
+            "x": 220.0,
+            "y": -90.0
+          },
+          "position": {
+            "x": 50.0,
+            "y": 70.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-RAM-1bit-select.package"
+        }
+      }
+    ],
+    "icon": ":/unknown.png",
+    "path": ""
+  }
+}

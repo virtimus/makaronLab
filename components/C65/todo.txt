@@ -1,0 +1,3 @@
+- optims: signal or opcode to reset step counter and goto next ? maybe with place optim (ie checking next opcode-step for diff instr ?)
+
+https://www.youtube.com/watch?v=dHWFpkGsxOs

@@ -1,0 +1,4200 @@
+{
+  "element": {
+    "default_new_input_flags": 15,
+    "default_new_output_flags": 15,
+    "description": "https://www.youtube.com/watch?v=KNve2LCcSRc https://www.youtube.com/watch?v=Vw3uDOUJRGw",
+    "id": 0,
+    "invertH": false,
+    "io": {
+      "inputs": [
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PA0",
+          "siType": "i",
+          "socket": 0,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PA1",
+          "siType": "i",
+          "socket": 1,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PA2",
+          "siType": "i",
+          "socket": 2,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PA3",
+          "siType": "i",
+          "socket": 3,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD0",
+          "siType": "i",
+          "socket": 4,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD1",
+          "siType": "i",
+          "socket": 5,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD2",
+          "siType": "i",
+          "socket": 6,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD3",
+          "siType": "i",
+          "socket": 7,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD4",
+          "siType": "i",
+          "socket": 8,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD5",
+          "siType": "i",
+          "socket": 9,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD6",
+          "siType": "i",
+          "socket": 10,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PD7",
+          "siType": "i",
+          "socket": 11,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A0",
+          "siType": "i",
+          "socket": 12,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A1",
+          "siType": "i",
+          "socket": 13,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A2",
+          "siType": "i",
+          "socket": 14,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "A3",
+          "siType": "i",
+          "socket": 15,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D0",
+          "siType": "i",
+          "socket": 16,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D1",
+          "siType": "i",
+          "socket": 17,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D2",
+          "siType": "i",
+          "socket": 18,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D3",
+          "siType": "i",
+          "socket": 19,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D4",
+          "siType": "i",
+          "socket": 20,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D5",
+          "siType": "i",
+          "socket": 21,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D6",
+          "siType": "i",
+          "socket": 22,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "D7",
+          "siType": "i",
+          "socket": 23,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "MEMIN-",
+          "siType": "i",
+          "socket": 24,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "RAMIN",
+          "siType": "i",
+          "socket": 25,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "PRMOD",
+          "siType": "i",
+          "socket": 26,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "RAMOUT-",
+          "siType": "i",
+          "socket": 27,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "CLK",
+          "siType": "i",
+          "socket": 28,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 1,
+          "name": "RST",
+          "siType": "i",
+          "socket": 29,
+          "type": "bool"
+        }
+      ],
+      "outputs": [
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O0",
+          "siType": "o",
+          "socket": 0,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O1",
+          "siType": "o",
+          "socket": 1,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O2",
+          "siType": "o",
+          "socket": 2,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O3",
+          "siType": "o",
+          "socket": 3,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O4",
+          "siType": "o",
+          "socket": 4,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O5",
+          "siType": "o",
+          "socket": 5,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O6",
+          "siType": "o",
+          "socket": 6,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "O7",
+          "siType": "o",
+          "socket": 7,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I0",
+          "siType": "o",
+          "socket": 8,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I1",
+          "siType": "o",
+          "socket": 9,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I2",
+          "siType": "o",
+          "socket": 10,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I3",
+          "siType": "o",
+          "socket": 11,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I4",
+          "siType": "o",
+          "socket": 12,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I5",
+          "siType": "o",
+          "socket": 13,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I6",
+          "siType": "o",
+          "socket": 14,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "I7",
+          "siType": "o",
+          "socket": 15,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#16",
+          "siType": "o",
+          "socket": 16,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#17",
+          "siType": "o",
+          "socket": 17,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#18",
+          "siType": "o",
+          "socket": 18,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#19",
+          "siType": "o",
+          "socket": 19,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#20",
+          "siType": "o",
+          "socket": 20,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#21",
+          "siType": "o",
+          "socket": 21,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#22",
+          "siType": "o",
+          "socket": 22,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#23",
+          "siType": "o",
+          "socket": 23,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#24",
+          "siType": "o",
+          "socket": 24,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#25",
+          "siType": "o",
+          "socket": 25,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#26",
+          "siType": "o",
+          "socket": 26,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#27",
+          "siType": "o",
+          "socket": 27,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#28",
+          "siType": "o",
+          "socket": 28,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#29",
+          "siType": "o",
+          "socket": 29,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#30",
+          "siType": "o",
+          "socket": 30,
+          "type": "bool"
+        },
+        {
+          "flags": 15,
+          "inFlags": 2,
+          "name": "#31",
+          "siType": "o",
+          "socket": 31,
+          "type": "bool"
+        }
+      ]
+    },
+    "max_inputs": 255,
+    "max_outputs": 255,
+    "min_inputs": 0,
+    "min_outputs": 0,
+    "name": "RAM + registers & PMODE",
+    "rotate": false,
+    "type": "logic/package"
+  },
+  "node": {
+    "iconify": false,
+    "iconifying_hides_central_widget": false,
+    "inputs_position": {
+      "x": -800.0,
+      "y": -1030.0
+    },
+    "outputs_position": {
+      "x": 440.0,
+      "y": -750.0
+    },
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    }
+  },
+  "package": {
+    "connections": [
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 4,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 4,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 4,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 4,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 6,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 6,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 6,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 6,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 2,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 2,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 2,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 2,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 8
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 9
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 10
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 11
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 12
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 13
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 14
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 15
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 16
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 17
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 18
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 19
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 20
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 21
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 22
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 23
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 24
+        },
+        "to": {
+          "flags": 1,
+          "id": 13,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 8,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 8,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 8,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 8,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 9
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 10
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 11
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 13
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 12
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 8
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 9
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 9
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 10
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 10
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 11
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 11
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 12
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 12
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 13
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 13
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 14
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 14
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 15
+        },
+        "to": {
+          "flags": 1,
+          "id": 0,
+          "socket": 15
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 25
+        },
+        "to": {
+          "flags": 1,
+          "id": 13,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 26
+        },
+        "to": {
+          "flags": 1,
+          "id": 13,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 27
+        },
+        "to": {
+          "flags": 1,
+          "id": 13,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 28
+        },
+        "to": {
+          "flags": 1,
+          "id": 13,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 9
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 9
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 17,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 18,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 18,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 18,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 17,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 12,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 19,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 14
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 19,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 29
+        },
+        "to": {
+          "flags": 1,
+          "id": 13,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 15,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 12,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 15,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 10
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 10
+        }
+      }
+    ],
+    "description": "A package",
+    "elements": [
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+          "id": 1,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B0",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B1",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B2",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B3",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "SEL",
+                "siType": "i",
+                "socket": 8,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "4bsAddress",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -310.0,
+            "y": -160.0
+          },
+          "outputs_position": {
+            "x": 370.0,
+            "y": -100.0
+          },
+          "position": {
+            "x": 100.0,
+            "y": -1180.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-RAM-4bit-select.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 2,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 80,
+          "max_outputs": 80,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "dsProgramAddress",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -490.0,
+            "y": -1180.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "",
+          "id": 4,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 1,
+                "name": "D4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 1,
+                "name": "D5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 1,
+                "name": "D6",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 1,
+                "name": "D7",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "LOAD-",
+                "siType": "i",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "ENABLE-",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#7",
+                "siType": "o",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I1",
+                "siType": "o",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I2",
+                "siType": "o",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I3",
+                "siType": "o",
+                "socket": 11,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I4",
+                "siType": "o",
+                "socket": 12,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I5",
+                "siType": "o",
+                "socket": 13,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I6",
+                "siType": "o",
+                "socket": 14,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I7",
+                "siType": "o",
+                "socket": 15,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "4bRegAddress",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -380.0,
+            "y": -100.0
+          },
+          "outputs_position": {
+            "x": 570.0,
+            "y": -260.0
+          },
+          "position": {
+            "x": -140.0,
+            "y": -780.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-D-latch-8bitreg-e-i.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 6,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 80,
+          "max_outputs": 80,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "dipSelect - address",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -490.0,
+            "y": -820.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 7,
+          "invertH": false,
+          "io": {
+            "inputs": [],
+            "outputs": [
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 0,
+          "max_outputs": 1,
+          "min_inputs": 0,
+          "min_outputs": 1,
+          "name": "Clock (ms)",
+          "rotate": false,
+          "type": "timers/clock"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -860.0,
+            "y": 10.0
+          }
+        },
+        "properties": {
+          "duration": 1000.0
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+          "id": 8,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B0",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B1",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B2",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B3",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "SEL",
+                "siType": "i",
+                "socket": 8,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "4bsData0",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -310.0,
+            "y": -160.0
+          },
+          "outputs_position": {
+            "x": 370.0,
+            "y": -100.0
+          },
+          "position": {
+            "x": 100.0,
+            "y": -960.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-RAM-4bit-select.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
+          "id": 9,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B0",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B1",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B2",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "B3",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "SEL",
+                "siType": "i",
+                "socket": 8,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "O3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "4bsData1",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -310.0,
+            "y": -160.0
+          },
+          "outputs_position": {
+            "x": 370.0,
+            "y": -100.0
+          },
+          "position": {
+            "x": 100.0,
+            "y": -740.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-RAM-4bit-select.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 15,
+          "default_new_output_flags": 15,
+          "description": "",
+          "id": 10,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D6",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D7",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "LOAD-",
+                "siType": "i",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "ENABLE-",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "D1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "#7",
+                "siType": "o",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I1",
+                "siType": "o",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I2",
+                "siType": "o",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I3",
+                "siType": "o",
+                "socket": 11,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I4",
+                "siType": "o",
+                "socket": 12,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I5",
+                "siType": "o",
+                "socket": 13,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I6",
+                "siType": "o",
+                "socket": 14,
+                "type": "bool"
+              },
+              {
+                "flags": 15,
+                "inFlags": 2,
+                "name": "I7",
+                "siType": "o",
+                "socket": 15,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "8bRegData",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -380.0,
+            "y": -100.0
+          },
+          "outputs_position": {
+            "x": 570.0,
+            "y": -260.0
+          },
+          "position": {
+            "x": -140.0,
+            "y": -370.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/cpu-D-latch-8bitreg-e-i.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 11,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#7",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#7",
+                "siType": "o",
+                "socket": 7,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 80,
+          "max_outputs": 80,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "dsProgramData",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              },
+              {
+                "index": 4,
+                "state": false
+              },
+              {
+                "index": 5,
+                "state": false
+              },
+              {
+                "index": 6,
+                "state": false
+              },
+              {
+                "index": 7,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -490.0,
+            "y": -1040.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 12,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "NAND (Bool)",
+          "rotate": false,
+          "type": "gates/nand"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 160.0,
+            "y": -430.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 13,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#6",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "MEMORY-IN?-",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "RAM-IN?",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "PROGRAM-MODE",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "RAM-OUT-",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "CLK",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "RST",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 80,
+          "max_outputs": 80,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "CRPTR - repeater(Bool[])",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              },
+              {
+                "index": 4,
+                "state": false
+              },
+              {
+                "index": 5,
+                "state": false
+              },
+              {
+                "index": 6,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -560.0,
+            "y": -430.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 14,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#7",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#7",
+                "siType": "o",
+                "socket": 7,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 80,
+          "max_outputs": 80,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "runMode - data",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              },
+              {
+                "index": 4,
+                "state": false
+              },
+              {
+                "index": 5,
+                "state": false
+              },
+              {
+                "index": 6,
+                "state": false
+              },
+              {
+                "index": 7,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -490.0,
+            "y": -680.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 15,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "IN(i)",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "OUT(o)",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "CRIED (Bool[])",
+          "rotate": false,
+          "type": "chips/CRIED"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 70.0,
+            "y": -410.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 16,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "A0(i)",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "A1(i)",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "A2(i)",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "A3(i)",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D0(i)",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D1(i)",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D2(i)",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D3(i)",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D4(i)",
+                "siType": "i",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D5(i)",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D6(i)",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "D7(i)",
+                "siType": "i",
+                "socket": 11,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "CS-(i)",
+                "siType": "i",
+                "socket": 12,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "WE-(i)",
+                "siType": "i",
+                "socket": 13,
+                "type": "bool"
+              },
+              {
+                "flags": 0,
+                "inFlags": 2,
+                "name": "#14",
+                "siType": "i",
+                "socket": 14,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O0(o)",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O1(o)",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O2(o)",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O3(o)",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O4(o)",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O5(o)",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O6(o)",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "O7(o)",
+                "siType": "o",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I0(o)",
+                "siType": "o",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I1(o)",
+                "siType": "o",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I2(o)",
+                "siType": "o",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I3(o)",
+                "siType": "o",
+                "socket": 11,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I4(o)",
+                "siType": "o",
+                "socket": 12,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I5(o)",
+                "siType": "o",
+                "socket": 13,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I6(o)",
+                "siType": "o",
+                "socket": 14,
+                "type": "bool"
+              },
+              {
+                "flags": 1,
+                "inFlags": 2,
+                "name": "I7(o)",
+                "siType": "o",
+                "socket": 15,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "CRAM (Bool[])",
+          "rotate": false,
+          "type": "chips/CRAM"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 260.0,
+            "y": -750.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 17,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -90.0,
+            "y": -430.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 18,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -310.0,
+            "y": -270.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 19,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 80,
+          "max_outputs": 80,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "CRPTR - repeater(Bool[])",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 40.0,
+            "y": -250.0
+          }
+        }
+      }
+    ],
+    "icon": ":/unknown.png",
+    "path": ""
+  }
+}

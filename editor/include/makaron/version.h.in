@@ -1,0 +1,43 @@
+#pragma once
+#ifndef MAKARON_VERSION_H
+#define MAKARON_VERSION_H
+
+#include <cstdint>
+
+#define MAKARON_FS_STD_FILESYSTEM               1
+#define MAKARON_FS_STD_EXPERIMENTAL_FILESYSTEM  2
+#define MAKARON_FS_BOOST_FILESYSTEM             3
+#define MAKARON_FS_IMPLEMENTATION               @MAKARON_FILESYSTEM_IMPLEMENTATION@
+
+#if MAKARON_FS_IMPLEMENTATION == MAKARON_FS_STD_FILESYSTEM
+#include <filesystem>
+namespace makaron {
+namespace fs = std::filesystem;
+}
+#elif MAKARON_FS_IMPLEMENTATION == MAKARON_FS_STD_EXPERIMENTAL_FILESYSTEM
+#include <experimental/filesystem>
+namespace makaron {
+namespace fs = std::experimental::filesystem;
+}
+#elif MAKARON_FS_IMPLEMENTATION == MAKARON_FS_BOOST_FILESYSTEM
+#include <boost/filesystem.hpp>
+namespace makaron {
+namespace fs = boost::filesystem;
+}
+#endif
+
+namespace makaron::version {
+
+constexpr char const *const STRING{ "@MAKARON_VERSION@" };
+constexpr uint8_t const MAJOR{ @MAKARON_VERSION_MAJOR@ };
+constexpr uint8_t const MINOR{ @MAKARON_VERSION_MINOR@ };
+constexpr uint8_t const PATCH{ @MAKARON_VERSION_PATCH@ };
+constexpr uint32_t const VERSION{ MAJOR * 10000 + MINOR * 100 + PATCH };
+
+constexpr char const *const BRANCH{ "@MAKARON_GIT_BRANCH@" };
+constexpr char const *const COMMIT_HASH{ "@MAKARON_GIT_COMMIT_HASH@" };
+constexpr char const *const COMMIT_SHORT_HASH{ "@MAKARON_GIT_COMMIT_SHORT_HASH@" };
+
+} // namespace makaron::version
+
+#endif // MAKARON_VERSION_H

@@ -1,0 +1,5 @@
+RAM - Random Access Memory - Dynamic program and data storage 
+ALU - Arithmetic Logical Unit
+BUS - main communication magistrale
+OE  - "Output Enabler" - enables output to BUS - used in deferent parts connected to BUS (ALU,RAM,registers etc) cpu-OE-8bit-ei
+PC - Program Counter - pointer to current program  execution point (in RAM)
