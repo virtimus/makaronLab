@@ -1,0 +1,4 @@
+FROM virtimus/ths:devMachine
+
+RUN mkdir -p /src && cd /src && git clone http://github.com/virtimus/makaronLab 
+#&& cd makaronLab/install && ./bootstrap-dev.sh

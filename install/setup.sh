@@ -1,9 +1,9 @@
-#!bin/bash
+#!/bin/bash
 set -e
 mkdir -p /src/makaronLab/build/editor
 mv mLabEditor /src/makaronLab/build/editor/
-if [ -e ~/Desktop/ ]; then
-    mv makaronLab.desktop ~/Desktop/
+if [ -e ~/Desktop ]; then
+    mv makaronLab.desktop ~/Desktop
 fi
 mv plugins /src/makaronLab/build/plugins
 mv lib /src/makaronLab/build/lib
