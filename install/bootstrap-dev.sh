@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 echo "[mLab] Installing toolchain ..."
 sudo apt update -y && sudo apt install -y curl libcurl4-openssl-dev libssl-dev build-essential manpages-dev software-properties-common
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt install -y gcc-7 g++-7 gcc-8 g++-8 

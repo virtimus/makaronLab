@@ -147,11 +147,11 @@ The only things to be done yet were PC (Program Counter) and CL (Control Logic) 
 
 ... prepared this:
 
-![cpu-PC-ei](cpu-PC-ei.png)
+![cpu-PC-ei](../packages/cpu-PC-ei.png)
 
 ... and finally this:
 
-![cpu-EI-part8](cpu-EI-part8.png)
+![cpu-EI-part8](../packages/cpu-EI-part8.png)
 
 The last one is a complete 8bit computer from Ben (without output registers part which I haven't bother and just connected 7 seg display to bus)
 
