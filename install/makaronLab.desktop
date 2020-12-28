@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=makaronLab
+Exec=/src/makaronLab/build/editor/mLabEditor
+Comment=
+Terminal=false
+Type=Application
