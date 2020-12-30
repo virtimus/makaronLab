@@ -6,7 +6,14 @@ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt install -y gc
 sudo apt-get install -y cmake qtbase5-dev qtdeclarative5-dev qtcreator
 
 echo "[mLab] Installing sources /external tools ..."
-cd /src && wget https://bellard.org/tinyemu/tinyemu-2019-12-21.tar.gz && tar -xvf tinyemu-2019-12-21.tar.gz
+if [ -e /src/makaronLab ]; then
+	cd 	/src/makaronLab && git pull
+else 
+	mkdir -p /src && cd /src && git clone http://github.com/virtimus/makaronLab 
+fi	
+if [ ! -e /src/tinyemu-2019-12-21 ]; then
+	cd /src && wget https://bellard.org/tinyemu/tinyemu-2019-12-21.tar.gz && tar -xvf tinyemu-2019-12-21.tar.gz
+fi
 cd /src/makaronLab/externalTools/tinyEMU && echo '#define MAX_XLEN 32' > riscv_cpu32.c && cat riscv_cpu.c >> riscv_cpu32.c && echo '#define MAX_XLEN 64' > riscv_cpu64.c && cat riscv_cpu.c >> riscv_cpu64.c && echo '#define MAX_XLEN 128' > riscv_cpu128.c && cat riscv_cpu.c >> riscv_cpu128.c
 cd /src/makaronLab && git submodule update --init --recursive && cd externalTools/spaghetti &&  git pull origin master
 cp /src/makaronLab/res/CMakeLists.txt  /src/makaronLab/externalTools/spaghetti/plugins/CMakeLists.txt 

@@ -4,3 +4,6 @@
 [submodule "externalTools/spaghetti"]
 	path = externalTools/spaghetti
 	url = https://github.com/virtimus/spaghetti
+[submodule "externalTools/sokol"]
+	path = externalTools/sokol
+	url = https://github.com/floooh/sokol
