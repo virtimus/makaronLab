@@ -26,7 +26,7 @@ Here are some screenshots from my build and detailed description of steps I've t
 
 Currently makaronLab is Linux based - I think that in the era of docker this is no longer any problem.
 
-If You're stucked with Windows (like I was for many years ...) it really a good occasion to leave the cave ... 
+If You're stucked with Windows (like I was for many years ...) it's really a good occasion to leave the cave ... 
 
 ### You can simply run it using docker image containing Linux Mint Desktop and makaronLab (release version) preinstalled:
 ```
@@ -42,6 +42,6 @@ mkdir -p /src && cd /src && git clone http://github.com/virtimus/makaronLab && c
 ```
 ### You can also use standarised development environment available as Docker container:
 ```
-sudo docker run -d -p 5389:3389 --rm --name mlab-usr virtimus/mlab-dev
+sudo docker run -d -p 5389:3389 --rm --name mlab-dev virtimus/mlab-dev
 ```
-it is ok to make a volume at /src and clone fresh sources from github
+it is ok to make a volume at /src (and/or /home dir) and clone fresh sources from github
