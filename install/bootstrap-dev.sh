@@ -6,6 +6,7 @@ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt install -y gc
 sudo apt-get install -y cmake qtbase5-dev qtdeclarative5-dev qtcreator
 
 echo "[mLab] Installing sources /external tools ..."
+if [[ -z "${MLAB_BS_SKIP_SRC}" ]]; then
 if [ -e /src/makaronLab ]; then
 	cd 	/src/makaronLab && git pull
 else 
@@ -25,3 +26,4 @@ clear && cd /src/makaronLab && mkdir -p build && cd build && cmake .. && make
 
 echo "[mLab] Starting mLabEditor ..."
 cd /src/makaronLab && mkdir -p packages && cd build/editor && ./mLabEditor
+fi #MLAB_BS_SKIP_SRC
