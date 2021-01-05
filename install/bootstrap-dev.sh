@@ -5,7 +5,7 @@ sudo apt update -y && sudo apt install -y curl libcurl4-openssl-dev libssl-dev b
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt install -y gcc-7 g++-7 gcc-8 g++-8 
 sudo apt-get install -y cmake qtbase5-dev qtdeclarative5-dev qtcreator
 
-echo "[mLab] Installing sources /external tools ..."
+echo "[mLab] Installing sources /external tools(MLAB_BS_SKIP_SRC=$MLAB_BS_SKIP_SRC) ..."
 if [[ -z "${MLAB_BS_SKIP_SRC}" ]]; then
 if [ -e /src/makaronLab ]; then
 	cd 	/src/makaronLab && git pull
