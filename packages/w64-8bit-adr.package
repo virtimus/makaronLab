@@ -1,0 +1,664 @@
+{
+  "element": {
+    "default_new_input_flags": 63,
+    "default_new_output_flags": 63,
+    "description": "",
+    "id": 0,
+    "invertH": false,
+    "io": {
+      "inputs": [],
+      "outputs": []
+    },
+    "max_inputs": 255,
+    "max_outputs": 255,
+    "min_inputs": 0,
+    "min_outputs": 0,
+    "name": "Package",
+    "rotate": false,
+    "type": "logic/package"
+  },
+  "node": {
+    "iconify": true,
+    "iconifying_hides_central_widget": false,
+    "inputs_position": {
+      "x": -400.0,
+      "y": 0.0
+    },
+    "outputs_position": {
+      "x": 400.0,
+      "y": 0.0
+    },
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    }
+  },
+  "package": {
+    "connections": [],
+    "description": "A package",
+    "elements": [
+      {
+        "element": {
+          "default_new_input_flags": 63,
+          "default_new_output_flags": 63,
+          "description": "",
+          "id": 1,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LDE",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LD",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "D0",
+                "siType": "i",
+                "socket": 8,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "EN",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "RST",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 11,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 1,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "Package",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -550.0,
+            "y": -320.0
+          },
+          "outputs_position": {
+            "x": 820.0,
+            "y": -150.0
+          },
+          "position": {
+            "x": 30.0,
+            "y": -360.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/w64-6bit-adr.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 63,
+          "default_new_output_flags": 63,
+          "description": "",
+          "id": 2,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LDE",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LD",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "D0",
+                "siType": "i",
+                "socket": 8,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "EN",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "RST",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 11,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 1,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "Package",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -550.0,
+            "y": -320.0
+          },
+          "outputs_position": {
+            "x": 820.0,
+            "y": -150.0
+          },
+          "position": {
+            "x": 30.0,
+            "y": -70.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/w64-6bit-adr.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 63,
+          "default_new_output_flags": 63,
+          "description": "",
+          "id": 3,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LDE",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LD",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "D0",
+                "siType": "i",
+                "socket": 8,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "EN",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "RST",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 11,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 1,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "Package",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -550.0,
+            "y": -320.0
+          },
+          "outputs_position": {
+            "x": 820.0,
+            "y": -150.0
+          },
+          "position": {
+            "x": 30.0,
+            "y": 230.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/w64-6bit-adr.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 63,
+          "default_new_output_flags": 63,
+          "description": "",
+          "id": 4,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "A5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LDE",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "LD",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "D0",
+                "siType": "i",
+                "socket": 8,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "EN",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "RST",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 11,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 1,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "Package",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -550.0,
+            "y": -320.0
+          },
+          "outputs_position": {
+            "x": 820.0,
+            "y": -150.0
+          },
+          "position": {
+            "x": 30.0,
+            "y": 520.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/w64-6bit-adr.package"
+        }
+      }
+    ],
+    "icon": ":/unknown.png",
+    "path": ""
+  }
+}

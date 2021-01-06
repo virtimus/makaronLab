@@ -1,0 +1,756 @@
+{
+  "element": {
+    "default_new_input_flags": 63,
+    "default_new_output_flags": 63,
+    "description": "",
+    "id": 0,
+    "invertH": false,
+    "io": {
+      "inputs": [],
+      "outputs": []
+    },
+    "max_inputs": 255,
+    "max_outputs": 255,
+    "min_inputs": 0,
+    "min_outputs": 0,
+    "name": "Package",
+    "rotate": false,
+    "type": "logic/package"
+  },
+  "node": {
+    "iconify": true,
+    "iconifying_hides_central_widget": false,
+    "inputs_position": {
+      "x": -400.0,
+      "y": 0.0
+    },
+    "outputs_position": {
+      "x": 400.0,
+      "y": 0.0
+    },
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    }
+  },
+  "package": {
+    "connections": [
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 9
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 9
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 10
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 10
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 5,
+          "socket": 11
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 11
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 8
+        }
+      }
+    ],
+    "description": "A package",
+    "elements": [
+      {
+        "element": {
+          "default_new_input_flags": 63,
+          "default_new_output_flags": 63,
+          "description": "",
+          "id": 1,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "A0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "A1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "A2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "A3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "A4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "A5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "LDE",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "LD",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "D0",
+                "siType": "i",
+                "socket": 8,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "EN",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "RST",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 11,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 1,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "Package",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -550.0,
+            "y": -320.0
+          },
+          "outputs_position": {
+            "x": 820.0,
+            "y": -150.0
+          },
+          "position": {
+            "x": -40.0,
+            "y": -120.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/w64-6bit-adr.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 2,
+          "invertH": false,
+          "io": {
+            "inputs": [],
+            "outputs": [
+              {
+                "flags": 24,
+                "inFlags": 2,
+                "name": "Value",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 0,
+          "max_outputs": 1,
+          "min_inputs": 0,
+          "min_outputs": 1,
+          "name": "ConstByte",
+          "rotate": false,
+          "type": "chips/ConstByte"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -130.0,
+            "y": -180.0
+          }
+        },
+        "properties": {
+          "value": 39
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 3,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 24,
+                "inFlags": 2,
+                "name": "Byte",
+                "siType": "i",
+                "socket": 0,
+                "type": "byte"
+              }
+            ],
+            "outputs": []
+          },
+          "max_inputs": 1,
+          "max_outputs": 0,
+          "min_inputs": 1,
+          "min_outputs": 0,
+          "name": "InfoByte",
+          "rotate": false,
+          "type": "chips/InfoByte"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 100.0,
+            "y": -200.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 4,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 24,
+                "inFlags": 2,
+                "name": "Byte",
+                "siType": "i",
+                "socket": 0,
+                "type": "byte"
+              }
+            ],
+            "outputs": []
+          },
+          "max_inputs": 1,
+          "max_outputs": 0,
+          "min_inputs": 1,
+          "min_outputs": 0,
+          "name": "InfoByte",
+          "rotate": false,
+          "type": "chips/InfoByte"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 100.0,
+            "y": -70.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 5,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#6",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#7",
+                "siType": "i",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#8",
+                "siType": "i",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#9",
+                "siType": "i",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#10",
+                "siType": "i",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#11",
+                "siType": "i",
+                "socket": 11,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#7",
+                "siType": "o",
+                "socket": 7,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#8",
+                "siType": "o",
+                "socket": 8,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#9",
+                "siType": "o",
+                "socket": 9,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#10",
+                "siType": "o",
+                "socket": 10,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#11",
+                "siType": "o",
+                "socket": 11,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "CRPTR - repeater(Bool[])",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              },
+              {
+                "index": 4,
+                "state": false
+              },
+              {
+                "index": 5,
+                "state": false
+              },
+              {
+                "index": 6,
+                "state": false
+              },
+              {
+                "index": 7,
+                "state": false
+              },
+              {
+                "index": 8,
+                "state": false
+              },
+              {
+                "index": 9,
+                "state": false
+              },
+              {
+                "index": 10,
+                "state": false
+              },
+              {
+                "index": 11,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -270.0,
+            "y": -120.0
+          }
+        }
+      }
+    ],
+    "icon": ":/unknown.png",
+    "path": ""
+  }
+}

@@ -2,7 +2,7 @@
 #include <QObject>
 #include <QStyleFactory>
 #include <iostream>
-
+#include <QtGui/qwindowdefs.h>
 #include <spaghetti/editor.h>
 #include <spaghetti/registry.h>
 
@@ -35,13 +35,26 @@ int main(int argc, char **argv)
 
   auto &registry = spaghetti::Registry::instance();
   registry.registerInternalElements();
+  spaghetti::Editor editor{ nullptr, &registry };
+
+  QObject::connect(&app, &QApplication::aboutToQuit, &editor, &spaghetti::Editor::aboutToQuit);
+
+  editor.setWidRef();//set wid for chips view
+
   registry.loadPlugins();
   registry.loadPackages();
 
-  spaghetti::Editor editor{ nullptr, &registry };
-  QObject::connect(&app, &QApplication::aboutToQuit, &editor, &spaghetti::Editor::aboutToQuit);
+  editor.populateLibrary();
   editor.show();
+
+
+
+
+  //WId wHnd = editor.winId();
   // editor.showMaximized();
+  //registry.setRootWnd(wHnd);
+
+
 
   return app.exec();
 }

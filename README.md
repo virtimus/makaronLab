@@ -40,6 +40,12 @@ Default user/password is "ths/pass"
 ```
 mkdir -p /src && cd /src && git clone http://github.com/virtimus/makaronLab && cd makaronLab/install && ./bootstrap-dev.sh
 ```
+or (directly using shell bootstrap script):
+
+```
+curl -sSL https://raw.githubusercontent.com/virtimus/makaronLab/master/install/bootstrap-dev.sh | sudo bash
+```
+
 ### You can also use standarised development environment available as Docker container:
 ```
 sudo docker run -d -p 5389:3389 --rm --name mlab-dev virtimus/mlab-dev

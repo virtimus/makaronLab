@@ -1,0 +1,1509 @@
+{
+  "element": {
+    "default_new_input_flags": 63,
+    "default_new_output_flags": 63,
+    "description": "",
+    "id": 0,
+    "invertH": false,
+    "io": {
+      "inputs": [],
+      "outputs": []
+    },
+    "max_inputs": 255,
+    "max_outputs": 255,
+    "min_inputs": 0,
+    "min_outputs": 0,
+    "name": "Package",
+    "rotate": false,
+    "type": "logic/package"
+  },
+  "node": {
+    "iconify": true,
+    "iconifying_hides_central_widget": false,
+    "inputs_position": {
+      "x": -460.0,
+      "y": 60.0
+    },
+    "outputs_position": {
+      "x": 290.0,
+      "y": -130.0
+    },
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    }
+  },
+  "package": {
+    "connections": [
+      {
+        "connect": {
+          "flags": 2,
+          "id": 3,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 5,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 1,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 3,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 3,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 4,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 6,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 7,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 7,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 5,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 7,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 5,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 6,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 4,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 8,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 4,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 10,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 5,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 8,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 9,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 3,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 3,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 11,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 13,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 13,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 5,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 12,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 15,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 15,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 12,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 15,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 16,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 17,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 17,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 5,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 3,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 15,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 5,
+          "socket": 6
+        }
+      }
+    ],
+    "description": "A package",
+    "elements": [
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 1,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "NAND (Bool)",
+          "rotate": false,
+          "type": "gates/nand"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -90.0,
+            "y": -170.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 2,
+          "invertH": false,
+          "io": {
+            "inputs": [],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "Value",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 0,
+          "max_outputs": 1,
+          "min_inputs": 0,
+          "min_outputs": 1,
+          "name": "Const value (Bool)",
+          "rotate": false,
+          "type": "values/const_bool"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 300.0,
+            "y": -310.0
+          }
+        },
+        "properties": {
+          "value": false
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 3,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#0",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#1",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 1,
+                "name": "#5",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "FIN",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "TAKE",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "NFILL",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "NEMPTY",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "PUT",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "SEIN_",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "CRPTR - repeater(Bool[])",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              },
+              {
+                "index": 4,
+                "state": false
+              },
+              {
+                "index": 5,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -390.0,
+            "y": -190.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 4,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "NAND (Bool)",
+          "rotate": false,
+          "type": "gates/nand"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -90.0,
+            "y": -10.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 5,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "SEOUT",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "EN_bar",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "XFULL",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "EN",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "EN_bar",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "EN",
+                "siType": "i",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "FOUT",
+                "siType": "i",
+                "socket": 6,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#0",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "o",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "o",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "o",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
+              },
+              {
+                "flags": 41,
+                "inFlags": 2,
+                "name": "#6",
+                "siType": "o",
+                "socket": 6,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "CRPTR - repeater(Bool[])",
+          "rotate": false,
+          "rptr": {
+            "pbStates": [
+              {
+                "index": 0,
+                "state": false
+              },
+              {
+                "index": 1,
+                "state": false
+              },
+              {
+                "index": 2,
+                "state": false
+              },
+              {
+                "index": 3,
+                "state": false
+              },
+              {
+                "index": 4,
+                "state": false
+              },
+              {
+                "index": 5,
+                "state": false
+              },
+              {
+                "index": 6,
+                "state": false
+              }
+            ]
+          },
+          "type": "chips/CRPTR"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 600.0,
+            "y": -10.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 6,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 70.0,
+            "y": -10.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 7,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 220.0,
+            "y": -10.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 8,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "NAND (Bool)",
+          "rotate": false,
+          "type": "gates/nand"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -80.0,
+            "y": 180.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 9,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 80.0,
+            "y": 170.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 10,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 210.0,
+            "y": 170.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 11,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "NAND (Bool)",
+          "rotate": false,
+          "type": "gates/nand"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -80.0,
+            "y": 340.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 12,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "NAND (Bool)",
+          "rotate": false,
+          "type": "gates/nand"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -70.0,
+            "y": 470.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 13,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 110.0,
+            "y": 460.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 14,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 270.0,
+            "y": 460.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 15,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "NAND (Bool)",
+          "rotate": false,
+          "type": "gates/nand"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -70.0,
+            "y": 650.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 16,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 110.0,
+            "y": 670.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 17,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": 290.0,
+            "y": 660.0
+          }
+        }
+      }
+    ],
+    "icon": ":/unknown.png",
+    "path": ""
+  }
+}

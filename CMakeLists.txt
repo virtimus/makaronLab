@@ -19,7 +19,7 @@ set(EXTERNAL_TOOLS_ROOT ${PROJECT_SOURCE_DIR}/externalTools)
 
 if (MLAB_BUILD_EDITOR)
   add_subdirectory(${EXTERNAL_TOOLS_ROOT}/spaghetti)
-  #add_subdirectory(libmakaron)
+  add_subdirectory(libmakaron)
   add_subdirectory(editor) 
 endif ()
 
