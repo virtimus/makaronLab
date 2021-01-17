@@ -21,6 +21,7 @@ if (MLAB_BUILD_EDITOR)
   add_subdirectory(${EXTERNAL_TOOLS_ROOT}/spaghetti)
   add_subdirectory(libmakaron)
   add_subdirectory(editor) 
+  add_subdirectory(mHDUI )
 endif ()
 
 if (MLAB_BUILD_C65)

@@ -38,21 +38,51 @@ void CRAM::calculate()
 
     bool rst = _pins.getPinS(CPins::RST);
     if (rst){
-        //read program on reset
-        //           LDA 14
-        content[0]=0b00011110;
-        //           ADD 15
-        content[1]=0b00101111;
-        //           SUB 8
-        content[2]=0b00111000;
-        //           HLT
-        content[3]=0b01010000;
-        //           NOP
-        content[4]=0b00000000;
+       /*  read program on reset
+       *
+       *
+       */
+
+        std::vector<uint8_t>& c = content;
+
+        /*
+        //prg
+        c[0]=0b00011110;// LDA 14
+        c[1]=0b00101111;// ADD 15
+        c[2]=0b00111000;// SUB 8
+        c[3]=0b11110000;// HLT
+        c[4]=0b00000000;// NOP
         // data
-        content[8]=0b00000010;
-       content[14]=0b00011100;
-       content[15]=0b00001110;
+        c[8]= 0b00000010;
+        c[14]=0b00011100;
+        c[15]=0b00001110;
+      */
+
+        /*
+       //prg
+       c[0]=0b01010001;// ldi 1   //d81
+       c[1]=0b00101110;// add $14 //d46
+       c[2]=0b01001110;// sta $14 //d78
+       c[3]=0b11100000;// out     //d224
+       c[4]=0b01100000;// jmp 0   //d96
+       c[5]=0b11110000;// hlt
+       //data
+       c[15]=0b00001110;
+       */
+
+
+       //https://youtu.be/Zg1NdPKoosU?t=1843
+	   c[0]=0b00101111;// ADD $15
+	   c[1]=0b11100000;// out
+	   c[2]=0b01110100;// JC 4
+	   c[3]=0b01100000;// JMP 0
+	   c[4]=0b00111111;// SUB $15
+	   c[5]=0b11100000;// OUT
+	   c[6]=0b10000000;// JZ 0
+	   c[7]=0b01100100;// JMP 4
+       //data
+       c[15]=0b0000001;
+
     }
 
 	short a0 = _pins.getPinS(CPins::A0);

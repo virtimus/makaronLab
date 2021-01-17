@@ -511,12 +511,12 @@
     "iconify": true,
     "iconifying_hides_central_widget": false,
     "inputs_position": {
-      "x": -2420.0,
-      "y": 10.0
+      "x": -3030.0,
+      "y": 0.0
     },
     "outputs_position": {
-      "x": 2530.0,
-      "y": 60.0
+      "x": 1220.0,
+      "y": -20.0
     },
     "position": {
       "x": 0.0,
@@ -3396,42 +3396,6 @@
       {
         "connect": {
           "flags": 2,
-          "id": 62,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 60,
-          "socket": 0
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 62,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 59,
-          "socket": 0
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 62,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 58,
-          "socket": 0
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
           "id": 23,
           "socket": 5
         },
@@ -3584,6 +3548,378 @@
           "id": 49,
           "socket": 13
         }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 62,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 66,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 66,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 60,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 66,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 59,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 66,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 58,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 62,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 67,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 56,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 67,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 67,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 66,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 50,
+          "socket": 11
+        },
+        "to": {
+          "flags": 1,
+          "id": 66,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 20,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 67,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 64,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 67,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 18,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 10
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 33
+        },
+        "to": {
+          "flags": 1,
+          "id": 51,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 34
+        },
+        "to": {
+          "flags": 1,
+          "id": 51,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 69,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 70,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 71,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 73,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 68,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 68,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 68,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 74,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 74,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 68,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 68,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 63,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 76,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 76,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 75,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 73,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 68,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 52,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 75,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 73,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 75,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 71,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 75,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 70,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 75,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 75,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 63,
+          "socket": 3
+        }
       }
     ],
     "description": "A package",
@@ -3598,7 +3934,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#0",
                 "siType": "i",
@@ -3606,7 +3942,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#1",
                 "siType": "i",
@@ -3614,7 +3950,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#2",
                 "siType": "i",
@@ -3622,7 +3958,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#3",
                 "siType": "i",
@@ -3630,7 +3966,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#4",
                 "siType": "i",
@@ -3638,7 +3974,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#5",
                 "siType": "i",
@@ -3646,7 +3982,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#6",
                 "siType": "i",
@@ -3654,7 +3990,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#7",
                 "siType": "i",
@@ -3662,7 +3998,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#8",
                 "siType": "i",
@@ -3670,7 +4006,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#9",
                 "siType": "i",
@@ -3678,8 +4014,8 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
-                "inFlags": 1,
+                "flags": 41,
+                "inFlags": 2,
                 "name": "#10",
                 "siType": "i",
                 "socket": 10,
@@ -3688,7 +4024,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -3696,7 +4032,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "o",
@@ -3704,7 +4040,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "o",
@@ -3712,7 +4048,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "o",
@@ -3720,7 +4056,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "o",
@@ -3728,7 +4064,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#5",
                 "siType": "o",
@@ -3736,7 +4072,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#6",
                 "siType": "o",
@@ -3744,7 +4080,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#7",
                 "siType": "o",
@@ -3752,7 +4088,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#8",
                 "siType": "o",
@@ -3760,7 +4096,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#9",
                 "siType": "o",
@@ -3768,7 +4104,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "CLOCK",
                 "siType": "o",
@@ -3898,7 +4234,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -3906,7 +4242,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "i",
@@ -3914,7 +4250,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "i",
@@ -3922,7 +4258,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "i",
@@ -3930,7 +4266,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "i",
@@ -3938,7 +4274,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#5",
                 "siType": "i",
@@ -3946,7 +4282,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#6",
                 "siType": "i",
@@ -3954,7 +4290,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#7",
                 "siType": "i",
@@ -3964,7 +4300,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -3972,7 +4308,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "o",
@@ -3980,7 +4316,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "o",
@@ -3988,7 +4324,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "o",
@@ -3996,7 +4332,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "o",
@@ -4004,7 +4340,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#5",
                 "siType": "o",
@@ -4012,7 +4348,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#6",
                 "siType": "o",
@@ -4020,7 +4356,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#7",
                 "siType": "o",
@@ -5889,7 +6225,7 @@
               {
                 "flags": 15,
                 "inFlags": 2,
-                "name": "#32",
+                "name": "CO",
                 "siType": "o",
                 "socket": 32,
                 "type": "bool"
@@ -5897,7 +6233,7 @@
               {
                 "flags": 15,
                 "inFlags": 2,
-                "name": "#33",
+                "name": "CIO",
                 "siType": "o",
                 "socket": 33,
                 "type": "bool"
@@ -5905,7 +6241,7 @@
               {
                 "flags": 15,
                 "inFlags": 2,
-                "name": "#34",
+                "name": "CZ",
                 "siType": "o",
                 "socket": 34,
                 "type": "bool"
@@ -5932,8 +6268,8 @@
             "y": -110.0
           },
           "position": {
-            "x": -550.0,
-            "y": 580.0
+            "x": -540.0,
+            "y": 610.0
           }
         },
         "package": {
@@ -6131,7 +6467,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -6139,7 +6475,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "i",
@@ -6147,7 +6483,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "i",
@@ -6155,7 +6491,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "i",
@@ -6165,7 +6501,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "LOAD-",
                 "siType": "o",
@@ -6173,7 +6509,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "ENC-",
                 "siType": "o",
@@ -6181,7 +6517,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "ENABLE-",
                 "siType": "o",
@@ -6189,7 +6525,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "CLK",
                 "siType": "o",
@@ -6245,7 +6581,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -6253,7 +6589,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "i",
@@ -6261,7 +6597,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "i",
@@ -6269,7 +6605,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "i",
@@ -6279,7 +6615,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -6287,7 +6623,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "o",
@@ -6295,7 +6631,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "o",
@@ -6303,7 +6639,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "o",
@@ -6399,7 +6735,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "HOLD",
                 "siType": "i",
@@ -6407,7 +6743,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "i",
@@ -6415,7 +6751,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "i",
@@ -6423,7 +6759,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "i",
@@ -6431,7 +6767,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "i",
@@ -6439,7 +6775,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#5",
                 "siType": "i",
@@ -6447,7 +6783,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#6",
                 "siType": "i",
@@ -6455,7 +6791,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#7",
                 "siType": "i",
@@ -6463,7 +6799,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#8",
                 "siType": "i",
@@ -6471,7 +6807,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#9",
                 "siType": "i",
@@ -6479,7 +6815,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#A",
                 "siType": "i",
@@ -6487,7 +6823,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#B",
                 "siType": "i",
@@ -6495,7 +6831,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#C",
                 "siType": "i",
@@ -6503,7 +6839,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#D",
                 "siType": "i",
@@ -6511,7 +6847,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#E",
                 "siType": "i",
@@ -6519,7 +6855,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#F",
                 "siType": "i",
@@ -6527,7 +6863,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#G",
                 "siType": "i",
@@ -6535,7 +6871,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#H",
                 "siType": "i",
@@ -6543,7 +6879,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#18",
                 "siType": "i",
@@ -6551,7 +6887,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#19",
                 "siType": "i",
@@ -6561,7 +6897,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "HOLD",
                 "siType": "o",
@@ -6569,23 +6905,23 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
-                "name": "PRAM-IN",
+                "name": "RAM-IN",
                 "siType": "o",
                 "socket": 1,
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
-                "name": "RAM-IN",
+                "name": "MR-IN",
                 "siType": "o",
                 "socket": 2,
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "RAM-OUT",
                 "siType": "o",
@@ -6593,7 +6929,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "IR-IN",
                 "siType": "o",
@@ -6601,7 +6937,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "IR-OUT",
                 "siType": "o",
@@ -6609,7 +6945,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "AR-IN",
                 "siType": "o",
@@ -6617,7 +6953,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "AR-OUT",
                 "siType": "o",
@@ -6625,7 +6961,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "AL-OUT",
                 "siType": "o",
@@ -6633,7 +6969,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "AL-SUB",
                 "siType": "o",
@@ -6641,7 +6977,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "BR-IN",
                 "siType": "o",
@@ -6649,7 +6985,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "BR-OUT",
                 "siType": "o",
@@ -6657,7 +6993,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "OUT-IN",
                 "siType": "o",
@@ -6665,7 +7001,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "CN-ENC",
                 "siType": "o",
@@ -6673,7 +7009,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "CN-JUMP",
                 "siType": "o",
@@ -6681,7 +7017,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "CN-OUT",
                 "siType": "o",
@@ -6689,7 +7025,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "RST",
                 "siType": "o",
@@ -6697,7 +7033,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#17",
                 "siType": "o",
@@ -6705,7 +7041,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "PRMODE",
                 "siType": "o",
@@ -6713,7 +7049,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#19",
                 "siType": "o",
@@ -6818,8 +7154,8 @@
           "iconify": false,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -840.0,
-            "y": 610.0
+            "x": -900.0,
+            "y": 600.0
           }
         }
       },
@@ -7127,7 +7463,7 @@
               {
                 "flags": 15,
                 "inFlags": 2,
-                "name": "MEMIN-",
+                "name": "RAM-IN-",
                 "siType": "i",
                 "socket": 24,
                 "type": "bool"
@@ -7135,7 +7471,7 @@
               {
                 "flags": 15,
                 "inFlags": 2,
-                "name": "RAMIN",
+                "name": "MR-IN",
                 "siType": "i",
                 "socket": 25,
                 "type": "bool"
@@ -7344,7 +7680,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -7352,7 +7688,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "i",
@@ -7360,7 +7696,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "i",
@@ -7368,7 +7704,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "i",
@@ -7376,7 +7712,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "i",
@@ -7384,7 +7720,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#5",
                 "siType": "i",
@@ -7394,7 +7730,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -7402,7 +7738,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "o",
@@ -7410,7 +7746,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "o",
@@ -7418,7 +7754,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "o",
@@ -7426,7 +7762,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "o",
@@ -7434,7 +7770,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "RST",
                 "siType": "o",
@@ -7483,8 +7819,8 @@
           "iconify": false,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -820.0,
-            "y": 1400.0
+            "x": -560.0,
+            "y": 1430.0
           }
         }
       },
@@ -7529,8 +7865,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -620.0,
-            "y": 1440.0
+            "x": -600.0,
+            "y": 1320.0
           }
         }
       },
@@ -7820,7 +8156,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#0",
                 "siType": "i",
@@ -7828,7 +8164,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#1",
                 "siType": "i",
@@ -7836,7 +8172,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#2",
                 "siType": "i",
@@ -7844,7 +8180,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#3",
                 "siType": "i",
@@ -7854,7 +8190,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -7862,7 +8198,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "o",
@@ -7870,7 +8206,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "o",
@@ -7878,7 +8214,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "o",
@@ -8909,8 +9245,8 @@
             "y": -280.0
           },
           "position": {
-            "x": -1440.0,
-            "y": 610.0
+            "x": -1450.0,
+            "y": 600.0
           }
         },
         "package": {
@@ -9016,8 +9352,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -430.0,
-            "y": 390.0
+            "x": -400.0,
+            "y": 970.0
           }
         }
       },
@@ -9628,7 +9964,7 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": 80.0,
+            "x": 90.0,
             "y": 630.0
           }
         }
@@ -9643,7 +9979,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -9653,7 +9989,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -10032,8 +10368,8 @@
           "iconify": false,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1040.0,
-            "y": 610.0
+            "x": -1090.0,
+            "y": 600.0
           }
         }
       },
@@ -10047,7 +10383,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -10055,7 +10391,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "i",
@@ -10063,7 +10399,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "i",
@@ -10071,7 +10407,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "i",
@@ -10079,7 +10415,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "i",
@@ -10087,7 +10423,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#5",
                 "siType": "i",
@@ -10095,7 +10431,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#6",
                 "siType": "i",
@@ -10103,7 +10439,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#7",
                 "siType": "i",
@@ -10111,7 +10447,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#8",
                 "siType": "i",
@@ -10119,7 +10455,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#9",
                 "siType": "i",
@@ -10127,7 +10463,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#10",
                 "siType": "i",
@@ -10135,9 +10471,9 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
-                "name": "#11",
+                "name": "OUT",
                 "siType": "i",
                 "socket": 11,
                 "type": "bool"
@@ -10145,7 +10481,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -10153,7 +10489,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "o",
@@ -10161,7 +10497,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "o",
@@ -10169,7 +10505,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "o",
@@ -10177,7 +10513,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "o",
@@ -10185,7 +10521,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#5",
                 "siType": "o",
@@ -10193,7 +10529,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#6",
                 "siType": "o",
@@ -10201,7 +10537,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#7",
                 "siType": "o",
@@ -10209,7 +10545,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#8",
                 "siType": "o",
@@ -10217,7 +10553,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#9",
                 "siType": "o",
@@ -10225,7 +10561,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#10",
                 "siType": "o",
@@ -10233,7 +10569,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#11",
                 "siType": "o",
@@ -10296,7 +10632,7 @@
               },
               {
                 "index": 11,
-                "state": false
+                "state": true
               }
             ]
           },
@@ -10306,8 +10642,8 @@
           "iconify": false,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1250.0,
-            "y": 610.0
+            "x": -1300.0,
+            "y": 600.0
           }
         }
       },
@@ -10338,7 +10674,7 @@
               },
               {
                 "flags": 1,
-                "inFlags": 1,
+                "inFlags": 2,
                 "name": "B2",
                 "siType": "i",
                 "socket": 2,
@@ -10346,7 +10682,7 @@
               },
               {
                 "flags": 1,
-                "inFlags": 1,
+                "inFlags": 2,
                 "name": "B3",
                 "siType": "i",
                 "socket": 3,
@@ -10510,8 +10846,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1470.0,
-            "y": 1440.0
+            "x": -2480.0,
+            "y": 1370.0
           }
         }
       },
@@ -10525,7 +10861,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#0",
                 "siType": "i",
@@ -10535,7 +10871,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -10712,8 +11048,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -590.0,
-            "y": 650.0
+            "x": -640.0,
+            "y": 640.0
           }
         }
       },
@@ -10811,11 +11147,11 @@
           "type": "chips/ByteToBools"
         },
         "node": {
-          "iconify": true,
+          "iconify": false,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1180.0,
-            "y": 1550.0
+            "x": -1240.0,
+            "y": 1560.0
           }
         }
       },
@@ -10829,7 +11165,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -10839,7 +11175,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -11108,8 +11444,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1550.0,
-            "y": 60.0
+            "x": -1580.0,
+            "y": 30.0
           }
         }
       },
@@ -11210,8 +11546,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1500.0,
-            "y": 1150.0
+            "x": -1890.0,
+            "y": 960.0
           }
         }
       },
@@ -11239,6 +11575,22 @@
                 "siType": "i",
                 "socket": 1,
                 "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
               }
             ],
             "outputs": [
@@ -11264,7 +11616,7 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1880.0,
+            "x": -1790.0,
             "y": 1500.0
           }
         }
@@ -11366,7 +11718,7 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1090.0,
+            "x": -1100.0,
             "y": 1480.0
           }
         }
@@ -11470,6 +11822,612 @@
           "position": {
             "x": -590.0,
             "y": 940.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 63,
+          "default_new_output_flags": 63,
+          "description": "",
+          "id": 66,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "A",
+                "siType": "i",
+                "socket": 0,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "B",
+                "siType": "i",
+                "socket": 1,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "SELB",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "O",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "w64-SL-8bit",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -430.0,
+            "y": -10.0
+          },
+          "outputs_position": {
+            "x": 350.0,
+            "y": -100.0
+          },
+          "position": {
+            "x": -1470.0,
+            "y": 1060.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/w64-SL-8bit.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 63,
+          "default_new_output_flags": 63,
+          "description": "",
+          "id": 67,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "LD",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "D0",
+                "siType": "i",
+                "socket": 1,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 1,
+                "name": "EN",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "RST",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "CLK",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "O0",
+                "siType": "o",
+                "socket": 0,
+                "type": "byte"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "I0",
+                "siType": "o",
+                "socket": 1,
+                "type": "byte"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 255,
+          "min_inputs": 0,
+          "min_outputs": 0,
+          "name": "OUT-reg",
+          "rotate": false,
+          "type": "logic/package"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "inputs_position": {
+            "x": -610.0,
+            "y": -70.0
+          },
+          "outputs_position": {
+            "x": 200.0,
+            "y": -80.0
+          },
+          "position": {
+            "x": -1740.0,
+            "y": 1140.0
+          }
+        },
+        "package": {
+          "description": "A package",
+          "icon": ":/unknown.png",
+          "path": "/src/packages/w64-REG-8bit-ei.package"
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "JC - JUMP on carry",
+          "id": 68,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "AND (Bool)",
+          "rotate": false,
+          "type": "gates/and"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2060.0,
+            "y": 1540.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 69,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2140.0,
+            "y": 1450.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 70,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2200.0,
+            "y": 1470.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 71,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2260.0,
+            "y": 1490.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 73,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2340.0,
+            "y": 1510.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 74,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2320.0,
+            "y": 1410.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 9,
+          "default_new_output_flags": 0,
+          "description": "JZ - JUMP on zero",
+          "id": 75,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 1,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#2",
+                "siType": "i",
+                "socket": 2,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#3",
+                "siType": "i",
+                "socket": 3,
+                "type": "bool"
+              },
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "i",
+                "socket": 4,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 255,
+          "max_outputs": 1,
+          "min_inputs": 2,
+          "min_outputs": 1,
+          "name": "AND (Bool)",
+          "rotate": false,
+          "type": "gates/and"
+        },
+        "node": {
+          "iconify": false,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2060.0,
+            "y": 1700.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 76,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -2260.0,
+            "y": 1600.0
           }
         }
       }

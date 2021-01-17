@@ -21,13 +21,14 @@ static const C65Pin EN  {3,"EN",  IoSide::Left,  SiType::Input};
 static const C65Pin RST {4,"RST", IoSide::Left,  SiType::Input};
 static const C65Pin O   {5,"O",   IoSide::Right, SiType::Output, IoType::Word64};
 static const C65Pin I   {6,"I",   IoSide::Right, SiType::Output, IoType::Word64};
+static const C65Pin IA   {7,"IA",   IoSide::Right, SiType::Output, IoType::Word64};
 
 
 	static const C65Pin all[] = {
             A,D,LD,EN,RST,
-            O,I
+            O,I, IA
 	};
-    static const int allSize = 7;
+    static const int allSize = 8;
 }
 
 

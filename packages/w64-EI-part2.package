@@ -1251,78 +1251,6 @@
         "connect": {
           "flags": 2,
           "id": 2,
-          "socket": 16
-        },
-        "to": {
-          "flags": 1,
-          "id": 38,
-          "socket": 24
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 2,
-          "socket": 17
-        },
-        "to": {
-          "flags": 1,
-          "id": 38,
-          "socket": 25
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 2,
-          "socket": 18
-        },
-        "to": {
-          "flags": 1,
-          "id": 38,
-          "socket": 26
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 38,
-          "socket": 24
-        },
-        "to": {
-          "flags": 1,
-          "id": 14,
-          "socket": 4
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 38,
-          "socket": 25
-        },
-        "to": {
-          "flags": 1,
-          "id": 14,
-          "socket": 5
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 38,
-          "socket": 26
-        },
-        "to": {
-          "flags": 1,
-          "id": 14,
-          "socket": 6
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 2,
           "socket": 6
         },
         "to": {
@@ -1341,54 +1269,6 @@
           "flags": 1,
           "id": 38,
           "socket": 15
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 2,
-          "socket": 8
-        },
-        "to": {
-          "flags": 1,
-          "id": 38,
-          "socket": 16
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 2,
-          "socket": 9
-        },
-        "to": {
-          "flags": 1,
-          "id": 38,
-          "socket": 17
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 2,
-          "socket": 10
-        },
-        "to": {
-          "flags": 1,
-          "id": 38,
-          "socket": 18
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 2,
-          "socket": 11
-        },
-        "to": {
-          "flags": 1,
-          "id": 38,
-          "socket": 19
         }
       },
       {
@@ -1413,54 +1293,6 @@
           "flags": 1,
           "id": 1,
           "socket": 2
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 38,
-          "socket": 16
-        },
-        "to": {
-          "flags": 1,
-          "id": 1,
-          "socket": 3
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 38,
-          "socket": 17
-        },
-        "to": {
-          "flags": 1,
-          "id": 1,
-          "socket": 4
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 38,
-          "socket": 18
-        },
-        "to": {
-          "flags": 1,
-          "id": 1,
-          "socket": 5
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 38,
-          "socket": 19
-        },
-        "to": {
-          "flags": 1,
-          "id": 1,
-          "socket": 6
         }
       },
       {
@@ -1562,18 +1394,6 @@
       {
         "connect": {
           "flags": 2,
-          "id": 3,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 2,
-          "socket": 23
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
           "id": 41,
           "socket": 0
         },
@@ -1581,6 +1401,198 @@
           "flags": 1,
           "id": 21,
           "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 14,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 42,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 11
+        },
+        "to": {
+          "flags": 1,
+          "id": 43,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 8
+        },
+        "to": {
+          "flags": 1,
+          "id": 38,
+          "socket": 16
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 16
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 9
+        },
+        "to": {
+          "flags": 1,
+          "id": 38,
+          "socket": 17
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 17
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 10
+        },
+        "to": {
+          "flags": 1,
+          "id": 38,
+          "socket": 18
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 11
+        },
+        "to": {
+          "flags": 1,
+          "id": 38,
+          "socket": 19
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 18
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 19
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 27
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 28
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 38,
+          "socket": 29
+        },
+        "to": {
+          "flags": 1,
+          "id": 14,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 19
+        },
+        "to": {
+          "flags": 1,
+          "id": 38,
+          "socket": 27
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 20
+        },
+        "to": {
+          "flags": 1,
+          "id": 38,
+          "socket": 28
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 2,
+          "socket": 21
+        },
+        "to": {
+          "flags": 1,
+          "id": 38,
+          "socket": 29
         }
       }
     ],
@@ -1700,6 +1712,22 @@
                 "siType": "o",
                 "socket": 3,
                 "type": "word64"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
               }
             ]
           },
@@ -1928,7 +1956,7 @@
               },
               {
                 "flags": 41,
-                "inFlags": 2,
+                "inFlags": 1,
                 "name": "CLK",
                 "siType": "i",
                 "socket": 23,
@@ -1947,7 +1975,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "PRAM-IN",
+                "name": "RAM-IN",
                 "siType": "o",
                 "socket": 1,
                 "type": "bool"
@@ -1955,7 +1983,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "RAM-IN",
+                "name": "MR-IN",
                 "siType": "o",
                 "socket": 2,
                 "type": "bool"
@@ -1987,7 +2015,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "AIN",
+                "name": "AR-IN",
                 "siType": "o",
                 "socket": 6,
                 "type": "bool"
@@ -1995,7 +2023,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "AOUT",
+                "name": "AR-OUT",
                 "siType": "o",
                 "socket": 7,
                 "type": "bool"
@@ -2003,7 +2031,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "BIN",
+                "name": "AL-OUT",
                 "siType": "o",
                 "socket": 8,
                 "type": "bool"
@@ -2011,7 +2039,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "BOUT",
+                "name": "AL-SUB",
                 "siType": "o",
                 "socket": 9,
                 "type": "bool"
@@ -2019,7 +2047,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "SUB",
+                "name": "BR-IN",
                 "siType": "o",
                 "socket": 10,
                 "type": "bool"
@@ -2027,7 +2055,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "ALOUT",
+                "name": "BR-OUT",
                 "siType": "o",
                 "socket": 11,
                 "type": "bool"
@@ -2035,7 +2063,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "OUTIN",
+                "name": "OUT-IN",
                 "siType": "o",
                 "socket": 12,
                 "type": "bool"
@@ -2043,7 +2071,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "ENC",
+                "name": "PC-ENC",
                 "siType": "o",
                 "socket": 13,
                 "type": "bool"
@@ -2051,7 +2079,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "JUMP",
+                "name": "PC-JUMP",
                 "siType": "o",
                 "socket": 14,
                 "type": "bool"
@@ -2059,7 +2087,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "PCOUT",
+                "name": "PC-OUT",
                 "siType": "o",
                 "socket": 15,
                 "type": "bool"
@@ -2067,7 +2095,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "IAMDIN",
+                "name": "RST",
                 "siType": "o",
                 "socket": 16,
                 "type": "bool"
@@ -2075,7 +2103,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "IBMDIN",
+                "name": "FLR-IN",
                 "siType": "o",
                 "socket": 17,
                 "type": "bool"
@@ -2083,7 +2111,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "IALMDIN",
+                "name": "",
                 "siType": "o",
                 "socket": 18,
                 "type": "bool"
@@ -2091,7 +2119,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "#19",
+                "name": "IAMDIN",
                 "siType": "o",
                 "socket": 19,
                 "type": "bool"
@@ -2099,7 +2127,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "#20",
+                "name": "IBMDIN",
                 "siType": "o",
                 "socket": 20,
                 "type": "bool"
@@ -2107,7 +2135,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "#21",
+                "name": "IALMDIN",
                 "siType": "o",
                 "socket": 21,
                 "type": "bool"
@@ -2279,8 +2307,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -910.0,
-            "y": 590.0
+            "x": -800.0,
+            "y": 530.0
           }
         },
         "properties": {
@@ -2319,8 +2347,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -210.0,
-            "y": -50.0
+            "x": -230.0,
+            "y": -120.0
           }
         }
       },
@@ -2356,8 +2384,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -140.0,
-            "y": -50.0
+            "x": -160.0,
+            "y": -60.0
           }
         }
       },
@@ -2393,8 +2421,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -70.0,
-            "y": -50.0
+            "x": -100.0,
+            "y": -60.0
           }
         }
       },
@@ -2537,8 +2565,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -10.0,
-            "y": -50.0
+            "x": -230.0,
+            "y": -60.0
           }
         }
       },
@@ -2824,7 +2852,7 @@
           "iconifying_hides_central_widget": false,
           "position": {
             "x": 60.0,
-            "y": 320.0
+            "y": 330.0
           }
         }
       },
@@ -2861,7 +2889,7 @@
           "iconifying_hides_central_widget": false,
           "position": {
             "x": 60.0,
-            "y": 250.0
+            "y": 230.0
           }
         }
       },
@@ -2978,7 +3006,7 @@
             "y": -120.0
           },
           "position": {
-            "x": -70.0,
+            "x": -60.0,
             "y": 60.0
           }
         },
@@ -3085,7 +3113,7 @@
             "y": -150.0
           },
           "position": {
-            "x": -170.0,
+            "x": -160.0,
             "y": 100.0
           }
         },
@@ -3226,8 +3254,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -290.0,
-            "y": -30.0
+            "x": -260.0,
+            "y": 30.0
           }
         },
         "properties": {
@@ -4310,8 +4338,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1470.0,
-            "y": 210.0
+            "x": -1510.0,
+            "y": 130.0
           }
         }
       },
@@ -4518,8 +4546,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1350.0,
-            "y": 310.0
+            "x": -1420.0,
+            "y": 370.0
           }
         }
       },
@@ -4556,7 +4584,7 @@
           "iconifying_hides_central_widget": false,
           "position": {
             "x": 60.0,
-            "y": 30.0
+            "y": 10.0
           }
         }
       },
@@ -4667,7 +4695,7 @@
           "iconifying_hides_central_widget": false,
           "position": {
             "x": 60.0,
-            "y": 100.0
+            "y": 110.0
           }
         }
       },
@@ -4924,8 +4952,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1500.0,
-            "y": 310.0
+            "x": -1610.0,
+            "y": 250.0
           }
         }
       },
@@ -5344,7 +5372,7 @@
               },
               {
                 "flags": 41,
-                "inFlags": 2,
+                "inFlags": 1,
                 "name": "#24",
                 "siType": "i",
                 "socket": 24,
@@ -5352,7 +5380,7 @@
               },
               {
                 "flags": 41,
-                "inFlags": 2,
+                "inFlags": 1,
                 "name": "#25",
                 "siType": "i",
                 "socket": 25,
@@ -5360,7 +5388,7 @@
               },
               {
                 "flags": 41,
-                "inFlags": 2,
+                "inFlags": 1,
                 "name": "#26",
                 "siType": "i",
                 "socket": 26,
@@ -5368,7 +5396,7 @@
               },
               {
                 "flags": 41,
-                "inFlags": 1,
+                "inFlags": 2,
                 "name": "#27",
                 "siType": "i",
                 "socket": 27,
@@ -5376,7 +5404,7 @@
               },
               {
                 "flags": 41,
-                "inFlags": 1,
+                "inFlags": 2,
                 "name": "#28",
                 "siType": "i",
                 "socket": 28,
@@ -5384,7 +5412,7 @@
               },
               {
                 "flags": 41,
-                "inFlags": 1,
+                "inFlags": 2,
                 "name": "#29",
                 "siType": "i",
                 "socket": 29,
@@ -6705,7 +6733,7 @@
           "iconifying_hides_central_widget": false,
           "position": {
             "x": 150.0,
-            "y": -180.0
+            "y": -120.0
           }
         }
       },
@@ -6741,8 +6769,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -550.0,
-            "y": -80.0
+            "x": -650.0,
+            "y": -100.0
           }
         }
       },
@@ -6778,12 +6806,86 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -1430.0,
-            "y": 120.0
+            "x": -1560.0,
+            "y": 60.0
           }
         },
         "properties": {
           "value": true
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 42,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 40,
+                "inFlags": 2,
+                "name": "Word64",
+                "siType": "i",
+                "socket": 0,
+                "type": "word64"
+              }
+            ],
+            "outputs": []
+          },
+          "max_inputs": 1,
+          "max_outputs": 0,
+          "min_inputs": 1,
+          "min_outputs": 0,
+          "name": "DBUS",
+          "rotate": false,
+          "type": "chips/InfoWord64"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -30.0,
+            "y": -50.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 43,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 40,
+                "inFlags": 2,
+                "name": "Word64",
+                "siType": "i",
+                "socket": 0,
+                "type": "word64"
+              }
+            ],
+            "outputs": []
+          },
+          "max_inputs": 1,
+          "max_outputs": 0,
+          "min_inputs": 1,
+          "min_outputs": 0,
+          "name": "InfoWord64",
+          "rotate": false,
+          "type": "chips/InfoWord64"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -290.0,
+            "y": -170.0
+          }
         }
       }
     ],

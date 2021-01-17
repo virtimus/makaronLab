@@ -1,0 +1,49 @@
+{
+	"folders": [
+		{
+			"path": "wq"
+		},
+		{
+			"path": "../wxWidgetsTest"
+		},
+		{
+			"path": "mHDUI"
+		},
+		{
+			"path": "../wqWidgetsTest"
+		},
+		{
+			"path": "../Phoenix"
+		},
+		{
+			"path": "../PySimpleGUI"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../wxWidgets"
+		},
+		{
+			"path": "../wxPython-src-3.0.2.0"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.tpp": "c",
+			"*.tcc": "c",
+			"optional": "c",
+			"istream": "c",
+			"ostream": "c",
+			"ratio": "c",
+			"system_error": "c",
+			"array": "c",
+			"functional": "c",
+			"regex": "c",
+			"tuple": "c",
+			"type_traits": "c",
+			"utility": "c",
+			"variant": "c"
+		}
+	}
+}

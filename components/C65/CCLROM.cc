@@ -226,11 +226,13 @@ void CCLROM::calculate()
 	// a0-3 - step
 	// a4-a7 - opcode
 	bool isNextStep=false;
+	bool isNextNextStep=false;
 	uint32_t value=0;
 	bool isReset = _pins.getPin(CPins::RST);
 	if (isReset){
 		// leave at 0
 		isNextStep = true;
+		isNextNextStep = true;
 	} else {
 	    size_t address = a0 + 2*a1 + 4*a2 + 8*a3 + 16*a4 + 32*a5 + 64*a6 + 128*a7;
 
@@ -241,6 +243,7 @@ void CCLROM::calculate()
 	    if (address<romContent.size()){
 	        value = romContent[address];
 	        isNextStep = (address+1<romContent.size() && romContent[address+1]>0);
+	        isNextNextStep = (address+2<romContent.size() && romContent[address+2]>0);
 	    }
 
 	}
@@ -250,6 +253,7 @@ void CCLROM::calculate()
     pins |= value<<CPins::outIndex;
 	_pins.tmpPinsS(pins);
 	_pins.setPin(CPins::NXS,isNextStep);
+	_pins.setPin(CPins::NNXS,isNextNextStep);
 	pinsToOut(CPins::all);
 
   /*  bool we = !_pins.getPin(CPins::WE_);

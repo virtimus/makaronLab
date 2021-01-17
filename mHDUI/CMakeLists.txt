@@ -1,0 +1,70 @@
+cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
+
+project(mHDUIEditor VERSION ${MLAB_VERSION} LANGUAGES C CXX)
+
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
+#set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+#set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+#set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+#set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+#add_executable(mHDUIEditor
+	#main.cc	
+#)
+
+if (HAVE_CXX_FILESYSTEM)
+  set(MAKARON_FILESYSTEM_IMPLEMENTATION MAKARON_FS_STD_FILESYSTEM)
+elseif (HAVE_CXX_EXPERIMENTAL_FILESYSTEM)
+  set(MAKARON_FILESYSTEM_IMPLEMENTATION MAKARON_FS_STD_EXPERIMENTAL_FILESYSTEM)
+elseif (HAVE_BOOST_FILESYSTEM)
+  set(MAKARON_FILESYSTEM_IMPLEMENTATION MAKARON_FS_BOOST_FILESYSTEM)
+endif ()
+
+#configure_file(include/makaron/version.h.in include/makaron/version.h)
+
+#[[target_compile_definitions(mHDUIEditor
+  PRIVATE ${MLAB_DEFINITIONS}
+  PRIVATE $<$<CONFIG:Debug>:${MLAB_DEFINITIONS_DEBUG}>
+  PRIVATE $<$<CONFIG:Release>:${MLAB_DEFINITIONS_RELEASE}>
+  )
+target_compile_options(mLabEditor
+  PRIVATE ${MLAB_FLAGS}
+  PRIVATE ${MLAB_FLAGS_C}
+  PRIVATE ${MLAB_FLAGS_CXX}
+  PRIVATE ${MLAB_FLAGS_LINKER}
+  PRIVATE $<$<CONFIG:Debug>:${MLAB_FLAGS_DEBUG}>
+  PRIVATE $<$<CONFIG:Debug>:${MLAB_WARNINGS}>
+  PRIVATE $<$<CONFIG:Release>:${MLAB_FLAGS_RELEASE}>
+  )
+ 
+target_include_directories(mHDUIEditor
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../externalTools/spaghetti/libspaghetti/source>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+#  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../externalTools/spaghetti/libspaghetti/source>
+  PRIVATE source
+  ) 
+target_include_directories(mHDUIEditor SYSTEM PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>/include
+  ) 
+ 
+target_link_libraries(mHDUIEditor PRIVATE Spaghetti)
+
+target_link_libraries(mHDUIEditor 
+	PRIVATE ${CMAKE_DL_LIBS} ${CXX_FILESYSTEM_LIBS}
+	)
+
+install(TARGETS mHDUIEditor
+  COMPONENT Editor
+  EXPORT mHDUIEditor
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  )
+ ]]
+#	message(STATUS "Setting compilation target to WASM")
+#	set(CMAKE_EXECUTABLE_SUFFIX ".wasm.js")
+#	set_target_properties(mHDUIEditor PROPERTIES LINK_FLAGS "-s WASM=1 -s EXPORTED_FUNCTIONS='[_main]'") 

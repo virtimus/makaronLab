@@ -47,14 +47,14 @@ namespace CPins {
     static const C65Pin OK {34,"OK" ,ioType::eOutputs, siType::eOutput};
     static const C65Pin OL {35,"OL" ,ioType::eOutputs, siType::eOutput};
     static const C65Pin OM {36,"OM" ,ioType::eOutputs, siType::eOutput};
-    static const C65Pin ON {37,"ON" ,ioType::eOutputs, siType::eOutput};
+    static const C65Pin NNXS {37,"NNXS" ,ioType::eOutputs, siType::eOutput};
 
     static const C65Pin NXS {38,"NXS" ,ioType::eOutputs, siType::eOutput};
 
 
 	static const C65Pin all[] = {
             A0, A1, A2, A3,  A4,  A5, A6, A7, D4, D5, D6, D7,  CS_, RST,
-            O0, O1, O2, O3,  O4,  O5, O6, O7, O8, O9, OA, OB,  OC,  OD, OE, OF, OG, OH, OI, OJ, OK, OL, OM, ON, NXS
+            O0, O1, O2, O3,  O4,  O5, O6, O7, O8, O9, OA, OB,  OC,  OD, OE, OF, OG, OH, OI, OJ, OK, OL, OM, NNXS, NXS
 	};
     static const int allSize = 39;
 
@@ -83,8 +83,8 @@ private:
   //private uint64_t content;
   std::vector<std::string> romContentBatch{
 	  "oMap:HOLD",
-	  "oMap:PRAM-IN",
 	  "oMap:RAM-IN",
+	  "oMap:MR-IN",
 	  "oMap:RAM-OUT",
 	  "oMap:IR-IN",
 	  "oMap:IR-OUT",
@@ -98,23 +98,41 @@ private:
 	  "oMap:CN-ENC",
 	  "oMap:CN-JUMP",
 	  "oMap:CN-OUT",
+	  "oMap:RST",
+	  "oMap:FLR-IN",
 	  "oMap:PRMODE",
-	  "oInit:CN-OUT RAM-IN",
+	  "oInit:CN-OUT MR-IN",
 	  "oInit:RAM-OUT IR-IN CN-ENC",
-      "oPCod:LDA",//01
-	  "oStep: IR-OUT  RAM-IN",
+      "oPCod:LDA",//0001
+	  "oStep: IR-OUT  MR-IN",
 	  "oStep: RAM-OUT AR-IN",
-      "oPCod:ADD",//10
-	  "oStep: IR-OUT  RAM-IN",
+      "oPCod:ADD",//0010
+	  "oStep: IR-OUT  MR-IN",
 	  "oStep: RAM-OUT BR-IN",
-	  "oStep: AL-OUT AR-IN",
-      "oPCod:SUB",//11
-      "oStep: IR-OUT  RAM-IN",
+	  "oStep: AL-OUT AR-IN FLR-IN",
+      "oPCod:SUB",//0011
+      "oStep: IR-OUT MR-IN",
       "oStep: AL-SUB RAM-OUT BR-IN ",
-      "oStep: AL-OUT AR-IN",
-      "oPCod:OUT",//100
-	  "oStep: AL-OUT OUT-IN",
-      "oPCod:HLT",//101
+      "oStep: AL-OUT AR-IN FLR-IN",
+      "oPCod:STA",//0100
+      "oStep: IR-OUT MR-IN",//put adress part of instruction into MR (to point given ram address)
+	  "oStep: AR-OUT RAM-IN",//store reg A into RAM
+      "oPCod:LDI",//0101:load immidiate - load value given into register A
+      "oStep: IR-OUT AR-IN",
+	  "oPCod:JMP",//0110:jump - jump unconditional to address given
+	  "oStep: IR-OUT CN-JUMP",
+	  "oPCod:JC",//0111:jump on carry - behavior (conditional reset of step counter) harcoded in simulated hardware
+	  "oStep: IR-OUT CN-JUMP",
+	  "oPCod:JZ",//1000:jump on zero - behavior (conditional reset of step counter) harcoded in simulated hardware
+	  "oStep: IR-OUT CN-JUMP",
+	  "oPCod:9",//1001
+	  "oPCod:10",//1010
+	  "oPCod:11",//1011
+	  "oPCod:12",//1100
+	  "oPCod:13",//1101
+	  "oPCod:OUT",//1110
+	  "oStep: AR-OUT OUT-IN",
+      "oPCod:HLT",//1111
       "oStep: HOLD",
 
   };

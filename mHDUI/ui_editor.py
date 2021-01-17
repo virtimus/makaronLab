@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Editor(object):
     def setupUi(self, Editor):
-        Editor.setObjectName("Editor")
+        #Editor.setObjectName("Editor")
         Editor.resize(1486, 976)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)

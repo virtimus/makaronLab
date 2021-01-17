@@ -1028,6 +1028,22 @@
                 "siType": "o",
                 "socket": 3,
                 "type": "word64"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "#4",
+                "siType": "o",
+                "socket": 4,
+                "type": "bool"
+              },
+              {
+                "flags": 63,
+                "inFlags": 2,
+                "name": "#5",
+                "siType": "o",
+                "socket": 5,
+                "type": "bool"
               }
             ]
           },
@@ -1071,7 +1087,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#0",
                 "siType": "i",
@@ -1079,7 +1095,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#1",
                 "siType": "i",
@@ -1087,7 +1103,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#2",
                 "siType": "i",
@@ -1095,7 +1111,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#3",
                 "siType": "i",
@@ -1103,7 +1119,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#4",
                 "siType": "i",
@@ -1111,7 +1127,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#5",
                 "siType": "i",
@@ -1119,7 +1135,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#6",
                 "siType": "i",
@@ -1127,7 +1143,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#7",
                 "siType": "i",
@@ -1135,7 +1151,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#8",
                 "siType": "i",
@@ -1143,7 +1159,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#9",
                 "siType": "i",
@@ -1151,7 +1167,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#10",
                 "siType": "i",
@@ -1159,7 +1175,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#11",
                 "siType": "i",
@@ -1167,7 +1183,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#12",
                 "siType": "i",
@@ -1175,7 +1191,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#13",
                 "siType": "i",
@@ -1183,7 +1199,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#14",
                 "siType": "i",
@@ -1191,7 +1207,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#15",
                 "siType": "i",
@@ -1199,7 +1215,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#16",
                 "siType": "i",
@@ -1207,7 +1223,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#17",
                 "siType": "i",
@@ -1215,7 +1231,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#18",
                 "siType": "i",
@@ -1223,7 +1239,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#19",
                 "siType": "i",
@@ -1231,7 +1247,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#20",
                 "siType": "i",
@@ -1239,7 +1255,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#21",
                 "siType": "i",
@@ -1247,7 +1263,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#22",
                 "siType": "i",
@@ -1255,7 +1271,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "CLK",
                 "siType": "i",
@@ -1265,7 +1281,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "HOLD",
                 "siType": "o",
@@ -1273,7 +1289,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "PRAM-IN",
                 "siType": "o",
@@ -1281,7 +1297,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "RAM-IN",
                 "siType": "o",
@@ -1289,7 +1305,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "RAM-OUT",
                 "siType": "o",
@@ -1297,7 +1313,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "IR-IN",
                 "siType": "o",
@@ -1305,7 +1321,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "IR-OUT",
                 "siType": "o",
@@ -1313,7 +1329,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "AIN",
                 "siType": "o",
@@ -1321,7 +1337,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "AOUT",
                 "siType": "o",
@@ -1329,7 +1345,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "BIN",
                 "siType": "o",
@@ -1337,7 +1353,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "BOUT",
                 "siType": "o",
@@ -1345,7 +1361,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "SUB",
                 "siType": "o",
@@ -1353,7 +1369,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "ALOUT",
                 "siType": "o",
@@ -1361,7 +1377,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "OUTIN",
                 "siType": "o",
@@ -1369,7 +1385,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "ENC",
                 "siType": "o",
@@ -1377,7 +1393,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "JUMP",
                 "siType": "o",
@@ -1385,7 +1401,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "PCOUT",
                 "siType": "o",
@@ -1393,7 +1409,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#16",
                 "siType": "o",
@@ -1401,7 +1417,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#17",
                 "siType": "o",
@@ -1409,7 +1425,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#18",
                 "siType": "o",
@@ -1417,7 +1433,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#19",
                 "siType": "o",
@@ -1425,7 +1441,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#20",
                 "siType": "o",
@@ -1433,7 +1449,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#21",
                 "siType": "o",
@@ -1441,7 +1457,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "RST",
                 "siType": "o",
@@ -1449,7 +1465,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "CLK",
                 "siType": "o",
@@ -1813,7 +1829,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#0",
                 "siType": "i",
@@ -1821,7 +1837,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#1",
                 "siType": "i",
@@ -1829,7 +1845,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#2",
                 "siType": "i",
@@ -1837,7 +1853,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 1,
                 "name": "#3",
                 "siType": "i",
@@ -1847,7 +1863,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "LD-",
                 "siType": "o",
@@ -1855,7 +1871,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "LD-",
                 "siType": "o",
@@ -1863,7 +1879,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "LD-",
                 "siType": "o",
@@ -1871,7 +1887,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "LD-",
                 "siType": "o",
@@ -2153,7 +2169,7 @@
           "io": {
             "inputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "i",
@@ -2161,7 +2177,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "i",
@@ -2169,7 +2185,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "i",
@@ -2177,7 +2193,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "i",
@@ -2185,7 +2201,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "i",
@@ -2195,7 +2211,7 @@
             ],
             "outputs": [
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#0",
                 "siType": "o",
@@ -2203,7 +2219,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#1",
                 "siType": "o",
@@ -2211,7 +2227,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#2",
                 "siType": "o",
@@ -2219,7 +2235,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#3",
                 "siType": "o",
@@ -2227,7 +2243,7 @@
                 "type": "bool"
               },
               {
-                "flags": 9,
+                "flags": 41,
                 "inFlags": 2,
                 "name": "#4",
                 "siType": "o",

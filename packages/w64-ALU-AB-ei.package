@@ -112,6 +112,22 @@
           "siType": "o",
           "socket": 3,
           "type": "word64"
+        },
+        {
+          "flags": 63,
+          "inFlags": 2,
+          "name": "#4",
+          "siType": "o",
+          "socket": 4,
+          "type": "bool"
+        },
+        {
+          "flags": 63,
+          "inFlags": 2,
+          "name": "#5",
+          "siType": "o",
+          "socket": 5,
+          "type": "bool"
         }
       ]
     },
@@ -124,7 +140,7 @@
     "type": "logic/package"
   },
   "node": {
-    "iconify": true,
+    "iconify": false,
     "iconifying_hides_central_widget": false,
     "inputs_position": {
       "x": -730.0,
@@ -878,7 +894,7 @@
             "y": -360.0
           },
           "position": {
-            "x": 120.0,
+            "x": 90.0,
             "y": 90.0
           }
         },

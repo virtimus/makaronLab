@@ -41,19 +41,21 @@ void W64RAM::calculate()
     if (rst){
         //read program on reset
         //           LDA 14
-        content[0]=0b00011110;
+        content[0]=0b00011110;//d 2+4+8+16=30
         //           ADD 15
-        content[1]=0b00101111;
+        content[1]=0b00101111;//d 1+2+4+8+32=47
         //           SUB 8
-        content[2]=0b00111000;
+        content[2]=0b00111000;//d
         //           HLT
         content[3]=0b01010000;
         //           NOP
         content[4]=0b00000000;
         // data
         content[8]=0b00000010;
-       content[14]=0b00011100;
-       content[15]=0b00001110;
+       content[14]=0b00011100;//d 4+8+16=28
+       content[15]=0b00001110;//2+4+8=14
+
+       //28+15-8=35
     }
 
     uint64_t address = pinValueAsWord64(CPins::A);

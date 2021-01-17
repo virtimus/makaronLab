@@ -202,7 +202,7 @@
         {
           "flags": 15,
           "inFlags": 1,
-          "name": "MEMIN-",
+          "name": "RAMIN-",
           "siType": "i",
           "socket": 24,
           "type": "bool"
@@ -210,7 +210,7 @@
         {
           "flags": 15,
           "inFlags": 1,
-          "name": "RAMIN",
+          "name": "MR-IN",
           "siType": "i",
           "socket": 25,
           "type": "bool"
@@ -516,10 +516,10 @@
     "type": "logic/package"
   },
   "node": {
-    "iconify": false,
+    "iconify": true,
     "iconifying_hides_central_widget": false,
     "inputs_position": {
-      "x": -800.0,
+      "x": -880.0,
       "y": -1030.0
     },
     "outputs_position": {
@@ -584,7 +584,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 4,
+          "id": 3,
           "socket": 0
         },
         "to": {
@@ -596,7 +596,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 4,
+          "id": 3,
           "socket": 1
         },
         "to": {
@@ -608,7 +608,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 4,
+          "id": 3,
           "socket": 2
         },
         "to": {
@@ -620,7 +620,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 4,
+          "id": 3,
           "socket": 3
         },
         "to": {
@@ -632,336 +632,240 @@
       {
         "connect": {
           "flags": 2,
-          "id": 6,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
           "id": 4,
           "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 0
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 6,
-          "socket": 1
-        },
-        "to": {
-          "flags": 1,
           "id": 4,
           "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 1
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 6,
-          "socket": 2
-        },
-        "to": {
-          "flags": 1,
           "id": 4,
           "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 2
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 6,
-          "socket": 3
-        },
-        "to": {
-          "flags": 1,
           "id": 4,
           "socket": 3
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 11,
-          "socket": 0
         },
         "to": {
           "flags": 1,
-          "id": 8,
-          "socket": 0
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 11,
-          "socket": 1
-        },
-        "to": {
-          "flags": 1,
-          "id": 8,
-          "socket": 1
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 11,
-          "socket": 2
-        },
-        "to": {
-          "flags": 1,
-          "id": 8,
-          "socket": 2
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 11,
-          "socket": 3
-        },
-        "to": {
-          "flags": 1,
-          "id": 8,
+          "id": 3,
           "socket": 3
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 11,
+          "id": 9,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 1
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 2
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 3
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 9,
           "socket": 4
         },
         "to": {
           "flags": 1,
-          "id": 9,
+          "id": 7,
           "socket": 0
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 11,
+          "id": 9,
           "socket": 5
         },
         "to": {
           "flags": 1,
-          "id": 9,
+          "id": 7,
           "socket": 1
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 11,
+          "id": 9,
           "socket": 6
         },
         "to": {
           "flags": 1,
-          "id": 9,
+          "id": 7,
           "socket": 2
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 11,
+          "id": 9,
           "socket": 7
         },
         "to": {
           "flags": 1,
-          "id": 9,
+          "id": 7,
           "socket": 3
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 10,
+          "id": 12,
           "socket": 0
         },
         "to": {
           "flags": 1,
           "id": 8,
-          "socket": 4
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 10,
-          "socket": 1
-        },
-        "to": {
-          "flags": 1,
-          "id": 8,
-          "socket": 5
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 10,
-          "socket": 2
-        },
-        "to": {
-          "flags": 1,
-          "id": 8,
-          "socket": 6
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 10,
-          "socket": 3
-        },
-        "to": {
-          "flags": 1,
-          "id": 8,
-          "socket": 7
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 10,
-          "socket": 4
-        },
-        "to": {
-          "flags": 1,
-          "id": 9,
-          "socket": 4
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 10,
-          "socket": 5
-        },
-        "to": {
-          "flags": 1,
-          "id": 9,
-          "socket": 5
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 10,
-          "socket": 6
-        },
-        "to": {
-          "flags": 1,
-          "id": 9,
-          "socket": 6
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 10,
-          "socket": 7
-        },
-        "to": {
-          "flags": 1,
-          "id": 9,
-          "socket": 7
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 14,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 10,
           "socket": 0
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 14,
+          "id": 12,
           "socket": 1
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 1
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 14,
+          "id": 12,
           "socket": 2
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 2
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 14,
+          "id": 12,
           "socket": 3
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 3
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 14,
+          "id": 12,
           "socket": 4
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 4
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 14,
+          "id": 12,
           "socket": 5
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 5
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 14,
+          "id": 12,
           "socket": 6
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 6
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 14,
+          "id": 12,
           "socket": 7
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 7
         }
       },
@@ -1021,7 +925,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 0
         }
       },
@@ -1033,7 +937,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 1
         }
       },
@@ -1045,7 +949,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 2
         }
       },
@@ -1057,7 +961,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 3
         }
       },
@@ -1069,7 +973,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 4
         }
       },
@@ -1081,7 +985,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 5
         }
       },
@@ -1093,7 +997,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 6
         }
       },
@@ -1105,7 +1009,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 11,
+          "id": 9,
           "socket": 7
         }
       },
@@ -1117,7 +1021,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 6,
+          "id": 4,
           "socket": 0
         }
       },
@@ -1129,7 +1033,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 6,
+          "id": 4,
           "socket": 1
         }
       },
@@ -1141,7 +1045,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 6,
+          "id": 4,
           "socket": 2
         }
       },
@@ -1153,7 +1057,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 6,
+          "id": 4,
           "socket": 3
         }
       },
@@ -1165,7 +1069,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 0
         }
       },
@@ -1177,7 +1081,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 1
         }
       },
@@ -1189,7 +1093,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 2
         }
       },
@@ -1201,7 +1105,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 3
         }
       },
@@ -1213,7 +1117,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 4
         }
       },
@@ -1225,7 +1129,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 5
         }
       },
@@ -1237,7 +1141,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 6
         }
       },
@@ -1249,7 +1153,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 14,
+          "id": 12,
           "socket": 7
         }
       },
@@ -1261,7 +1165,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 13,
+          "id": 11,
           "socket": 0
         }
       },
@@ -1273,7 +1177,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 0
         }
       },
@@ -1285,7 +1189,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 1
         }
       },
@@ -1297,7 +1201,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 2
         }
       },
@@ -1309,122 +1213,122 @@
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 3
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 8,
+          "id": 6,
           "socket": 0
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 4
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 8,
+          "id": 6,
           "socket": 1
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 5
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 8,
+          "id": 6,
           "socket": 2
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 6
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 8,
+          "id": 6,
           "socket": 3
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 7
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 9,
+          "id": 7,
           "socket": 0
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 8
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 9,
+          "id": 7,
           "socket": 1
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 9
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 9,
+          "id": 7,
           "socket": 2
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 10
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 9,
+          "id": 7,
           "socket": 3
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 11
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 12,
+          "id": 10,
           "socket": 0
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 13
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 0
         },
         "to": {
@@ -1436,7 +1340,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 1
         },
         "to": {
@@ -1448,7 +1352,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 2
         },
         "to": {
@@ -1460,7 +1364,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 3
         },
         "to": {
@@ -1472,7 +1376,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 4
         },
         "to": {
@@ -1484,7 +1388,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 5
         },
         "to": {
@@ -1496,7 +1400,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 6
         },
         "to": {
@@ -1508,7 +1412,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 7
         },
         "to": {
@@ -1520,19 +1424,19 @@
       {
         "connect": {
           "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 3
         },
         "to": {
           "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 12
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 8
         },
         "to": {
@@ -1544,7 +1448,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 9
         },
         "to": {
@@ -1556,7 +1460,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 10
         },
         "to": {
@@ -1568,7 +1472,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 11
         },
         "to": {
@@ -1580,7 +1484,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 12
         },
         "to": {
@@ -1592,7 +1496,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 13
         },
         "to": {
@@ -1604,7 +1508,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 14
         },
         "to": {
@@ -1616,7 +1520,7 @@
       {
         "connect": {
           "flags": 2,
-          "id": 16,
+          "id": 14,
           "socket": 15
         },
         "to": {
@@ -1633,7 +1537,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 13,
+          "id": 11,
           "socket": 1
         }
       },
@@ -1645,7 +1549,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 13,
+          "id": 11,
           "socket": 2
         }
       },
@@ -1657,7 +1561,7 @@
         },
         "to": {
           "flags": 1,
-          "id": 13,
+          "id": 11,
           "socket": 3
         }
       },
@@ -1669,14 +1573,14 @@
         },
         "to": {
           "flags": 1,
-          "id": 13,
+          "id": 11,
           "socket": 4
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 2
         },
         "to": {
@@ -1688,8 +1592,80 @@
       {
         "connect": {
           "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 7,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 8,
+          "socket": 9
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 9
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 11,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 15,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 3,
+          "socket": 8
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 16,
+          "socket": 0
         },
         "to": {
           "flags": 1,
@@ -1700,84 +1676,12 @@
       {
         "connect": {
           "flags": 2,
-          "id": 13,
-          "socket": 2
-        },
-        "to": {
-          "flags": 1,
-          "id": 9,
-          "socket": 8
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 13,
-          "socket": 2
-        },
-        "to": {
-          "flags": 1,
-          "id": 10,
-          "socket": 9
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 13,
-          "socket": 2
-        },
-        "to": {
-          "flags": 1,
-          "id": 4,
-          "socket": 9
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 13,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 17,
-          "socket": 0
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 18,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 4,
-          "socket": 8
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 18,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 10,
-          "socket": 8
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 1
         },
         "to": {
           "flags": 1,
-          "id": 18,
+          "id": 16,
           "socket": 0
         }
       },
@@ -1789,31 +1693,19 @@
         },
         "to": {
           "flags": 1,
-          "id": 12,
-          "socket": 0
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 19,
-          "socket": 0
-        },
-        "to": {
-          "flags": 1,
-          "id": 16,
+          "id": 14,
           "socket": 14
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 5
         },
         "to": {
           "flags": 1,
-          "id": 19,
+          "id": 17,
           "socket": 0
         }
       },
@@ -1825,56 +1717,164 @@
         },
         "to": {
           "flags": 1,
-          "id": 13,
+          "id": 11,
           "socket": 5
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 15,
+          "id": 13,
           "socket": 0
         },
         "to": {
           "flags": 1,
-          "id": 12,
+          "id": 10,
           "socket": 1
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 4
         },
         "to": {
           "flags": 1,
-          "id": 15,
+          "id": 13,
           "socket": 0
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 4
         },
         "to": {
           "flags": 1,
-          "id": 4,
+          "id": 3,
           "socket": 10
         }
       },
       {
         "connect": {
           "flags": 2,
-          "id": 13,
+          "id": 11,
           "socket": 4
         },
         "to": {
           "flags": 1,
-          "id": 10,
+          "id": 8,
           "socket": 10
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 15,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 10,
+          "socket": 0
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 0
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 1
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 2
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 3
+        },
+        "to": {
+          "flags": 1,
+          "id": 6,
+          "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 4
+        },
+        "to": {
+          "flags": 1,
+          "id": 7,
+          "socket": 4
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 5
+        },
+        "to": {
+          "flags": 1,
+          "id": 7,
+          "socket": 5
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 6
+        },
+        "to": {
+          "flags": 1,
+          "id": 7,
+          "socket": 6
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 12,
+          "socket": 7
+        },
+        "to": {
+          "flags": 1,
+          "id": 7,
+          "socket": 7
         }
       }
     ],
@@ -2017,7 +2017,7 @@
             "y": -100.0
           },
           "position": {
-            "x": 100.0,
+            "x": 90.0,
             "y": -1180.0
           }
         },
@@ -2146,7 +2146,7 @@
           "default_new_input_flags": 15,
           "default_new_output_flags": 15,
           "description": "",
-          "id": 4,
+          "id": 3,
           "invertH": false,
           "io": {
             "inputs": [
@@ -2390,8 +2390,8 @@
             "y": -260.0
           },
           "position": {
-            "x": -140.0,
-            "y": -780.0
+            "x": -160.0,
+            "y": -1080.0
           }
         },
         "package": {
@@ -2405,7 +2405,7 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 6,
+          "id": 4,
           "invertH": false,
           "io": {
             "inputs": [
@@ -2519,7 +2519,7 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 7,
+          "id": 5,
           "invertH": false,
           "io": {
             "inputs": [],
@@ -2559,7 +2559,7 @@
           "default_new_input_flags": 15,
           "default_new_output_flags": 15,
           "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
-          "id": 8,
+          "id": 6,
           "invertH": false,
           "io": {
             "inputs": [
@@ -2691,8 +2691,8 @@
             "y": -100.0
           },
           "position": {
-            "x": 100.0,
-            "y": -960.0
+            "x": 90.0,
+            "y": -950.0
           }
         },
         "package": {
@@ -2706,7 +2706,7 @@
           "default_new_input_flags": 15,
           "default_new_output_flags": 15,
           "description": "https://www.youtube.com/watch?v=KNve2LCcSRc",
-          "id": 9,
+          "id": 7,
           "invertH": false,
           "io": {
             "inputs": [
@@ -2838,8 +2838,8 @@
             "y": -100.0
           },
           "position": {
-            "x": 100.0,
-            "y": -740.0
+            "x": 90.0,
+            "y": -720.0
           }
         },
         "package": {
@@ -2853,7 +2853,7 @@
           "default_new_input_flags": 15,
           "default_new_output_flags": 15,
           "description": "",
-          "id": 10,
+          "id": 8,
           "invertH": false,
           "io": {
             "inputs": [
@@ -3097,8 +3097,8 @@
             "y": -260.0
           },
           "position": {
-            "x": -140.0,
-            "y": -370.0
+            "x": -230.0,
+            "y": -130.0
           }
         },
         "package": {
@@ -3112,7 +3112,7 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 11,
+          "id": 9,
           "invertH": false,
           "io": {
             "inputs": [
@@ -3306,7 +3306,7 @@
           "default_new_input_flags": 9,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 12,
+          "id": 10,
           "invertH": false,
           "io": {
             "inputs": [
@@ -3351,7 +3351,7 @@
           "iconifying_hides_central_widget": false,
           "position": {
             "x": 160.0,
-            "y": -430.0
+            "y": -440.0
           }
         }
       },
@@ -3360,7 +3360,7 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 13,
+          "id": 11,
           "invertH": false,
           "io": {
             "inputs": [
@@ -3425,7 +3425,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "MEMORY-IN?-",
+                "name": "RAM-IN-",
                 "siType": "o",
                 "socket": 0,
                 "type": "bool"
@@ -3433,7 +3433,7 @@
               {
                 "flags": 41,
                 "inFlags": 2,
-                "name": "RAM-IN?",
+                "name": "MR-IN",
                 "siType": "o",
                 "socket": 1,
                 "type": "bool"
@@ -3524,8 +3524,8 @@
           "iconify": false,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -560.0,
-            "y": -430.0
+            "x": -620.0,
+            "y": -420.0
           }
         }
       },
@@ -3534,7 +3534,7 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 14,
+          "id": 12,
           "invertH": false,
           "io": {
             "inputs": [
@@ -3718,8 +3718,8 @@
           "iconify": false,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": -490.0,
-            "y": -680.0
+            "x": -550.0,
+            "y": -690.0
           }
         }
       },
@@ -3728,7 +3728,7 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 15,
+          "id": 13,
           "invertH": false,
           "io": {
             "inputs": [
@@ -3764,8 +3764,8 @@
           "iconify": true,
           "iconifying_hides_central_widget": false,
           "position": {
-            "x": 70.0,
-            "y": -410.0
+            "x": 60.0,
+            "y": -350.0
           }
         }
       },
@@ -3774,7 +3774,7 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
-          "id": 16,
+          "id": 14,
           "invertH": false,
           "io": {
             "inputs": [
@@ -4052,99 +4052,99 @@
           "default_new_input_flags": 0,
           "default_new_output_flags": 0,
           "description": "",
+          "id": 15,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -230.0,
+            "y": -420.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
+          "id": 16,
+          "invertH": false,
+          "io": {
+            "inputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "#1",
+                "siType": "i",
+                "socket": 0,
+                "type": "bool"
+              }
+            ],
+            "outputs": [
+              {
+                "flags": 9,
+                "inFlags": 2,
+                "name": "State",
+                "siType": "o",
+                "socket": 0,
+                "type": "bool"
+              }
+            ]
+          },
+          "max_inputs": 1,
+          "max_outputs": 1,
+          "min_inputs": 1,
+          "min_outputs": 1,
+          "name": "NOT (Bool)",
+          "rotate": false,
+          "type": "gates/not"
+        },
+        "node": {
+          "iconify": true,
+          "iconifying_hides_central_widget": false,
+          "position": {
+            "x": -260.0,
+            "y": -540.0
+          }
+        }
+      },
+      {
+        "element": {
+          "default_new_input_flags": 0,
+          "default_new_output_flags": 0,
+          "description": "",
           "id": 17,
-          "invertH": false,
-          "io": {
-            "inputs": [
-              {
-                "flags": 9,
-                "inFlags": 2,
-                "name": "#1",
-                "siType": "i",
-                "socket": 0,
-                "type": "bool"
-              }
-            ],
-            "outputs": [
-              {
-                "flags": 9,
-                "inFlags": 2,
-                "name": "State",
-                "siType": "o",
-                "socket": 0,
-                "type": "bool"
-              }
-            ]
-          },
-          "max_inputs": 1,
-          "max_outputs": 1,
-          "min_inputs": 1,
-          "min_outputs": 1,
-          "name": "NOT (Bool)",
-          "rotate": false,
-          "type": "gates/not"
-        },
-        "node": {
-          "iconify": true,
-          "iconifying_hides_central_widget": false,
-          "position": {
-            "x": -90.0,
-            "y": -430.0
-          }
-        }
-      },
-      {
-        "element": {
-          "default_new_input_flags": 0,
-          "default_new_output_flags": 0,
-          "description": "",
-          "id": 18,
-          "invertH": false,
-          "io": {
-            "inputs": [
-              {
-                "flags": 9,
-                "inFlags": 2,
-                "name": "#1",
-                "siType": "i",
-                "socket": 0,
-                "type": "bool"
-              }
-            ],
-            "outputs": [
-              {
-                "flags": 9,
-                "inFlags": 2,
-                "name": "State",
-                "siType": "o",
-                "socket": 0,
-                "type": "bool"
-              }
-            ]
-          },
-          "max_inputs": 1,
-          "max_outputs": 1,
-          "min_inputs": 1,
-          "min_outputs": 1,
-          "name": "NOT (Bool)",
-          "rotate": false,
-          "type": "gates/not"
-        },
-        "node": {
-          "iconify": true,
-          "iconifying_hides_central_widget": false,
-          "position": {
-            "x": -310.0,
-            "y": -270.0
-          }
-        }
-      },
-      {
-        "element": {
-          "default_new_input_flags": 0,
-          "default_new_output_flags": 0,
-          "description": "",
-          "id": 19,
           "invertH": false,
           "io": {
             "inputs": [

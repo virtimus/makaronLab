@@ -1,35 +1,48 @@
 import sys
-from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QWidget, QStyle
-from ui_editor import Ui_Editor
-import consts
+#from PyQt5.QtCore import QDir
+#from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QWidget, QStyle
+#from wq import * as MainW 
+import wq
+#from ui_editor import Ui_Editor
 
-class Registry:
+import consts
+#from . import consts
+
+class ElementFactory:
     def __init__(self, editor):
-        #nop?
-        print("dupa")
+        self._editor=editor
+
         
     @staticmethod    
     def instance(editor):
-        return Registry(editor);
+        return ElementFactory(editor)
 
 # file:///src/ews.i3c/makaronLab/externalTools/spaghetti/libspaghetti/source/ui/editor.cc
-class Editor(QMainWindow):
-    def __init__(self,parent):
-        super(Editor, self).__init__(parent)
-        self._ui = Ui_Editor()
-        self._ui.setupUi(self)
-        self._registry = Registry.instance(self);
+class Editor(wq.MainWindow):
+    def __init__(self, *args, **kw):
+        super(Editor,self).__init__(*args, **kw)
+        #self._ui = Ui_Editor()
+        #self._ui.setupUi(self)
+        self._factory = ElementFactory.instance(self);
         self.setObjectName(consts.HDUI_NAME);
         
         #clear stuff
         self._ui.elementsContainer.removeItem(0);
         self._ui.packagesContainer.removeItem(0);
         self._ui.tabWidget.removeTab(0);
-        self._ui.clearSearchText.setIcon(self.style().standardIcon(QStyle.SP_DialogResetButton))
+        self._ui.clearSearchText.setIcon(self._mainWindow.style().standardIcon(QStyle.SP_DialogResetButton))
         self._ui.elementsList.setIconSize(consts.HDUI_ICON_SIZE)
         self._ui.elementsList.setSpacing(5)
         self._ui.elementsList.setUniformItemSizes(True)
+
+#    def setObjectName(self,name:str):
+#        pass
+        '''
+        if wq.consts.isQt():
+            self._object.setObjectName(name)
+        else:
+            raise Exception('Object','setObjectName -> noImpl')
+        '''
         '''TODO
   connect(m_ui->actionNew, &QAction::triggered, this, &Editor::newPackage);
   connect(m_ui->actionOpen, &QAction::triggered, this, &Editor::openPackage);
@@ -75,15 +88,19 @@ class Editor(QMainWindow):
   shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_F), self)
   connect(shortcut, &QShortcut::activated, [this] { m_ui->searchNode->setFocus(); });
 '''
-        packagesDir = QDir(consts.HDUI_PACKAGES_DIR)
-        if (not packagesDir.exists()):
-            packagesDir.mkpath(".")  
-  
+'''
+        graphsDir = QDir(consts.HDUI_GRAPHS_DIR)
+        if (not graphsDir.exists()):
+            graphsDir.mkpath(".")  
+''' 
+
+
 ''' Main App Entry
 '''  
+
   
-app = QApplication(sys.argv)
-window = QMainWindow()
+app = wq.App.fromArgs(sys.argv)
+#window = QMainWindow()
 editor = Editor(None);
 editor.show()
 sys.exit(app.exec_())    

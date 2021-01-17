@@ -236,10 +236,10 @@
     "type": "logic/package"
   },
   "node": {
-    "iconify": true,
+    "iconify": false,
     "iconifying_hides_central_widget": false,
     "inputs_position": {
-      "x": -400.0,
+      "x": -470.0,
       "y": -210.0
     },
     "outputs_position": {
@@ -533,18 +533,6 @@
         "connect": {
           "flags": 2,
           "id": 0,
-          "socket": 16
-        },
-        "to": {
-          "flags": 1,
-          "id": 1,
-          "socket": 16
-        }
-      },
-      {
-        "connect": {
-          "flags": 2,
-          "id": 0,
           "socket": 17
         },
         "to": {
@@ -755,6 +743,18 @@
           "flags": 1,
           "id": 1,
           "socket": 7
+        }
+      },
+      {
+        "connect": {
+          "flags": 2,
+          "id": 0,
+          "socket": 17
+        },
+        "to": {
+          "flags": 1,
+          "id": 1,
+          "socket": 16
         }
       }
     ],
@@ -1068,7 +1068,7 @@
             "y": -50.0
           },
           "position": {
-            "x": -300.0,
+            "x": -340.0,
             "y": -50.0
           }
         },
@@ -1135,7 +1135,7 @@
             "y": -50.0
           },
           "position": {
-            "x": -240.0,
+            "x": -270.0,
             "y": -30.0
           }
         },
@@ -1202,7 +1202,7 @@
             "y": -50.0
           },
           "position": {
-            "x": -180.0,
+            "x": -200.0,
             "y": -10.0
           }
         },
@@ -1269,7 +1269,7 @@
             "y": -50.0
           },
           "position": {
-            "x": -120.0,
+            "x": -130.0,
             "y": 10.0
           }
         },
@@ -1403,7 +1403,7 @@
             "y": -50.0
           },
           "position": {
-            "x": -0.0,
+            "x": 10.0,
             "y": 50.0
           }
         },
