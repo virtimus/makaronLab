@@ -2,43 +2,217 @@
 # PYQT
 
 import sys
+import sip
 
 import PyQt5.QtCore as QtCore
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
+import PyQt5.QtGui  as qtg
 import PyQt5.QtWidgets as QtWidgets
 from PyQt5.QtCore import Qt, QPoint, QTimeLine
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPainter, QPalette
 from PyQt5.QtWidgets import (QAction, QApplication, QGraphicsItem,
                              QGraphicsScene, QGraphicsView, qApp)
 
-from ... import consts, prop
+from ... import consts, prop, orientation, direction, colors
 from ...moduletype import ModuleType
 
+from ..driverBase import WqDriverBase
 
+
+from enum import Enum
+
+class GridDensity(Enum):
+    LARGE = 1
+    SMALL = 2
+
+class WqiShowMode(Enum):
+    ICONIFIED = 1
+    EXPANDED = 2
+
+class WqVector:
+    def __iter__(self):
+        return self._list.__iter__();
+
+    def __next__(self):
+        return self._list.__next__();
+
+    def __init__(self):
+        self._list = []
+        pass
+
+    def count(self):
+        return len(self._list)
+
+
+class SocketItem(qtw.QGraphicsItem):
+    SIZE = 16
+      
+SOCKET_SIZE = SocketItem.SIZE
+ROUNDED_SOCKET_SIZE = round((SOCKET_SIZE) / 10.0) * 10.0
+ROUNDED_SOCKET_SIZE_2 = ROUNDED_SOCKET_SIZE / 2.0
+
+#implements nonroot mode of moduleView (spaghetti node)
 class WqGraphicsItem(qtw.QGraphicsItem):
     def __init__(self,parent):
+        self._self = None # should finally point to ModuleView Object
+        self._nameFont = qtg.QFont()
+        self._element = None
+        self._centralWidget = None #QGraphicsItem
+        self._centralWidgetPosition = None  #QPointF
+        self._mode = None #WqiShowMode
+        self._icon = qtg.QPixmap()
+        self._showName = True
+        self._boundingRect = None
+        self._inputs = WqVector()
+        self._outputs = WqVector()
+        self._color = qtg.QColor(105, 105, 105, 128)
         super(WqGraphicsItem,self).__init__(parent)
-
-class WqDriver:
-    def __init__(self,_self,parent,impl):
-        #self._wqImpl = wqImpl
-        self._object = impl
-        self._impl = impl
-        self._parent = parent
-        self._self = _self
 
     def s(self):
         return self._self
-    
-    def impl(self):
-        return self._impl
 
-    def pimpl(self):
-        return self._parent.impl()
-    
-    def p(self):
-        return self._parent
+    def setIcon(self, ico:str):
+        self._iconPath = ico
+        self._icon.load(ico)
+
+
+    def setCentralWidget(self, w:QGraphicsItem):
+        if (self._centralWidget != None):
+            sip.delete(self._centralWidget)
+            self._centralWidget = None
+            self._centralWidget = w
+            self._centralWidget.setParentItem(self)
+            self._centralWidget.setPos(self._centralWidgetPosition)
+        
+    def iconify(self):
+        if (self._element != None):
+            self._element.iconify(True)
+            if (self._element.iconifyingHidesCentralWidget() and self._centralWidget != None):
+                self._centralWidget.hide()
+        self._mode = WqiShowMode.ICONIFIED
+        for inp in self._inputs:
+            inp.hideName()
+        for out in self._outputs:
+            out.hideName()
+        self.calculateBoundingRect()
+
+    def findMaxNameWidth(self,coll):
+        #TODO
+        return 5
+
+    def calculateBoundingRect(self):
+        self.prepareGeometryChange()
+        INPUTS_COUNT = self._inputs.count()
+        OUTPUTS_COUNT = self._outputs.count()
+        SOCKETS_COUNT = max(INPUTS_COUNT, OUTPUTS_COUNT)
+        CENTRAL_SIZE = self._centralWidget.boundingRect().size() if (self._centralWidget != None and  self._centralWidget.isVisible()) else self._icon.size() / 2
+        SOCKETS_HEIGHT = SOCKETS_COUNT * ROUNDED_SOCKET_SIZE
+
+        #maxNameWidth = [](auto &&a_a, auto &&a_b) { return a_a->nameWidth() < a_b->nameWidth(); };
+        #auto const LONGEST_INPUT = max_element(m_inputs, maxNameWidth);
+        #auto const LONGEST_OUTPUT = max_element(m_outputs, maxNameWidth);
+        #int const LONGEST_INPUTS_NAME_WIDTH = LONGEST_INPUT != std::end(m_inputs) ? (*LONGEST_INPUT)->nameWidth() : 0;
+        LONGEST_INPUTS_NAME_WIDTH = self.findMaxNameWidth(self._inputs)
+        #int const LONGEST_OUTPUTS_NAME_WIDTH = LONGEST_OUTPUT != std::end(m_outputs) ? (*LONGEST_OUTPUT)->nameWidth() : 0;
+        LONGEST_OUTPUTS_NAME_WIDTH = self.findMaxNameWidth(self._outputs)
+        INPUTS_NAME_WIDTH = LONGEST_INPUTS_NAME_WIDTH if self._mode == WqiShowMode.EXPANDED else 0
+        OUTPUTS_NAME_WIDTH = LONGEST_OUTPUTS_NAME_WIDTH if self._mode == WqiShowMode.EXPANDED else 0
+        NAME_OFFSET = ROUNDED_SOCKET_SIZE_2 if self._showName else 0
+        width = CENTRAL_SIZE.width() 
+        height = None
+        if (SOCKETS_HEIGHT > CENTRAL_SIZE.height()):
+            height = NAME_OFFSET + SOCKETS_HEIGHT + ROUNDED_SOCKET_SIZE
+        else:
+            height = NAME_OFFSET + CENTRAL_SIZE.height() + ROUNDED_SOCKET_SIZE_2
+        if (SOCKETS_COUNT < 2):
+            height += ROUNDED_SOCKET_SIZE_2
+        width = ROUNDED_SOCKET_SIZE + INPUTS_NAME_WIDTH + CENTRAL_SIZE.width() + OUTPUTS_NAME_WIDTH + ROUNDED_SOCKET_SIZE
+        width = round(width / 10.0) * 10.0
+        height = round(height / 10.0) * 10.0
+        CENTRAL_X = ROUNDED_SOCKET_SIZE + INPUTS_NAME_WIDTH
+        CENTRAL_Y = NAME_OFFSET + (height / 2.0) - (CENTRAL_SIZE.height() / 2.0)
+        self._centralWidgetPosition = qtc.QPointF(CENTRAL_X, CENTRAL_Y)
+        if (self._centralWidget != None):
+            self._centralWidget.setPos(self._centralWidgetPosition)
+        yOffset = ROUNDED_SOCKET_SIZE + NAME_OFFSET
+        sinp = 0.0
+        sout = width
+        if (self._element != None and (direction.LEFT == self._element.direction() or direction.DOWN == self._element.direction())):
+            sinp = width
+            sout = 0.0
+        for inp in self._inputs:
+            inp.setPos(sinp, yOffset)
+            yOffset += ROUNDED_SOCKET_SIZE
+        yOffset = ROUNDED_SOCKET_SIZE + NAME_OFFSET
+        for out in self._outputs:
+            out.setPos(sout, yOffset)
+            yOffset += ROUNDED_SOCKET_SIZE
+        self._boundingRect = qtc.QRectF(0.0, 0.0, width, height)
+
+    #paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget)
+    def paint(self, painter,option,widget=None):
+    #def paintEvent(self, event):
+    #    qp = QPainter()
+    #    qp.begin(self)
+        #(void)a_option;
+        #(void)a_widget;
+        self.paintBorder(painter)
+        if (self._centralWidget == None or not self._centralWidget.isVisible()):
+            self.paintIcon(painter)
+    #    qp.end()
+
+    def paintIcon(self, painter):
+        HALF_ICON_SIZE = self._icon.size() / 2
+        Y = self._centralWidgetPosition.y()
+        WIDTH = HALF_ICON_SIZE.width()
+        HEIGHT = HALF_ICON_SIZE.height()
+        painter.drawPixmap(self._centralWidgetPosition.x(), Y, WIDTH, HEIGHT, self._icon)
+
+
+    def boundingRect(self):
+        return self._boundingRect
+
+    #void Node::paintBorder(QPainter *const a_painter)
+    def paintBorder(self, painter):
+        rect = self.boundingRect()
+
+        pen = qtg.QPen() # pen{};
+        pen.setColor(colors.C.SOCKETBORDER.qColor())
+        pen.setWidth(2)
+        #//QColor color{ 105, 105, 105, 128 };
+        brush = qtg.QBrush( self._color)
+        painter.setPen(qtc.Qt.NoPen)
+        painter.setBrush(brush)
+        painter.drawRect(rect)
+
+        if (self._showName):
+            nameRect =qtc.QRectF( 0.0, 0.0, self._boundingRect.width(), ROUNDED_SOCKET_SIZE )
+            pen.setColor(colors.C.FONTNAME.qColor())
+            nameBackground = QColor(colors.C.NAMEBACKGROUND.qColor())
+            nameBackground.setAlpha(128)
+            
+            painter.setPen(qtc.Qt.NoPen)
+            painter.setBrush(nameBackground)
+            painter.drawRect(nameRect)
+            
+            pen.setColor(colors.C.FONTNAME.qColor())
+            painter.setFont(self._nameFont)
+            painter.setPen(pen)
+
+            METRICS = qtg.QFontMetrics( self._nameFont )
+            FONT_HEIGHT = METRICS.height()
+            NAME_Y = (ROUNDED_SOCKET_SIZE / 2.0) + (FONT_HEIGHT - METRICS.strikeOutPos()) / 2.0 - 1.0
+            painter.drawText(qtc.QPointF(5.0, NAME_Y), self.s().name())
+        selColor = qtg.QColor(156, 156, 156, 255) if self.isSelected() else qtg.QColor(58, 66, 71, 255)
+        pen.setColor( selColor )
+        pen.setWidth(2)
+        painter.setPen(pen)
+        painter.setBrush(qtc.Qt.NoBrush)
+        painter.drawRect(rect)
+
+class WqDriver(WqDriverBase):
+
 
 
     def doModuleView_Init(self):
@@ -55,21 +229,23 @@ class WqDriver:
         else:  
             if isinstance(self.pimpl(), QGraphicsView):
                 result = WqGraphicsItem(None)
+                self.pimpl()._scene.addItem(result)
             else:
                 result = WqGraphicsItem(self.pimpl())
         return result; 
 
     def doModuleView_AfterInit(self):
+        tImpl = self.impl()
+        tImpl._self = self.s()
+        tImpl._element = self.s().module()
         if self.s().isRoot():#@s:PackageView::PackageView
-            self.s()._inputsView  = self.s().addModuleView('moduleInputs', type=ModuleType.INPUTS)
-            self.s()._outputsView = self.s().addModuleView('moduleOutputs', type=ModuleType.OUTPUTS)
+            #self.s()._inputsView  = self.s().addModuleView('moduleInputs', type=ModuleType.INPUTS)
+            #self.s()._outputsView = self.s().addModuleView('moduleOutputs', type=ModuleType.OUTPUTS)
             #vec2d m_inputsPosition{ -400.0, 0.0 };
             self.s()._inputsView.setProp(prop.PositionX,-400.0)
             self.s()._inputsView.setProp(prop.PositionY,0.0)
             self.s()._outputsView.setProp(prop.PositionX,400.0)
             self.s()._outputsView.setProp(prop.PositionY,0.0)
-
-            tImpl = self.impl()
             #tImpl.__class__ = MainWindow
             tImpl.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
             tImpl.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing | QPainter.HighQualityAntialiasing | QPainter.SmoothPixmapTransform)
@@ -132,7 +308,13 @@ class WqDriver:
 
             if (m_standalone) m_package->startDispatchThread();
             '''
-        else:
+        else: #Node::Node
+            tImpl._nameFont.setFamily("Consolas")
+            tImpl._nameFont.setPointSize(8)
+
+            tImpl.setFlags(qtw.QGraphicsItem.ItemIsMovable | qtw.QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemSendsGeometryChanges)
+
+            tImpl.iconify()
             pass #nop
 
        
@@ -242,6 +424,52 @@ class WqDriver:
         }
         '''
 
+    def doModuleView_UpdateGrid(self, scale):
+        newDensity = GridDensity.LARGE if scale >= 0.85 else GridDensity.SMALL 
+        self.s()._gridDensity = newDensity
+
+    def doModuleView_DrawBackground(self, painter, rect):
+        penNormal = qtg.QPen(QColor(156, 156, 156, 32))
+        penAxis = qtg.QPen(QColor(156, 156, 156, 128)) 
+
+        #qreal const LEFT{ a_rect.left() };
+        LEFT = rect.left()
+        #qreal const RIGHT{ a_rect.right() };
+        RIGHT = rect.right()
+        #qreal const TOP{ a_rect.top() };
+        TOP = rect.top()
+        #qreal const BOTTOM{ a_rect.bottom() };
+        BOTTOM = rect.bottom()
+
+        #qreal const GRID_DENSITY{ (m_gridDensity == GridDensity::eSmall ? 100.0 : 10.0) };
+        GRID_DENSITY = 100.0 if self.s()._gridDensity == GridDensity.SMALL else 10.0
+
+        #qreal const START_X{ std::round(LEFT / GRID_DENSITY) * GRID_DENSITY };
+        START_X = round(LEFT / GRID_DENSITY) * GRID_DENSITY
+        #qreal const START_Y{ std::round(TOP / GRID_DENSITY) * GRID_DENSITY };
+        START_Y = round(TOP / GRID_DENSITY) * GRID_DENSITY
+
+        if self.s()._gridDensity == GridDensity.SMALL:
+            penAxis.setWidth(2)
+            penNormal.setWidth(2)
+        
+        
+        #for x in range(START_X,RIGHT,GRID_DENSITY):
+        x = START_X
+        while x<RIGHT:
+            PEN = penAxis if (x >= -0.1 and x <= 0.1) else penNormal
+            painter.setPen(PEN)
+            painter.drawLine(qtc.QPointF(x, TOP), qtc.QPointF(x, BOTTOM))
+            x+=GRID_DENSITY
+
+        #for y in range(START_Y,BOTTOM,GRID_DENSITY):
+        y=START_Y
+        while y<BOTTOM:
+            PEN = penAxis if (y >= -0.1 and y <= 0.1) else penNormal 
+            painter.setPen(PEN)
+            painter.drawLine(qtc.QPointF(LEFT, y), qtc.QPointF(RIGHT, y))
+            y+=GRID_DENSITY
+
     def doApp_Init(self):
         result = qtw.QApplication(sys.argv) 
         app = result
@@ -339,7 +567,20 @@ class WqDriver:
             if onClick != None:
                 result.triggered.connect(onClick)
             #!TODO!result.onClick = onClick
-        return result   
+        return result 
+
+    def doMenuBar_Init(self):
+        return self.pimpl().menuBar()
+
+
+    def doMenuBar_AddMenu(self,menuTitle):
+        return  self.impl().addMenu(menuTitle)
+        '''
+        else:           
+            result = Menu(self._parent)
+            self._wxMenuBar.Append(result.implObject(),menuTitle)
+            return result  
+            '''
 
     def doMdiPanel_Init(self):      
         result = qtw.QMdiArea(self._parent.impl())
@@ -366,9 +607,69 @@ class WqDriver:
     def doTab_Init(self):      
         result = qtw.QWidget()
         self._parent.impl().addTab(result,"test")
-        return result 
+        return result
+
+    def doLayout_Init(self):
+        orient = self.s()._kwargs['orient'] if 'orient' in self.s()._kwargs else None
+        result = qtw.QVBoxLayout() if orient == orientation.VERTICAL else qtw.QHBoxLayout()
+        return result
+        '''
+        if ( wqImpl == None ):
+            wqImpl = parent._wqImpl
+        if self.isQt(wqImpl):
+            if (orientation.VERTICAL == l):
+                self._layout = qtw.QVBoxLayout()
+                pass
+            else:
+                self._layout = qtw.QHBoxLayout()
+                pass
+        else: 
+            self._layout = wx.BoxSizer(l)
+            parent.implObject().SetSizer(self._layout) 
+        '''
 
     def doLayout_AddElement(self, element):
-        result = self.impl().addWidget(element.impl())           
+        result = self.impl().addWidget(element.impl()) 
+        return result 
+
+    def doLayout_Add(self,label, sizerFlags):
+        result = self.impl().addWidget(label.inpl())  
+        return result       
         
+    def doElement_Init(self):
+        result = qtw.QWidget(self.pimpl())
+        return result
+
+    def doElement_Resize(self,w,h):
+        result = self.impl().resize(w,h)
+        return result
+
+    def doElement_SizePolicy(self):
+        result = self.impl().sizePolicy()
+        return result
+
+    def doElement_SetSizePolicy(self, sizePolicy):
+        result = self.impl().setSizePolicy(sizePolicy)
+        return result
          
+    def doPanel_Init(self):
+        result = qtw.QFrame(self.pimpl())
+        return result
+
+    def doLabel_Init(self):
+        result = qtw.QLabel(self.pimpl())
+        if 'label' in self.s()._kwargs:
+            result.setText(self.s()._kwargs['label'])
+        return result
+
+    def doLabel_GetFont(self):
+        result = self.impl.font()
+        return result
+
+    def doLabel_SetFont(self, font):
+        result = self.impl().setFont(font)
+        return result 
+        
+
+
+

@@ -238,6 +238,11 @@ short getBit(uint16_t value, short bitPos){
 	return result;
 }
 
+short getBit(uint8_t value, short bitPos){
+    short result = (value >> bitPos) & 1U;
+    return result;
+}
+
 void clearBit(uint16_t &value, short bitPos){
 	value &= ~(1UL << bitPos);
 }

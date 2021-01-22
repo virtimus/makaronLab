@@ -3,7 +3,7 @@ import wq
 
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
-from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as Signal
+from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventSignal
 
 from wq.sidePanel.SidePanelState import SidePanelState
 
@@ -17,7 +17,7 @@ base_t = qtw.QScrollArea
 
 
 class SidePanel(qtw.QScrollArea):
-    stateChanged = Signal(SidePanelState)
+    stateChanged = EventSignal(SidePanelState)
 
     #def parentWidget(self):
     #    return self._parentWidget

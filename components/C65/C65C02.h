@@ -32,7 +32,7 @@ namespace CPins {
 	static const C65Pin NMIB {5, "NMIB" ,ioType::eInputs,  siType::eInput};
 	static const C65Pin SYNC {6, "SYNC" ,ioType::eInputs,  siType::eOutput};
 	static const C65Pin VDD  {7, "VDD"  ,ioType::eInputs,  siType::eInput};
-	static const C65Pin A0   {8, "A0"   ,ioType::eInputs,  siType::eOutput};
+	static const C65Pin A0   {8, "A0"   ,ioType::eInputs,  siType::eOutput};//ADR
 	static const C65Pin A1   {9, "A1"   ,ioType::eInputs,  siType::eOutput};
 	static const C65Pin A2   {10,"A2"   ,ioType::eInputs,  siType::eOutput};
 	static const C65Pin A3   {11,"A3"   ,ioType::eInputs,  siType::eOutput};

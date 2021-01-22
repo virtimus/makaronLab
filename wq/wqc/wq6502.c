@@ -1,82 +1,145 @@
 
 
-#include "wq6502.h"
 
 	#define CHIPS_IMPL
 	//##include <vendor/chips/chips/m6502.h>
 	#include <m6502.h>
+
+#include "wq6502.h"
+//#include <vector>
+
+
 	#define T(b) ASSERT_TRUE(b)
-	#define R(r) cpu.r
+	//#define R(r) cpu.r
 
-	static m6502_t cpu;
-	static uint64_t pins;
-	static uint8_t RAM[1<<16] = { 0 };
-	static m6502_desc_t cpu_desc;
-	bool prevClock = false;
-	bool prevResb = false;
+	//m6502_t cpu
+	//static std::vector<m6502_t> v_cpu;
 
-	static void w8(uint16_t addr, uint8_t data) {
-	    RAM[addr] = data;
+	//uint64_t pins
+	//static std::vector<uint64_t> v_pins;
+
+	//typedef struct S_RAM { uint8_t RAM[1<<16]; } S_RAM;
+	//typedef struct S_ROM { uint8_t ROM[32768]; } S_ROM;
+
+	//static uint8_t RAM[1<<16] = { 0 };
+	//static std::vector<S_RAM> V_RAM;
+
+	//static uint8_t ROM[1<<16] = { 0 };
+	//static std::vector<S_ROM> V_ROM;
+	
+	//static m6502_desc_t cpu_desc;
+	//static std::vector<m6502_desc_t> v_cpu_desc;
+
+	//bool prevClock = false;
+	//static std::vector<bool> v_prevClock;
+
+	//bool prevResb = false;
+	//static std::vector<bool> v_prevResb;
+
+	DECLARE_DYN_ARRAY(wq6502Info_t);
+	DYN_ARRAY(wq6502Info_t) wq6502a = {0};
+
+	 
+	static void w8(size_t iv,uint16_t addr, uint8_t data) {
+	    //RAM[addr] = data;
+		wq6502a.buf[iv].RAM[addr] = data;
 	}
 
-	static void w16(uint16_t addr, uint16_t data) {
-	    RAM[addr] = data & 0xFF;
-	    RAM[(addr+1)&0xFFFF] = data>>8;
+	static void w16(size_t iv,uint16_t addr, uint16_t data) {
+	    wq6502a.buf[iv].RAM[addr] = data & 0xFF;
+	    wq6502a.buf[iv].RAM[(addr+1)&0xFFFF] = data>>8;
 	}
 
-	static uint16_t r16(uint16_t addr) {
-	    uint8_t l = RAM[addr];
-	    uint8_t h = RAM[(addr+1)&0xFFFF];
+	static uint16_t r16(size_t iv,uint16_t addr) {
+	    uint8_t l = wq6502a.buf[iv].RAM[addr];
+	    uint8_t h = wq6502a.buf[iv].RAM[(addr+1)&0xFFFF];
 	    return (h<<8)|l;
 	}
 
-	static uint8_t r8(uint16_t addr) {
-		return RAM[addr];
+	static uint8_t r8(size_t iv,uint16_t addr) {
+		return wq6502a.buf[iv].RAM[addr];
 	}
 
-	static void init(void) {
-	    memset(RAM, 0, sizeof(RAM));
-	    pins = m6502_init(&cpu, &cpu_desc/*&(m6502_desc_t){0}*/);
+	static size_t init(void) {
+
+		size_t iv = wq6502a.n;//sizeof(wq6502a.buf);
+
+		wq6502Info_t wq6502Info;
+
+		DYN_ADD(wq6502a, wq6502Info, errorAlloc);
+
+		wq6502Info_t* pb= &wq6502a.buf[iv];
+
+		pb->iv = iv;
+
+		//m6502_t cpu = wq6502a.buf[iv].cpu;
+		//wq6502a.buf[iv].cpu = cpu;//.emplace_back(cpu);
+
+		//S_RAM RAM{};
+		memset(pb->RAM, 0, sizeof(pb->RAM));
+		//V_RAM.emplace_back(RAM);
+
+		//S_ROM ROM{};
+		//V_ROM.emplace_back(ROM);
+
+		//m6502_desc_t& cpu_desc = pb->cpu_desc;
+		//v_cpu_desc.emplace_back(cpu_desc)
+
+		pb->prevClock = false;
+		//v_prevClock.emplace_back(prevClock);
+
+		pb->prevResb = false;
+		//v_prevResb.emplace_back(prevResb);
+	    
+	    pb->pins = m6502_init(&pb->cpu, &pb->cpu_desc/*&(m6502_desc_t){0}*/);
+		//v_pins.emplace_back(pins);
+
         //setBit(pins
-	    cpu.S = 0xBD;   // perfect6502 starts with S at C0 for some reason
-	    cpu.P = M6502_ZF|M6502_BF|M6502_IF;
+	    pb->cpu.S = 0xBD;   // perfect6502 starts with S at C0 for some reason
+	    pb->cpu.P = M6502_ZF|M6502_BF|M6502_IF;
+
+		return iv;
+		errorAlloc: printf( "Allocation error i = %d\n", iv );
 	}
 
-	static void prefetch(uint16_t pc) {
-	    pins = M6502_SYNC;
-	    M6502_SET_ADDR(pins, pc);
-	    M6502_SET_DATA(pins, RAM[pc]);
-	    cpu.PC = pc;
+	static void prefetch(size_t iv, uint16_t pc) {
+
+	    wq6502a.buf[iv].pins = M6502_SYNC;
+	    M6502_SET_ADDR(wq6502a.buf[iv].pins, pc);
+	    M6502_SET_DATA(wq6502a.buf[iv].pins, wq6502a.buf[iv].RAM[pc]);
+	    wq6502a.buf[iv].cpu.PC = pc;
 	}
 
-	static void copy(uint16_t addr, uint8_t* bytes, size_t num) {
-	    assert((addr + num) <= sizeof(RAM));
-	    memcpy(&RAM[addr], bytes, num);
+	static void copy(size_t iv,uint16_t addr, uint8_t* bytes, size_t num) {
+	    assert((addr + num) <= sizeof(wq6502a.buf[iv].RAM));
+	    memcpy(&wq6502a.buf[iv].RAM[addr], bytes, num);
 	}
 
-	static void tick(void) {
-	    pins = m6502_tick(&cpu, pins);
-	    const uint16_t addr = M6502_GET_ADDR(pins);
-	    if (pins & M6502_RW) {
+	static void tick(size_t iv) {
+	    wq6502a.buf[iv].pins = m6502_tick(&wq6502a.buf[iv].cpu, wq6502a.buf[iv].pins);
+	    const uint16_t addr = M6502_GET_ADDR(wq6502a.buf[iv].pins);
+	    if (wq6502a.buf[iv].pins & M6502_RW) {
 	        /* memory read */
-	        uint8_t val = RAM[addr];
-	        M6502_SET_DATA(pins, val);
+	        uint8_t val = wq6502a.buf[iv].RAM[addr];
+	        M6502_SET_DATA(wq6502a.buf[iv].pins, val);
 	    }
 	    else {
 	        /* memory write */
-	        uint8_t val = M6502_GET_DATA(pins);
-	        RAM[addr] = val;
+	        uint8_t val = M6502_GET_DATA(wq6502a.buf[iv].pins);
+	        wq6502a.buf[iv].RAM[addr] = val;
 	    }
 	}
 
-	static uint32_t step(void) {
+	static uint32_t step(size_t iv) {
 	    uint32_t ticks = 0;
 	    do {
-	        tick();
+	        tick(iv);
 	        ticks++;
-	    } while (0 == (pins & M6502_SYNC));
+	    } while (0 == (wq6502a.buf[iv].pins & M6502_SYNC));
 	    return ticks;
 	}
+
+	
 
 //namespace wq6502 {
 
@@ -90,10 +153,29 @@
 		return (v!=0);
 		}	
 
+	void C_pins_setPin(uint64_t* pv, short bit, bool high){
+		if (high){
+			(*pv) |= 1UL << bit;
+		} else {
+			(*pv) &= ~(1UL << bit);
+		}
+	}	
+
 	short C_getBit(uint64_t value, short bitPos){
 		short result = (value >> bitPos) & 1U;
 		return result;
 		}
+
+	short C_getBit16(uint16_t value, short bitPos){
+		short result = (value >> bitPos) & 1U;
+		return result;
+		}
+
+	short C_getBit8(uint8_t value, short bitPos){
+		short result = (value >> bitPos) & 1U;
+		return result;
+		}		
+
 
 	void C_setBit(uint64_t *value, short bitPos){
 		(*value) |= ((uint64_t)1) << bitPos;
@@ -107,31 +189,44 @@
 		(*value) &= ~(1UL << bitPos);
 		}
 
-void wq6502_calculate(uint64_t pv){
+ void wq6502_init(wq6502Info_t* info){
+	size_t iv = init();
+	//wq6502Info_t info;
+	info->iv = iv;
+	info->pins = wq6502a.buf[iv].pins;
+	return info;
+}
+
+uint64_t wq6502_calc(size_t iv, uint64_t pv){
+
+	wq6502Info_t* pb= &wq6502a.buf[iv];
 
 	//C65Pins _pins;
 
 	//_pins.tmpPinsS(pv);
 
-bool pinPHI2 = C_pins_getPin(pv,CPins_PHI2);
-bool clockDelta =(pinPHI2 != prevClock);
-bool clockRise = (pinPHI2 && !prevClock);
-prevClock = pinPHI2;
-bool pinRDY = C_pins_getPin(pv,CPins_RDY);
-bool pinRESB = C_pins_getPin(pv,CPins_RESB);
-bool resetRise = (pinRESB && !prevResb);
+const bool pinPHI2 = C_pins_getPin(pv,CPINS_PHI2);
+const bool clockDelta =(pinPHI2 != pb->prevClock);
+
+const bool clockRise = true;//(pinPHI2 && !wq6502a.buf[iv].prevClock);
+wq6502a.buf[iv].prevClock = pinPHI2;
+const bool pinRDY = true; //C_pins_getPin(pv,CPINS_RDY);
+
+
+const bool pinRESB = C_pins_getPin(pv,CPINS_RESB);
+const bool resetRise = (pinRESB && !wq6502a.buf[iv].prevResb);
 if (resetRise){
 	  //C65::consoleAppendF("C65C02: pin RESB rise - ===RESET=== ...",NULL);
 	  // full reset sequence as shown for 6520C
 
 	  //set reset PIN in m6502
     auto bp = M6502_PIN_RES;
-    C_setBit(&pins,bp);
+    C_setBit(&wq6502a.buf[iv].pins,bp);
 
 }
-prevResb = pinRESB;
-bool pinA23 = C_pins_getPin(pv,CPins_A23);
-bool outRESB = C_pins_getPin(pv,CPins_RESB);
+pb->prevResb = pinRESB;
+//bool pinA23 = C_pins_getPin(pv,CPINS_A23);
+const bool outRESB = C_pins_getPin(pv,CPINS_RESB);
 //spaghetti::log::info("pin PHI2 is:{}",pinPHI2);
 //spaghetti::log::info("pin RDY is:{}",pinRDY);
 //spaghetti::log::info("pin RESB is:{}",pinRESB);
@@ -142,33 +237,45 @@ if (pinRDY){
 		  //C65::consoleAppendF("C65C02: pin PHI2 is:{}",pinPHI2);
 		  //spaghetti::log::info("C65C02: next processing step...");
 
+			uint8_t val;
+			//uint64_t pinsIn = pins;
+			pb->pins = m6502_tick(&pb->cpu, pb->pins);
+			//uint64_t pinsOut = pins;
+			const uint16_t addr = M6502_GET_ADDR(wq6502a.buf[iv].pins);
+			if (wq6502a.buf[iv].pins & M6502_RW) { /* memory read */
 
-			pins = m6502_tick(&cpu, pins);
-			const uint16_t addr = M6502_GET_ADDR(pins);
-			if (pins & M6502_RW) { /* memory read */
-
-				uint8_t val = RAM[addr];
+				val = wq6502a.buf[iv].RAM[addr];
 
 				if (C_getBit(addr,15)==1){// read ROM
 					uint16_t taddr = addr;
 					C_clearBit16(&taddr,15);
-					val=ROM[taddr];
+					val=wq6502a.buf[iv].ROM[taddr];
 				}
 
 				//spaghetti::log::info("{} {} {} {} {}",getBinStr(address),getBinStr(*value),getHexStr(address),"r",getHexStr(*value));
 				//consoleAppendF("onRead6502: {} {} {} {} {}",getBinStr(addr).c_str(),getBinStr(val).c_str(),getHexStr(addr).c_str(),"r",getHexStr(val).c_str());
 
-				M6502_SET_DATA(pins, val);
+				M6502_SET_DATA(wq6502a.buf[iv].pins, val);
 			}
 			else { /* memory write */
 
-				uint8_t val = M6502_GET_DATA(pins);
+				val = M6502_GET_DATA(wq6502a.buf[iv].pins);
 
 				//consoleAppendF("onWrite6502: {} {} {} {} {}",getBinStr(addr).c_str(),getBinStr(val).c_str(),getHexStr(addr).c_str(),"W",getHexStr(val).c_str());
 
-				RAM[addr] = val;
+				wq6502a.buf[iv].RAM[addr] = val;
 			}
 
+        for (int i=0;i<16;i++){
+            const bool bit = (C_getBit16(addr,i)==1);
+            C_pins_setPin(&pv, CPINS_A0+i,bit);
+        }
+
+        for (int i=0;i<16;i++){
+            const bool bit = (C_getBit8(val,i)==1);
+            C_pins_setPin(&pv,CPINS_D0+i,bit);
+        }
+ 		//C_pins_setPin(&pv, 63,true);
 
 	  } else {
 		  //spaghetti::log::info("C65C02: waiting clock tick...");
@@ -177,7 +284,7 @@ if (pinRDY){
 	  // halted state
 	  //spaghetti::log::info("C65C02: in HALTED state.");
 }
-
+	return pv;
 }// calculate
 
 //} namespace wq6502

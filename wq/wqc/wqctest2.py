@@ -4,12 +4,13 @@ import time
 
 import wqc
 
+'''
 try:
     COUNT = int(sys.argv[1])
 except (IndexError, ValueError):
     print('Usage: python3 main.py <count of numbers to sum>.')
     sys.exit(1)
-
+'''
 
 def py_sum(number_of_steps: int) -> int:
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -26,6 +27,11 @@ def sum_thread(start: int, stop: int) -> int:
         s += i+1
     return s
 
+def hex64(n):
+    return hex (n & 0xffffffffffffffff) #[:-1]
+
+COUNT=20
+
 print(f'Calculating {COUNT}')
 
 start = time.time()
@@ -34,8 +40,43 @@ stop = time.time()
 print(f'wqc.sum({COUNT}) = {result}\tCalculated in {stop-start}s')
 result = wqc.sum(COUNT)
 print(f'wqc.sum({COUNT}) = {result}\tCalculated in {stop-start}s')
+result = wqc.sum(COUNT)
+print(f'wqc.sum({COUNT}) = {result}\tCalculated in {stop-start}s')
 
+
+#//result = wqc.c6502_init({"jajo":0})
+result = wqc.c6502_init(345)
+
+print(f'wqc.c6502_init():{result}')
+
+cpuDict = wqc.c6502_open()
+print(cpuDict)
+cpuDict = wqc.c6502_open()
+print(cpuDict)
+
+pins = cpuDict['pins']
+iv = cpuDict['iv']
+
+print(f'wqc.c6502_open():{iv} {hex(pins)}')
+#result = wqc.c6502_init2()
+
+#print(result)
 start = time.time()
-result = py_sum(COUNT)
+for i in range(0,40,1):
+    pins = wqc.c6502_calc(iv,pins)
+    print(f'wqc.c6502_calc(result):{iv} {hex64(pins)}')
 stop = time.time()
-print(f'py_sum({COUNT}) = {result}\tCalculated in {stop-start}s')
+print(f'Calculated in {stop-start}s')
+
+#ares = wqc.c6502_insp()
+
+#print(dir(ares))
+
+#for v in ares:
+#    print(v)
+
+
+#start = time.time()
+#result = py_sum(COUNT)
+#stop = time.time()
+#print(f'py_sum({COUNT}) = {result}\tCalculated in {stop-start}s')

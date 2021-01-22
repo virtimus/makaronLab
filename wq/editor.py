@@ -29,10 +29,8 @@ if __name__ == '__main__':
     # When this module is run (not imported) then create the app, the
     # frame, show it, and start the event loop.
     app = wq.App(wqImpl=wq.consts.WQ_IMPL)
-    frm = wq.EditorFrame(None, title='makaronLab',wqImpl=wq.consts.WQ_IMPL)
+    frm = wq.EditorFrame(app, title='makaronLab') #,wqImpl=wq.consts.WQ_IMPL)
     frm.Show()
-    
-
     app.MainLoop()
     
 

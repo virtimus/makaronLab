@@ -4,7 +4,8 @@ from enum import Enum
 
 
 class ModuleType(Enum):
-        SIMPLE = 0
-        INPUTS = 1
-        OUTPUTS = 2
-        WQC = 3
+        ATOMIC = 0
+        GRAPH = 1
+        INPUTS = 2
+        OUTPUTS = 3
+        

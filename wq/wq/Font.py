@@ -19,14 +19,14 @@ class FontPointSize(Object.Object):
             self._font.PointSize += other
 
 class Font(Object.Object):
-    def __init__(self, parent=None, object=None, wqImpl=None):
+    def __init__(self, parent=None, impl=None, wqImpl=None):
         if wqImpl == None:
             wqImpl =  consts.WQ_IMPL if parent == None else parent._wqImpl
-        if object == None:
+        if impl == None:
             self._font = qtw.QFont() if self.isQt(wqImpl) else wx.Font()
         else:
-            self._font = object
-        self.PointSize  = FontPointSize(parent, object, wqImpl=wqImpl)    
+            self._font = impl
+        self.PointSize  = FontPointSize(parent, self._font, wqImpl=wqImpl)    
         super(Font, self).__init__(parent, self._font,wqImpl=wqImpl)
         #super(wx.StaticText, self).__init__(parent, label=label)
 

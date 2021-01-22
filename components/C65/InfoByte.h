@@ -7,6 +7,8 @@
 
 
 class InfoByte final : public spaghetti::Element {
+private:
+	bool _hexValue = false;
  public:
   static constexpr char const *const TYPE{ "chips/InfoByte" };
   static constexpr spaghetti::string::hash_t const HASH{ spaghetti::string::hash(TYPE) };
@@ -15,6 +17,10 @@ class InfoByte final : public spaghetti::Element {
 
   char const *type() const noexcept override { return TYPE; }
   spaghetti::string::hash_t hash() const noexcept override { return HASH; }
+
+  bool hexValue() const { return _hexValue; }
+  void setHexValue(bool n) { _hexValue = n; }
+
 };
 
 

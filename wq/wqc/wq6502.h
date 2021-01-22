@@ -3,26 +3,36 @@
 #define WQ_6502_H
 
 #include <stdint.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-	extern uint8_t ROM[];
+	#include <m6502.h>
 
-    #define M6502_PIN_A0 0;
-    #define M6502_PIN_D0 16;
-    #define M6502_PIN_RW 24;
-    #define M6502_PIN_SYNC 25;
-    #define M6502_PIN_IRQ 26;
-    #define M6502_PIN_NMI 27;
-    #define M6502_PIN_RDY 28;
-    #define M6502_PIN_RES 30;
+	//extern uint8_t ROM[];
 
-//#namespace wq6502 {
+		
 
+    #define M6502_PIN_A0 0
+    #define M6502_PIN_D0 16
+    #define M6502_PIN_RW 24
+    #define M6502_PIN_SYNC 25
+    #define M6502_PIN_IRQ 26
+    #define M6502_PIN_NMI 27
+    #define M6502_PIN_RDY 28
+    #define M6502_PIN_RES 30
 
-CPins_RDY=1;
-CPins_A23=31;
-CPins_RESB = 32;
-CPins_PHI2O = 33;
-CPins_PHI2 = 35;
+	//pins order on api level
+	#define CPINS_RDY 1
+	//#define CPINS_A23 31;
+	#define CPINS_RESB 32
+	#define CPINS_PHI2O 33
+	//#define CPINS_PHI2I 35;
+	#define CPINS_A0 8
+	#define CPINS_D0 39
+
+	#define CPINS_PHI2 35 //PHI2
+
 
 /*	struct wq6502_CPins {
 		using siType = spaghetti::SocketItemType;
@@ -100,10 +110,46 @@ CPins_PHI2 = 35;
 
 		static const int allSize = 64;
 	}*/
+	typedef struct wq6502Info_t { 
+		size_t iv;
+		uint64_t pins;
+		m6502_t cpu;
+		uint8_t RAM[1<<16];
+		uint8_t ROM[32768]; 
+		m6502_desc_t cpu_desc;
+		bool prevClock;
+		bool prevResb;
 
-	void wq6502_calculate(uint64_t pv);
-	static void wq6502_init(void);
+	 } wq6502Info_t;
 
-//}// namespace
+	void wq6502_init(wq6502Info_t* info);
+	uint64_t wq6502_calc(size_t iv,uint64_t pv);
+
+//https://stackoverflow.com/questions/3456446/a-good-c-equivalent-of-stl-vector
+#define DECLARE_DYN_ARRAY(T) \
+    typedef struct \
+    { \
+        T *buf; \
+        size_t n; \
+        size_t reserved; \
+    } T ## Array;
+
+#define DYN_ARRAY(T) T ## Array
+
+#define DYN_ADD(array, value, errorLabel) DYN_ADD_REALLOC(array, value, errorLabel, realloc)
+
+#define DYN_ADD_REALLOC(array, value, errorLabel, realloc) \
+    { \
+        if ((array).n >= (array).reserved) \
+        { \
+            if (!(array).reserved) (array).reserved = 10; \
+            (array).reserved *= 2; \
+            void *ptr = realloc((array).buf, sizeof(*(array).buf)*(array).reserved); \
+            if (!ptr) goto errorLabel; \
+            (array).buf = ptr; \
+        } \
+        (array).buf[(array).n++] = value; \
+    }
+
 
 #endif// WQ_6502_H

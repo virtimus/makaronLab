@@ -56,4 +56,22 @@ class WqDriver:
         self._self.raiseNoImpl('pyqt5.WqDriver','doTabPanel_Init -> noImpl')
 
     def doTab_Init(self):        
-        self._self.raiseNoImpl('pyqt5.WqDriver','doTab_Init -> noImpl')        
+        self._self.raiseNoImpl('pyqt5.WqDriver','doTab_Init -> noImpl')
+
+    def doMenuBar_Init(self):        
+        result = wx.MenuBar()
+        self.pimpl().SetMenuBar(result)
+        return result
+    
+    def doLayout_Init(self):
+        orient = self.s()._kwargs['orient'] if 'orient' in self.s()._kwargs else orientation.HORIZONTAL
+        result = wx.BoxSizer(orient)
+        self.pimpl().SetSizer(result) 
+
+    def doLabel_GetFont(self):
+        result = self.impl().GetFont()
+        return result
+    
+    def doLabel_SetFont(self, font):    
+        result = self.impl().SetFont(font)
+        return result

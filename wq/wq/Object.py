@@ -1,6 +1,7 @@
 from . import consts
 from .drivers.ui import pyqt5 as drvQt
 from .drivers.ui import wxWidgets as drvWx
+from .drivers import loader as wqLoader
 
 class Object():
     def __new__(cls, *args, **kwargs):
@@ -10,20 +11,30 @@ class Object():
         tParent = result._loadParent(*args, **kwargs)
         tImpl = result._loadImpl(*args, **kwargs)
         tWqImpl = kwargs['wqImpl'] if 'wqImpl' in kwargs else consts.WQ_IMPL
-        result._wqD = result.__loadWqDriver(tParent,tImpl,tWqImpl)
+        result._wqD = result.__loadWqDriver(tParent,tImpl,tWqImpl)        
         return result
 
-    def __init__(self, parent, impl, *, wqD=None, wqImpl=None):
+    def __init__(self, parent, impl, **kwargs):
         self._props = {}
+        wqD = kwargs['wqD'] if 'wqD' in kwargs else None
+        wqImpl = kwargs['wqImpl'] if 'wqImpl' in kwargs else None
         if wqD != None:
             self._wqD = wqD
         else:
             if wqImpl == None and self._wqD == None:
                 self.raiseNoImpl('Object','init -> wqImpl required')
+            
+        if (self._wqD != None and (impl == None or isinstance(impl, str))):#load implementation from string if given
+            tClName = self.__class__.__name__ #if impl == None else impl
+            tMethod = getattr(self._wqD, "do"+tClName+"_Init",None)
+            if tMethod == None and isinstance(impl, str):
+                self.raiseNoImpl('Object',f'init - no driver implementation found for {tClName}')
+            if tMethod!=None:
+                impl = tMethod()                    
         self._object = impl
         self._impl = self._object
-        if  self._impl != None:
-            self._impl._wqob = self
+        #if  self._impl != None:
+        #    self._impl._wqob = self
         if (self._wqD._impl==None):
             self._wqD._impl=self._impl
         self._parent = parent
@@ -42,7 +53,7 @@ class Object():
     def _loadImpl(self,*args, **kwargs):
         tImpl = args[1] if len(args)>1 else None
         if tImpl == None:
-            tImpl = kwargs['impl'] if 'impl' in kwargs else None
+            tImpl = kwargs['impl'] if 'impl' in kwargs else None  
         return tImpl
 
 
@@ -56,11 +67,15 @@ class Object():
     def __loadWqDriver(self,parent,impl,wqImpl):
         if wqImpl == None:
             wqImpl = parent._wqImpl if parent != None and hasattr(parent,'_wqImpl') else consts.WQ_IMPL
-        self._wqImpl = wqImpl    
+        self._wqImpl = wqImpl
+        WqDriver = wqLoader.loadWqDriver(self._wqImpl)
+        '''
         if self.isQt(wqImpl):
             result = drvQt.WqDriver(self,parent,impl)
         else:
             result = drvWx.WqDriver(self,parent,impl)
+        '''
+        result = WqDriver(self,parent,impl)
         return result
 
     def wqD(self):

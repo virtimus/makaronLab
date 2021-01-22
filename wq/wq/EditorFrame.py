@@ -15,12 +15,15 @@ from .TabPanel import TabPanel
 
 from .Signal import Signal
 from .Module import Module
-from .Pin import Pin
+from .Module import Node
+#from .Pin import Pin
 from .ModuleView import ModuleView
 from .sidePanel.SidePanel import SidePanel
+from .ModuleFactory import ModuleFactory
 
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
+from .ModuleLibraryWqc import ModuleLibraryWqc
 
 class EditorFrame(MainWindow):
     """
@@ -31,7 +34,9 @@ class EditorFrame(MainWindow):
         # ensure the parent's __init__ is called
         super(EditorFrame, self).__init__(parent)
 
-        self._openModules = dict({})    
+        self._openModules = dict({})
+
+        self._libModules = dict({})  #module dict for dragging/creating views/opening(if package)   
 
         #self.impl().setWindowFlags(Qt.FramelessWindowHint)
 
@@ -76,7 +81,7 @@ class EditorFrame(MainWindow):
         self.impl().statusBar().addPermanentWidget(statusProgressBar,1)
         '''
 
-        layout=Layout(pnl, None, orientation.VERTICAL)
+        layout=Layout(pnl, orient=orientation.VERTICAL)
         layout.impl().setContentsMargins(6, 6, 6, 6)
         layout.impl().setSpacing(2)
         self._tabPanel = TabPanel(pnl)
@@ -86,26 +91,63 @@ class EditorFrame(MainWindow):
         tab3= Tab(self._tabPanel)
         tab4 = Tab(self._tabPanel)
         tab5 = Tab(self._tabPanel)
-        hlayout=Layout(pnl, None, orientation.HORIZONTAL)
+        hlayout=Layout(pnl, orient=orientation.HORIZONTAL)
         hlayout.impl().setContentsMargins(6, 6, 6, 6)
         hlayout.impl().setSpacing(2)
         hlayout.impl().addLayout(layout.impl(),0)
         pnl.impl().setLayout(hlayout.impl())
 
-        rootModule = Module(self,'rootModule')
+        #load libraries
+        wqcLib = ModuleFactory.loadLibrary('wqc')
+        #wqlLib = ModuleFactory.loadLibrary('local')
+
+        moduleList = wqcLib.listModules()
+        for k in moduleList:
+            print(k)
+
+        #    self._libModules['wqc.'+k] = { "moduleDef":moduleList[k]
+
+        c6502=wqcLib.createModule('c6502')
+        res = c6502.init({})
+        #print(res)
+        resp = c6502.open()
+
+        rootModule = Module(self,'rootModule',
+            type = ModuleType.GRAPH
+        )
+        self._rootModule = rootModule
+
+        #andModuleImpl = wqlLib.createModule('AND')       
+        andModule = Module(rootModule,'andModule',
+            impl = 'local/AND'
+            )
+
+        '''
         controlModule = Module(rootModule,'controlModule')
         infoModule = Module(rootModule,'infoModule')
-        m6502Module = Module(rootModule,'m6502Module',type=ModuleType.WQC)
-        drivePin = Pin(controlModule,'O1_64','Out Pin of controlModule')
-        sl1 = Pin(infoModule,'I1_64','In Pin1 of InfoModule')
-        inM6502 = Pin(m6502Module,'ICPU_64','In Pin of m6502')
-        m6502DrivePin = Pin(m6502Module,'OCPU_64','Out Pin of m6502')
-        sl2 = Pin(infoModule,'I2_64','In Pin2 of InfoModule')
+        m6502Module = Module(rootModule,'m6502Module',
+            type=ModuleType.WQC,
+            impl=c6502
+            )
+        driveSig = Signal(controlModule,size=1, name='O1_64',info='Out Signal of controlModule')
+        slave1Sig = Signal(infoModule,size=1, name='I1_64',info='In Signal of InfoModule')
+        C6502InSig = Signal(m6502Module,size=1, name='ICPU_64',info='In Signal of m6502')
+        C6502OutSig = Signal(m6502Module,size=1, name='OCPU_64',info='Out Signal of m6502')
+        slave2Sig = Signal(infoModule,size=1, name='I2_64',info='In Signal of InfoModule')
         #pinRef = Pin()
 
-        signal1 = Signal(rootModule, 64,drivePin=drivePin, slavePins = [sl1,inM6502])
+        #signal1 = Signal(rootModule, 64,drivePin=drivePin, slavePins = [sl1,inM6502])
 
-        signal2 = Signal(rootModule, 64,drivePin=m6502DrivePin, slavePins = [sl2])
+        #signal2 = Signal(rootModule, 64,drivePin=m6502DrivePin, slavePins = [sl2])
+        #//rootModule.connect(driveSig, slave1Sig) #conn from control to info
+        #//rootModule.connect(driveSig, C6502InSig)
+        #//rootModule.connect(C6502OutSig, slave2Sig)
+        #//rootModule.connect(m6502Module, slave2Sig)
+        coNodOut = Node(controlModule, size=1, driveSignal=driveSig, name='coOut')
+        coNodOut.addSignal(slave1Sig)
+        '''
+
+
 
         #network ready (init/open phase) - now simulation (calculate/inspect)...
 
@@ -212,7 +254,7 @@ class EditorFrame(MainWindow):
         if found != None:
             self._moduleViewIndex = found            
         else:
-            moduleView = ModuleView(self,module=module)
+            moduleView = ModuleView(self,module=module) #recurive by nested modules
             moduleView.open()
             moduleView.setSelectedModule(None)
             moduleView.showProperties()
@@ -245,4 +287,11 @@ class EditorFrame(MainWindow):
             index = tab.currentIndex()
             moduleViewImpl = tab.impl().widget(index)
             moduleViewImpl.centerOn(0.0, 0.0)
+
+            self.openModuleView(self._rootModule)
+            index = tab.currentIndex()
+            moduleViewImpl = tab.impl().widget(index)
+            moduleViewImpl.centerOn(0.0, 0.0)
+
+
         #super(EditorFrame, self).showEvent(event)

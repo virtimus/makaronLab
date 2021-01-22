@@ -30,6 +30,7 @@ from .Layout import Layout
 from .Layout import Layout as BoxSizer
 from .Menu import Menu
 from .MenuBar import MenuBar
+from .ModuleFactory import ModuleFactory
 
 
 from . import orientation

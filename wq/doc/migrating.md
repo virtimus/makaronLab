@@ -1,4 +1,6 @@
 
+eorientation -> direction
+
 In This simulation framework SIGNAL is the first class citizen ...
 
 Skeleton elements:
@@ -11,11 +13,17 @@ Presentation:
 registry -> 
 - ModuleFactory
     impl() = spaghetti registry ?, nmigen? kicad?
+    _moduleLibraries = {} // by name
+    openModule('modulePath',args)
+    registerLibrary
+- ModuleLibrary
 
     methods:
-        init - initialize factory - response - library of module descriptions identified by names/id's
+        init - initialize library - response - library of module descriptions identified by names/id's
         open - create module by name/id
-        close - close module
+        insp - inspect
+        exit - close library
+
 
 
 
@@ -32,14 +40,14 @@ packageView(tab) ->
 element/node/package -> 
 - Module(type, n pins(connected with ref to ext signal or disconnected), &m statements/submodules, i internal signals)
 
-    Module.type (native/python, wqc, statement, verilog, kicad etc)
+    Module.type (native/python/graph, wqc, statement, verilog, kicad etc)
     Module.impl() - low level api access
     methods:
         init
         open
-        calculate
-        inspect
-        close
+        calc
+        insp
+        exit
 
 
 connections (input/output) -> 

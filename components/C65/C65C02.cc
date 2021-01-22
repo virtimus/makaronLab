@@ -248,9 +248,11 @@ void C65C02::calculate()
 
 		pins = m6502_tick(&cpu, pins);
 		const uint16_t addr = M6502_GET_ADDR(pins);
+        uint8_t val;
+
 		if (pins & M6502_RW) { /* memory read */
 
-			uint8_t val = RAM[addr];
+            val = RAM[addr];
 
 			if (getBit(addr,15)==1){// read ROM
 				uint16_t taddr = addr;
@@ -265,12 +267,24 @@ void C65C02::calculate()
 		}
 		else { /* memory write */
 
-			uint8_t val = M6502_GET_DATA(pins);
+            val = M6502_GET_DATA(pins);
 
 			consoleAppendF("onWrite6502: {} {} {} {} {}",getBinStr(addr).c_str(),getBinStr(val).c_str(),getHexStr(addr).c_str(),"W",getHexStr(val).c_str());
 
 			RAM[addr] = val;
 		}
+        int ind = CPins::A0.index;
+        for (int i=0;i<16;i++){
+            bool bit = (getBit(addr,i)==1);
+            _pins.setPin(ind+i,bit);
+        }
+        ind = CPins::D0.index;
+        for (int i=0;i<16;i++){
+             bool bit = (getBit(val,i)==1);
+             _pins.setPin(ind+i,bit);
+         }
+
+        //std::transform(str.begin(), str.end(),str.begin(), ::toupper);
 
 #else //C65_C65C02_CHIPS
 			  step6502();
