@@ -111,7 +111,7 @@ class EditorFrame(MainWindow):
         res = c6502.init({})
         #print(res)
         resp = c6502.open()
-
+        #'''
         rootModule = Module(self,'rootModule',
             type = ModuleType.GRAPH
         )
@@ -121,7 +121,7 @@ class EditorFrame(MainWindow):
         andModule = Module(rootModule,'andModule',
             impl = 'local/AND'
             )
-
+        #'''
         '''
         controlModule = Module(rootModule,'controlModule')
         infoModule = Module(rootModule,'infoModule')
@@ -273,7 +273,7 @@ class EditorFrame(MainWindow):
                       
 
     def newModuleView(self):
-        module = Module(self, "New")
+        module = Module(self, "New", type=ModuleType.GRAPH)
         self.openModuleView(module)
 
     _firstTime = True 

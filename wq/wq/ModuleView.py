@@ -17,9 +17,9 @@ from PyQt5.QtCore import QPointF
 
 class ModuleView(Object):
     def __init__(self, *args, **kwargs):
-        self._gridDensity = None
+        #self._gridDensity = None
         self._selectedModule = None 
-        self._scheduledScalings = None;  
+        #self._scheduledScalings = None;  
         args = self._loadInitArgs(args)
         d1 = isinstance(args[0],ModuleView)
         d2 = isinstance(args[0],MainWindow)
@@ -40,6 +40,7 @@ class ModuleView(Object):
         args = (args[0],self._moduleView) #impl
         kwargs.pop('module', None)         
         super(ModuleView, self).__init__(*args, **kwargs)
+
         if d2: #rootView - create additional inputs/outputs module
             self._inputsView = ModuleView(self,
                 module=Module(self.module(),
@@ -62,9 +63,11 @@ class ModuleView(Object):
         #recurse into submodules
         self._moduleViews = {}
         if len(self._module.modules())>1: #0 is self/root
-            for tmoduleId in self._module.modules():
-                if tmoduleId>0:
-                    tModuleView = ModuleView(self,module=self._module.modById(tmoduleId))
+            for tmoduleId in self._module.modules():                
+                if tmoduleId>0: #not self
+                    tmodule = self._module.modById(tmoduleId)
+                    if (not tmodule.type() in [ModuleType.INPUTS, ModuleType.OUTPUTS]): # inputs/outputs don't need recursive init - view created
+                        tModuleView = ModuleView(self,module=tmodule)
             
     def id(self):
         return self._id
@@ -100,7 +103,7 @@ class ModuleView(Object):
         return self._module.isRoot()
 
     def open(self):
-        result = self.wqD().doModuleView_Open()
+        result = self.wqD().impl().open()
         return result
     
     #@s:PackageView::setSelectedNode
@@ -122,19 +125,11 @@ class ModuleView(Object):
 
 
 
-    #@s:PackageView::wheelEvent(QWheelEvent *a_event)
-    def wheelEvent(self, event):
-        self.wqD().doModuleView_wheelEvent(event)
+#    #@s:PackageView::wheelEvent(QWheelEvent *a_event)
+#    def wheelEvent(self, event):
+#        self.wqD().doModuleView_wheelEvent(event)
 
-    #@s:PackageView::updateGrid(qreal const a_scale)
-    def updateGrid(self, scale):
-        return self.wqD().doModuleView_UpdateGrid(scale)
-        newDensity = GridDensity.LARGE if scale >= 0.85 else GridDensity.SMALL 
-        self._gridDensity = newDensity
 
-    #@s:PackageView::drawBackground(QPainter *a_painter, QRectF const &a_rect)
-    def drawBackground(self, painter, rect):
-        return self.wqD().doModuleView_DrawBackground(painter, rect)
 
   
 

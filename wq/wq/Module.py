@@ -7,6 +7,7 @@ from . import moduletype
 from . import consts
 from . import direction
 from .nodeiotype import NodeIoType
+from .wqvector import WqVector
 
 """
 CNode is a junction pint between different signals with same size
@@ -17,7 +18,7 @@ or first Signal with deltaVector.out
 class Node(Object):
     def __init__(self, *args, **kwargs):
         #//self._deltaVector = DeltaVector.NONE 
-        self._signals = {}    
+        self._signals = WqVector()    
         args = self._loadInitArgs(args)
         if not isinstance(args[0],Module):
             self.raiseExc('[Node] Parent has to be descendant of wq.Module')
@@ -81,22 +82,23 @@ class Node(Object):
     def addSignal(self, signal:'Signal'):
         if self._driveSignal == None:
             self.setDriveSignal(signal)
-        tid = signal.id()
-        if tid in self._signals:
-            self.raiseExc(f'Signal with id {tid} already added')
+        lid = signal.id()
+        if lid in self._signals:
+            self.raiseExc(f'Signal with id {lid} already added')
         if self._driveSignal.size()!=signal.size():
             self.raiseExc('Signal size differs')            
-        self._signals[id]=signal
+        self._signals.append(lid,signal)
 
 class IoNode(Node):
     def __init__(self, *args, **kwargs): 
         self._ioType = kwargs['ioType'] if 'ioType' in kwargs else None #nodeiotype
         if self._ioType == None:
             self.raiseExc('ioType required')
-        self._extSignals = {}
+        self._extSignals = WqVector()
         tsignal = kwargs['signal'] if 'signal' in kwargs else None
         if tsignal == None:
             self.raiseExc(f'Signal required fo ioNode')
+        self._name = kwargs['name'] if 'name' in kwargs else tsignal.name()
         super(IoNode, self).__init__(*args, **kwargs)
         #for ioNode driveSignal is external or internal depending on type?
         #ioNode will be added always with internal signal
@@ -104,6 +106,8 @@ class IoNode(Node):
         if self.ioType() == NodeIoType.INPUT:
             self._driveSignal = None
 
+    def name(self):
+        return self._name
 
     def extSignals(self):
         return self._extSignals
@@ -151,19 +155,31 @@ class Module(Object):
         self._name=args[1]
         #args = (args[0], None) 
         parent = args[0]
+
         impl = kwargs['impl'] if 'impl' in kwargs else None
-        self._modules = {0:self}
-        self._nodes = {}
-        self._nodesByName = {}
-        self._signals = {}
-        self._signalsByName = {}
+        self._type = kwargs['type'] if 'type' in kwargs else None
+        self._isImplStr = isinstance(impl, str)
+        if self._type != None and self._isImplStr :
+            self.raiseExc(f'[Module] Type cannot be given for module loaded from lib {self._name}')
+        elif not self._isImplStr  and self._type == None:
+            self.raiseExc(f'[Module] ''type'' required {self._name}')
+        self._modules = WqVector()
+        self._modules.append(0,self)
+        self._nodes = WqVector()
+        #self._nodesByName = {} handled by WqVector
+        self._signals = WqVector()
+        #self._signalsByName = {}
         self._id = 0
         kwargs.pop('type', None) 
         kwargs.pop('impl', None)        
         super(Module, self).__init__(parent, impl, **kwargs)
+        #check type
+        if self._isImplStr:
+            self._type = self.impl().moduleType()
         if d1:
             self._id = len(self.parent().modules())
             self.parent().addModule(self)
+
     def id(self):
         return self._id
 
@@ -182,6 +198,9 @@ class Module(Object):
     def signals(self):
         return self._signals
 
+    def type(self):
+        return self._type
+
     def sigByName(self, sigName:str):
         result = self._signalsByName[sigName] if sigName in self._signalsByName else None
         return result
@@ -194,29 +213,31 @@ class Module(Object):
         return self._modules
 
     def modById(self, id):
-        return self._modules[id]
+        return self._modules.byId(id)
 
     def addSignal(self, signal:'Signal'):
         if signal.id() in self._signals:
             self.raiseExc(f'Signal with id {signal.id()} already in list')
-        if signal.name() in self._signalsByName:
+        if signal.name() in self._signals.by('name'):
             self.raiseExc(f'Signal with name {signal.name()} already in list')
-        self._signals[signal.id()]=signal
-        self._signalsByName[signal.name()]=signal
+        #self._signals[signal.id()]=signal
+        #self._signalsByName[signal.name()]=signal
+        self._signals.append(signal.id(), signal)
 
     def addNode(self, node:'Node'):
         if node.id() in self._nodes:
             self.raiseExc(f'Node with id {node.id()} already in list')
-        if node.name() in self._nodesByName:
+        if node.name() in self._nodes.by('name'):
             self.raiseExc(f'Node with name {node.name()} already in list')
-        self._nodes[node.id()]=node
-        self._nodesByName[node.name()]=node
+        #self._nodes[node.id()]=node
+        #self._nodesByName[node.name()]=node
+        self._nodes.append(node.id(),node)
 
     def addModule(self, module:'Module'):
         tid = module.id()
         if tid in self._modules:
             self.raiseExc(f'Module with id {tid} already in collection of submodules')
-        self._modules[tid]=module
+        self._modules.append(tid, module)
     
     def newSignal(self, **kwargs):
         from .Signal import Signal

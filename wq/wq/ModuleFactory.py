@@ -5,6 +5,7 @@ from typing import Callable
 #from . import ModuleLibraryWqc
 
 from .nodeiotype import NodeIoType
+from .moduletype import ModuleType
 
 log = logging.getLogger(__name__)
 
@@ -55,21 +56,56 @@ class ModuleFactory:
             exec_class = cls._registeredLibraries[name]
             library = exec_class(**kwargs)
             cls._loadedLibraries[name] = library
-            return library    
+            return library  
 
+    @classmethod
+    def createModule(cls, modulePath:str):
+        impla = modulePath.split('/')
+        lib = ModuleFactory.loadLibrary(impla[0])
+        result = lib.createModule(impla[1])
+        return result
+
+
+IoType = NodeIoType
 
 class ModuleImplBase(metaclass=ABCMeta):
     def __init__(self, **kwargs):
         """ Constructor """
         self._self = None
+        self._moduleType = ModuleType.ATOMIC #default moduletype
         pass
 
     def s(self):
         return self._self
 
+    def raiseExc(self, a0):
+        raise Exception(a0)   
+
+    def moduleType(self):
+        return self._moduleType     
+
     @abstractmethod
     def echo(self):
         pass
+
+    def newIO(self, **kwargs):
+        tname = kwargs['name'] if 'name' in kwargs else None
+        if tname == None:
+            self.raiseExc('Name required')
+        tsize = kwargs['size'] if 'size' in kwargs else 1
+        tIoType = kwargs['ioType'] if 'ioType' in kwargs else None
+        sig = self.s().newSignal(name=tname,size=tsize)
+        result = self.s().newIoNode(signal=sig, ioType=tIoType)
+        return result
+
+    def sig(self, name:str):
+        ts = self.s()
+        return ts.sigByName(name)
+    
+
+
+
+
 
 
 class ModuleLibraryBase(metaclass=ABCMeta):
@@ -102,18 +138,27 @@ class AndGateModule(ModuleImplBase):
         }
 
     def open(self):
-        ySig = self.s().newSignal(name='Y',size=1)
-        y = self.s().newIoNode(signal=ySig, ioType=NodeIoType.OUTPUT)
-        aSig = self.s().newSignal(name='A',size=1)
-        a = self.s().newIoNode(signal=aSig, ioType=NodeIoType.INPUT)
-        bSig = self.s().newSignal(name='B',size=1)
-        b = self.s().newIoNode(signal=bSig, ioType=NodeIoType.INPUT)
-        return {}
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b
+        }
 
-
-    def calc(self):
-        ts = self.s()
-        ts.sigByName('Y').setValue(ts.sigByName('A').value() and ts.sigByName('B').value())    
+    def calc(s):
+        s.sig('Y').setValue(s.sig('A').value() and s.sig('B').value())    
 
 class Test2Module(ModuleImplBase):
     def echo(self):
