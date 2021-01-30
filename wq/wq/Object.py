@@ -15,9 +15,23 @@ class Object():
         return result
 
     def __init__(self, parent, impl, **kwargs):
-        self._props = {}
-        wqD = kwargs['wqD'] if 'wqD' in kwargs else None
-        wqImpl = kwargs['wqImpl'] if 'wqImpl' in kwargs else None
+        self._parent = parent
+        #kwargs['props'] if 'props' in kwargs else {}
+        self._props = self._initHandleArg('props',
+            kwargs = kwargs,
+            default = {},
+            desc = 'Additional dynamic properties not defined in model'
+            )
+        #kwargs['wqD'] if 'wqD' in kwargs else None
+        wqD = self._initHandleArg('wqD',
+            kwargs = kwargs,
+            desc = 'Indstance of implementation driver/factory for model elements'
+        )
+        #kwargs['wqImpl'] if 'wqImpl' in kwargs else None
+        wqImpl = self._initHandleArg('wqImpl',
+            kwargs = kwargs,
+            desc = 'Implementation driver/factory path/class'
+        )
         if wqD != None:
             self._wqD = wqD
         else:
@@ -37,12 +51,24 @@ class Object():
         #    self._impl._wqob = self
         if (self._wqD._impl==None):
             self._wqD._impl=self._impl
-        self._parent = parent
+        
         if (self._wqD._parent==None):
             self._wqD._parent=self._parent
         #if wqImpl==None:
         #    wqImpl = self._wqD._wqImpl
         #self._wqImpl = wqImpl
+
+    def _initHandleArg(self, name:str, **kwargs):
+        defD = kwargs
+        kwargs = defD['kwargs']
+        trequired = defD['required'] if 'required' in defD else False
+        tdefault = defD['default'] if 'default' in defD else None
+        result = kwargs[name] if name in kwargs else tdefault
+        if result == None and trequired:
+            tclname = self.__class__.__name__
+            self.raiseExc('[_initHandleArg] Required keyword argument {name} missing for {tclname}')
+        return result
+
 
     def _loadParent(self,*args, **kwargs): 
         tParent = args[0] if  len(args)>0 else None

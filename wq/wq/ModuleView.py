@@ -29,6 +29,8 @@ class ModuleView(Object):
         self._module = kwargs['module'] if 'module' in kwargs else None
         if self._module == None:
             self.raiseExc('[ModuleView] keyword argument module required')
+        if self._module._view != None:
+            self.raiseExc(f'[ModuleView] Other view already assigned to module {self._module.name()}')
         self._module._view = self    
         d3 = isinstance(self._module,Module)
         if (not d3):
@@ -38,22 +40,22 @@ class ModuleView(Object):
         self._id = 0
         self._moduleView = self.wqD().doModuleView_Init()
         args = (args[0],self._moduleView) #impl
-        kwargs.pop('module', None)         
+        kwargs.pop('module', None)      
         super(ModuleView, self).__init__(*args, **kwargs)
-
         if d2: #rootView - create additional inputs/outputs module
             self._inputsView = ModuleView(self,
                 module=Module(self.module(),
                     'moduleInputs',
-                    type=ModuleType.INPUTS
+                    moduleType=ModuleType.INPUTS
                     )
                 )
             self._outputsView = ModuleView(self,
                 module=Module(self.module(),
                     'moduleOutputs',
-                    type=ModuleType.OUTPUTS
+                    moduleType=ModuleType.OUTPUTS
                     )
-                )
+                )  
+
         self.wqD().doModuleView_AfterInit()
         if d1: #register in parent
             self._id = len(self.parent().moduleViews())
@@ -66,7 +68,7 @@ class ModuleView(Object):
             for tmoduleId in self._module.modules():                
                 if tmoduleId>0: #not self
                     tmodule = self._module.modById(tmoduleId)
-                    if (not tmodule.type() in [ModuleType.INPUTS, ModuleType.OUTPUTS]): # inputs/outputs don't need recursive init - view created
+                    if (not tmodule.moduleType() in [ModuleType.INPUTS, ModuleType.OUTPUTS]): # inputs/outputs don't need recursive init - view created
                         tModuleView = ModuleView(self,module=tmodule)
             
     def id(self):

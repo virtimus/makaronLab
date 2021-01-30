@@ -6,6 +6,8 @@ from typing import Callable
 
 from .nodeiotype import NodeIoType
 from .moduletype import ModuleType
+from . import direction
+
 
 log = logging.getLogger(__name__)
 
@@ -68,44 +70,122 @@ class ModuleFactory:
 
 IoType = NodeIoType
 
+from .EventSignal import EventSignal, EventBase, EventProps
+
+class EventNameChanged:
+    def __init__(self, oldName:str, newName:str):
+        self._oldName = oldName
+        self._newName = newName
+
+class EventIONameChanged:
+    def __init__(self,fromName,toName,lid,isInput):
+        self._fromName = fromName
+        self._toName = toName
+        self._lid = lid
+        self._isInput = isInput
+
+class EventIOTypeChanged:
+    def __init__(self, isInput, ioId, osize, tsize):
+        self._isInput = isInput
+        self._ioId = ioId
+        self._oldSize = osize
+        self._newSize = tsize
+
 class ModuleImplBase(metaclass=ABCMeta):
+    class Events(EventBase):
+        elementNameChanged = EventSignal(EventNameChanged)
+        inputAdded = EventSignal(EventProps)
+        outputAdded = EventSignal(EventProps)
+        ioNameChanged = EventSignal(EventIONameChanged)
+        inputRemoved = EventSignal(EventProps)
+        outputRemoved = EventSignal(EventProps)
+        ioTypeChanged = EventSignal(EventIOTypeChanged)
+        pass    
     def __init__(self, **kwargs):
         """ Constructor """
+        self._isIconified = False 
+        self._iconifyingHidesCentralWidget = False 
         self._self = None
-        self._moduleType = ModuleType.ATOMIC #default moduletype
+        self._moduleType = None 
+        self._events = ModuleImplBase.Events()       
         pass
 
     def s(self):
         return self._self
 
+    def events(self):
+        return self._events
+
+    def id(self):
+        return self._self.id()
+
+    def name(self):
+        return self._self.name()
+
+    def description(self):
+        return self.desc()
+
+    def desc(self):
+        return self._self.desc()
+    
+    def info(self):
+        return self._self.info()
+
     def raiseExc(self, a0):
         raise Exception(a0)   
 
     def moduleType(self):
-        return self._moduleType     
+        return self._moduleType
 
     @abstractmethod
-    def echo(self):
+    def init(self,**kwargs):    
+        pass
+
+    @abstractmethod
+    def open(self,**kwargs):    
+        pass
+
+    @abstractmethod
+    def calc(self,**kwargs):    
         pass
 
     def newIO(self, **kwargs):
-        tname = kwargs['name'] if 'name' in kwargs else None
-        if tname == None:
-            self.raiseExc('Name required')
-        tsize = kwargs['size'] if 'size' in kwargs else 1
-        tIoType = kwargs['ioType'] if 'ioType' in kwargs else None
-        sig = self.s().newSignal(name=tname,size=tsize)
-        result = self.s().newIoNode(signal=sig, ioType=tIoType)
-        return result
+        return self.s().newIO(**kwargs)
 
     def sig(self, name:str):
         ts = self.s()
-        return ts.sigByName(name)
+        return ts.sigByName(name) 
+
+    def iconify(self, iconify):
+        self._isIconified = iconify
+
+    def isIconified(self):
+        return self._isIconified
+
+    def setIconifyingHidesCentralWidget(self, hide):
+        self._iconifyingHidesCentralWidget = hide
+        
+    def iconifyingHidesCentralWidget(self):
+        return self._iconifyingHidesCentralWidget
+    
+    def nodes(self):
+        return self.s().nodes()
+
+    #'inputs' is historical name deprecated in fact it is ionode on left !TODO! remimplement using nodes() vector
+    def inputs(self):
+        return self.nodes().filterBy('direction',direction.LEFT)
+
+    def outputs(self):
+        return self.s().nodes().filterBy('direction',direction.RIGHT)
+
     
 
 
 
-
+class ModuleImplBaseLocal(ModuleImplBase):
+    def __init__(self, **kwargs):
+        super(ModuleImplBaseLocal, self).__init__(**kwargs)
+        self._moduleType = ModuleType.ATOMIC #default moduletype
 
 
 class ModuleLibraryBase(metaclass=ABCMeta):
@@ -127,7 +207,7 @@ class ModuleLibraryBase(metaclass=ABCMeta):
         return cls._modules
 
 
-class AndGateModule(ModuleImplBase):
+class AndGateModule(ModuleImplBaseLocal):
     def echo(self):
         print("Hello World from AndGateModule")
 
@@ -137,7 +217,7 @@ class AndGateModule(ModuleImplBase):
             'info':'AND logic gate'    
         }
 
-    def open(self):
+    def open(self,**kwargs):
         #result = AndGateModule()
         y = self.newIO(
             name='Y',
@@ -157,7 +237,7 @@ class AndGateModule(ModuleImplBase):
             'B':b
         }
 
-    def calc(s):
+    def calc(s, **kwargs):
         s.sig('Y').setValue(s.sig('A').value() and s.sig('B').value())    
 
 class Test2Module(ModuleImplBase):

@@ -8,6 +8,7 @@ from . import consts
 from . import direction
 from .nodeiotype import NodeIoType
 from .wqvector import WqVector
+from .moduletype import ModuleType
 
 """
 CNode is a junction pint between different signals with same size
@@ -18,20 +19,34 @@ or first Signal with deltaVector.out
 class Node(Object):
     def __init__(self, *args, **kwargs):
         #//self._deltaVector = DeltaVector.NONE 
+        self._view = None
         self._signals = WqVector()    
         args = self._loadInitArgs(args)
         if not isinstance(args[0],Module):
             self.raiseExc('[Node] Parent has to be descendant of wq.Module')
         self._name = kwargs['name'] if 'name' in kwargs else None
-
         self._info = kwargs['info'] if 'info' in kwargs else None
-        self._desc = kwargs['desc'] if 'desc' in kwargs else None       
+        self._desc = kwargs['desc'] if 'desc' in kwargs else None               
+        self._sigInternal = self._initHandleArg('sigInternal',
+                kwargs = kwargs,
+                required = False,
+                defaultValue = False,
+                desc ='Used to check if signal is contained in node, if yes - it will be deleted and disconnected together with parent node'               
+            )
         self._driveSignal = None
-        if 'signal' in kwargs:
-            self.addSignal(kwargs['signal'])
-            self._name = kwargs['signal'].name() if self._name == None else self._name
+        self._intSignal = None
+        tsignal = self._initHandleArg('signal',
+                kwargs = kwargs,
+                desc = 'Internal or drive (for output node) signal contained in Node'
+            )
+        if tsignal != None:
+            self.addSignal(tsignal)
+            if self._sigInternal:
+                self._intSignal = tsignal
+            self._name = tsignal.name() if self._name == None else self._name
         if self._name == None:
-            self.raiseExc(f'Name of Node required')                    
+            self.raiseExc(f'Name of Node required')             
+                   
         super(Node, self).__init__(*args, **kwargs)
         self._id = len(self.parent().nodes())
         #self.parent()._nodes[self.id()]=self
@@ -43,9 +58,6 @@ class Node(Object):
     def module(self):
         return self._parent
     
-    def driveSignal(self):
-        return self._driveSignal
-
     def size(self):
         result = self.driveSignal().size() if self.driveSignal() != None else None
         if result == None and len(self.signals())>0:
@@ -56,6 +68,20 @@ class Node(Object):
             result = next(iter(self._signals.values())).size()
         return result; 
         '''
+
+    def setSize(self, nsize:int):
+        if self.size() == nsize:
+            return
+        if self.driveSignal() != None:
+            self.driveSignal().setSize(nsize)
+
+        for lid in self.signals(): #omit drive?
+            s = self.signals().byLid(lid)
+            s.setSize(nsize)
+
+    def resetValue(self):
+        if self._driveSignal != None:
+            self._driveSignal.resetValue()
     
     def desc(self):
         return self._desc
@@ -65,6 +91,9 @@ class Node(Object):
 
     def name(self):
         return self._name
+
+    def driveSignal(self):
+        return self._driveSignal
 
     def setDriveSignal(self, signal:'Signal'):
         if self._driveSignal == None:
@@ -99,6 +128,10 @@ class IoNode(Node):
         if tsignal == None:
             self.raiseExc(f'Signal required fo ioNode')
         self._name = kwargs['name'] if 'name' in kwargs else tsignal.name()
+        self._direction = kwargs['direction'] if 'direction' in kwargs else None
+        if self._direction == None:
+            self._direction = direction.LEFT if self.ioType() == NodeIoType.INPUT else direction.RIGHT
+
         super(IoNode, self).__init__(*args, **kwargs)
         #for ioNode driveSignal is external or internal depending on type?
         #ioNode will be added always with internal signal
@@ -109,11 +142,20 @@ class IoNode(Node):
     def name(self):
         return self._name
 
+    def direction(self):
+        return self._direction
+
     def extSignals(self):
         return self._extSignals
 
     def ioType(self):
         return self._ioType
+
+    def flags(self):
+        return self.prop('ioNodeFlags')
+
+    def valueType(self):
+        return self.prop('valueType')
 
 
 """
@@ -140,42 +182,47 @@ class Module(Object):
 
     def __init__(self, *args, **kwargs):
         self._view = None 
-        self._isIconified = False 
-        self._iconifyingHidesCentralWidget = False 
-        self._rotate = False
-        self._invertH = False
         args = self._loadInitArgs(args)
-        d1 = isinstance(args[0],Module)
-        d2 = isinstance(args[0],MainWindow)
+        parent = args[0]
+        d1 = isinstance(parent,Module)
+        d2 = isinstance(parent,MainWindow)
         #d3 = args[0] != None
         if not (d1 or d2):
             self.raiseExc('[Module] Parent has to be descendant of wq.Module or wq.MainWindow')
+        if d1 and not ModuleType.GRAPH == parent.mType():
+            self.raiseExc('[Module] module can be descendant only of graph module')
+
         if args[1] == None:
             self.raiseExc('[Module] Name has to be given')
         self._name=args[1]
         #args = (args[0], None) 
-        parent = args[0]
+
 
         impl = kwargs['impl'] if 'impl' in kwargs else None
-        self._type = kwargs['type'] if 'type' in kwargs else None
+        self._moduleType = kwargs['moduleType'] if 'moduleType' in kwargs else None
         self._isImplStr = isinstance(impl, str)
-        if self._type != None and self._isImplStr :
-            self.raiseExc(f'[Module] Type cannot be given for module loaded from lib {self._name}')
-        elif not self._isImplStr  and self._type == None:
-            self.raiseExc(f'[Module] ''type'' required {self._name}')
+        if self._moduleType != None and self._isImplStr :
+            self.raiseExc(f'[Module] moduleType cannot be given for module loaded from lib {self._name}')
+        elif not self._isImplStr  and self._moduleType == None:
+            self.raiseExc(f'[Module] ''moduleType'' required {self._name}')
         self._modules = WqVector()
         self._modules.append(0,self)
         self._nodes = WqVector()
         #self._nodesByName = {} handled by WqVector
         self._signals = WqVector()
+        self._desc = None
         #self._signalsByName = {}
         self._id = 0
         kwargs.pop('type', None) 
         kwargs.pop('impl', None)        
         super(Module, self).__init__(parent, impl, **kwargs)
         #check type
-        if self._isImplStr:
-            self._type = self.impl().moduleType()
+        #if self._isImplStr:
+        #    self._moduleType = self.impl().moduleType()
+        if self.impl() == None:
+            self.raiseExc(f'No impl loaded for module {self.name()}')
+        if self.impl().moduleType() == None:
+            self.raiseExc(f'Impl for module {self.name()} has not set moduleType')
         if d1:
             self._id = len(self.parent().modules())
             self.parent().addModule(self)
@@ -185,6 +232,12 @@ class Module(Object):
 
     def name(self):
         return self._name
+
+    def desc(self):
+        return self._desc
+    
+    def setDesc(self, dsc:str):
+        self._desc = dsc
 
     def path(self):
         result = "/"+self.name() if self.isRoot() else str(self.parent().path()) + "/" + self.name()
@@ -198,8 +251,11 @@ class Module(Object):
     def signals(self):
         return self._signals
 
-    def type(self):
-        return self._type
+    def mType(self):
+        return self.moduleType()
+
+    def moduleType(self):
+        return self._moduleType #impl().moduleType()
 
     def sigByName(self, sigName:str):
         result = self._signalsByName[sigName] if sigName in self._signalsByName else None
@@ -213,7 +269,7 @@ class Module(Object):
         return self._modules
 
     def modById(self, id):
-        return self._modules.byId(id)
+        return self._modules.byLid(id)
 
     def addSignal(self, signal:'Signal'):
         if signal.id() in self._signals:
@@ -247,32 +303,26 @@ class Module(Object):
         return Node(self,**kwargs) 
 
     def newIoNode(self, **kwargs):
-        return IoNode(self,**kwargs)            
+        return IoNode(self,**kwargs) 
+
+    def newIO(self, **kwargs):
+        tname = kwargs['name'] if 'name' in kwargs else None
+        if tname == None:
+            self.raiseExc('Name required')
+        tsize = kwargs['size'] if 'size' in kwargs else 1
+        tIoType = kwargs['ioType'] if 'ioType' in kwargs else None
+        sig = self.newSignal(name=tname,size=tsize)
+        kwargs.pop('ioType',None)
+        result = self.newIoNode(signal=sig, sigInternal=True, ioType=tIoType,**kwargs)
+        return result  
+
+    def newModule(self, moduleName, **kwargs):
+        result = Module(self,moduleName,**kwargs)
+        return result             
         
     def isRoot(self):
         return isinstance(self.parent(), MainWindow) #alt id == 0
 
-    def iconify(self, iconify):
-        self._isIconified = iconify
 
-    def isIconified(self):
-        return self._isIconified
 
-    def setIconifyingHidesCentralWidget(self, hide):
-        self._iconifyingHidesCentralWidget = hide
-        
-    def iconifyingHidesCentralWidget(self):
-        return self._iconifyingHidesCentralWidget
 
-    #EOrientation orientation
-    def direction(self):
-        dir = direction.RIGHT
-        if (self._rotate):
-            if (not self._invertH):
-                dir = direction.UP
-            else:
-                dir = direction.DOWN
-        else:
-            if (self._invertH):
-                dir = direction.LEFT
-        return dir

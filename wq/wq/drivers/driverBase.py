@@ -19,3 +19,9 @@ class WqDriverBase:
     
     def p(self):
         return self._parent
+
+    def callAfterInit(self, tImpl):
+        if hasattr(tImpl,'__afterInit__'):
+            ai = getattr(tImpl,'__afterInit__')
+            if callable(ai):
+                ai(self)

@@ -97,6 +97,8 @@ class EditorFrame(MainWindow):
         hlayout.impl().addLayout(layout.impl(),0)
         pnl.impl().setLayout(hlayout.impl())
 
+        
+
         #load libraries
         wqcLib = ModuleFactory.loadLibrary('wqc')
         #wqlLib = ModuleFactory.loadLibrary('local')
@@ -113,14 +115,19 @@ class EditorFrame(MainWindow):
         resp = c6502.open()
         #'''
         rootModule = Module(self,'rootModule',
-            type = ModuleType.GRAPH
+            moduleType = ModuleType.GRAPH
         )
         self._rootModule = rootModule
 
         #andModuleImpl = wqlLib.createModule('AND')       
-        andModule = Module(rootModule,'andModule',
+        #andModule = Module(rootModule,'andModule',
+        #    impl = 'local/AND'
+        #    )
+        andModule = rootModule.newModule('andModule',
             impl = 'local/AND'
             )
+
+
         #'''
         '''
         controlModule = Module(rootModule,'controlModule')
@@ -171,9 +178,15 @@ class EditorFrame(MainWindow):
 
             label = qtw.QLabel("Left")
             label.setAlignment(qtc.Qt.AlignCenter)
+
+            tw = qtw.QTableWidget()
+            tw.setRowCount(10)
+            tw.setColumnCount(2)
+            self._propertiesTable = tw
             
             panel_left.setWidgetResizable(True)
-            panel_left.setWidget(label)
+            #panel_left.setWidget(label)
+            panel_left.setWidget(tw)
             self._panelLeft = panel_left
         leftPanel()
 
@@ -248,7 +261,7 @@ class EditorFrame(MainWindow):
             result = self._openModules
         return result
 
-    #openOrCreatePackage
+    #openOrCreatePackageView
     def openModuleView(self,module:Module):
         found = self.openModules(module)
         if found != None:
@@ -273,7 +286,7 @@ class EditorFrame(MainWindow):
                       
 
     def newModuleView(self):
-        module = Module(self, "New", type=ModuleType.GRAPH)
+        module = Module(self, "New", moduleType=ModuleType.GRAPH)
         self.openModuleView(module)
 
     _firstTime = True 

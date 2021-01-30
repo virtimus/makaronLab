@@ -1,5 +1,35 @@
 
 eorientation -> direction
+package -> graph not! -> Module(ModuleType=GRAPH)
+Package -> Graph -> GView/GVItem
+
+Element -> Module(ModuleType=ATOMIC),ModuleBaseIMpl
+
+m_inputs/m_outputs -> IONode,IoNodeIMPL (ioType INPUT/OUTPUT)
+m_connections -> signal/nodes
+IONodeView
+editor -> editor,EditorFrame
+package_view -> ModuleView,GraphModuleViewImpl
+
+IOSocket { enum Flags ->IoNodeFlags
+
+ported:
+- link_item -> IoLinkView
+- socket_item -> IoNodeView
+- node -> ModuleViewImpl
+toimpl:
+- package_view -> GraphViewImpl showproperties itp
+- package -> Module(root or GRAPH) -> sim/ModuleImplGraph
+- element -> Module(atomic) ModuleImplElement
+
+node/package?
+
+
+
+
+
+
+.package - > .mlg
 
 In This simulation framework SIGNAL is the first class citizen ...
 
@@ -32,7 +62,7 @@ editor ->
     methods:
         registerFactory - register new factory
 
-package -> graph not! -> Module
+
 
 packageView(tab) -> 
 - ModuleView
@@ -75,9 +105,3 @@ enum class SocketItemType { eInput, eOutput, eDynamic };//SiType
 enum class IOSocketsType { eInputs, eOutputs, eTop, eDown};//IoSide
 enum class EOrientation { eRight, eLeft, eUp, eDown };//TBD
 
-Element -> GItem
-Package -> Graph -> GView/GVItem
-m_inputs/m_outputs -> pins
-m_connections -> signal/edges
-
-.package - > .mlg
