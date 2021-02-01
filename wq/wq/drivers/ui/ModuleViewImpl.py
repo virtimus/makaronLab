@@ -2,6 +2,8 @@ import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
 import PyQt5.QtGui  as qtg
 
+import sip
+
 from ...nodeiotype import NodeIoType
 
 from ...wqvector import WqVector
@@ -376,7 +378,7 @@ void Node::advance(int a_phase)
         dir = direction.RIGHT
         if (self._rotate):
             if (not self._invertH):
-                dir = direction.UP
+                dir = direction.TOP
             else:
                 dir = direction.DOWN
         else:
@@ -402,7 +404,7 @@ void Node::advance(int a_phase)
         if (rotate):
             self._rotate = True
         else:
-            self._rotate = False;
+            self._rotate = False
 		#//m_invertH = false;
 
 	#//updateRotation();
@@ -670,15 +672,17 @@ void Node::advance(int a_phase)
         item = qtw.QTableWidgetItem(title)
         item.setTextAlignment(qtc.Qt.AlignHCenter | qtc.Qt.AlignVCenter)
         item.setFlags(item.flags() & ~qtc.Qt.ItemIsEditable)
-        item.background().setColor(qtc.Qt.darkGray)
-        item.foreground().setColor(qtc.Qt.black)
+        #//item.background().setColor(qtc.Qt.lightGray)
+        item.setBackground(qtc.Qt.darkGray)
+        #item.foreground().setColor(qtc.Qt.black)
+        item.setForeground(qtc.Qt.black)
         self._properties.setItem(ROW, 0, item)
         self._properties.setSpan(ROW, 0, 1, 2)
 
 
     #def changeIOName(IOSocketsType const a_type, int const a_id, QString const &a_name)
     def changeIOName(self, direction, vid, name):
-        INPUTS = direction - direction.LEFT 
+        #INPUTS = direction - direction.LEFT 
 
         #SocketItem *socket{};
         #if (self.mType() == ModuleType.ATOMIC):
@@ -823,10 +827,15 @@ auto max_element(Container &a_container, Comparator a_comparator)
     def removeSocket(self, dr):
         if dr == direction.LEFT:
             inpd = self.inputs().last()
-            self.nodeViews().remove(inpd)
+            self.nodeViews().removeByLid(inpd.id())
+            sip.delete(inpd)
+            del inpd           
         else:
             outd = self.outputs().last()
-            self.nodeViews().remove(outd)
+            self.nodeViews().removeByLid(outd.id())
+            sip.delete(outd)
+            del outd
+            
 
 
     def setSocketType(self, direction, socketId, vType:ValueType):

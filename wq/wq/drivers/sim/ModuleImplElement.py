@@ -198,9 +198,12 @@ class ModuleImplElement(ModuleImplBase):
 
     def removeInput(self):
         tinp = self.inputs().last()
-        self.nodes().remove(tinp)
+        #self.nodes().remove(tinp)
         #handleEvent(Event{ EventType::eInputRemoved, EventEmpty{} });
-        self.events().inputRemoved.emit(EventProps({'inputId':tinp.id()}))
+        inpId = tinp.id()
+        self.removeIO(inpId)
+        del tinp
+        self.events().inputRemoved.emit(EventProps({'inputId':inpId}))
 
     def clearInputs(self):
         #m_inputs.clear();

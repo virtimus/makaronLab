@@ -166,15 +166,15 @@ class EditorFrame(MainWindow):
 
         
     def createSidePanels(self, parent):
-        def leftPanel():
+        def rightPanel():
         
-            panel_left = SidePanel(parent.impl(), 
-                side=direction.LEFT
+            tpanel = SidePanel(parent.impl(), 
+                side=direction.RIGHT
                 )
-            panel_left.setOpenEasingCurve(qtc.QEasingCurve.Type.OutElastic);
-            panel_left.setCloseEasingCurve(qtc.QEasingCurve.Type.InElastic);
-            panel_left.setPanelSize(400)
-            panel_left.init()
+            tpanel.setOpenEasingCurve(qtc.QEasingCurve.Type.OutElastic);
+            tpanel.setCloseEasingCurve(qtc.QEasingCurve.Type.InElastic);
+            tpanel.setPanelSize(300)
+            tpanel.init()
 
             label = qtw.QLabel("Left")
             label.setAlignment(qtc.Qt.AlignCenter)
@@ -184,11 +184,11 @@ class EditorFrame(MainWindow):
             tw.setColumnCount(2)
             self._propertiesTable = tw
             
-            panel_left.setWidgetResizable(True)
+            tpanel.setWidgetResizable(True)
             #panel_left.setWidget(label)
-            panel_left.setWidget(tw)
-            self._panelLeft = panel_left
-        leftPanel()
+            tpanel.setWidget(tw)
+            self._panelRight = tpanel
+        rightPanel()
 
 
     def makeMenuBar(self):

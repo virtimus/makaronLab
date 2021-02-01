@@ -30,6 +30,7 @@ class IoLinkView(qtw.QGraphicsPathItem):
         self._shape =  qtg.QPainterPath() #QPainterPath m_shape{};
         self._path = qtg.QPainterPath() #QPainterPath m_path{};
         self._dashOffset = None #/0.0 #qreal
+        self._tmp = {}
         '''
          QRectF m_boundingRect{};
   
@@ -129,6 +130,10 @@ class IoLinkView(qtw.QGraphicsPathItem):
         painter.setPen(pen)
         painter.drawPath(self._path)
 
+        #if 'linkItemPos' in self._tmp:
+        #    painter.drawLine(self._tmp['linkItemPos'],self._tmp['c1'])
+        #    painter.drawLine(self._tmp['toPoint'],self._tmp['c2'])
+
     def hoverEnterEvent(self, event): #QGraphicsSceneHoverEvent
         #(void)event;
         self.setHover(True)
@@ -187,94 +192,79 @@ class IoLinkView(qtw.QGraphicsPathItem):
 
         c1 = qtc.QPointF()
         c2 = qtc.QPointF()
-        distW = abs(self._toPoint.x()) * 0.5 
-        distH = abs(self._toPoint.y()) * 0.5 
+        distWS = round(self._toPoint.x() * 0.5) 
+        distW = abs(distWS) 
+        distHS = round(self._toPoint.y() * 0.5)
+        distH = abs(distHS) * 0.5 
 
-        '''
-        fromOrientU = self._fr.module().getRotation()==-90
-        toOrientU = self._to!=None and self._to.module().getRotation()==-90
-        fromOrientL = EOrientation::eLeft == m_from->node()->element()->orientation();
-  bool fromInp = m_from->ioType() == IOSocketsType::eInputs;
-  bool toInp = m_to!=NULL && m_to->ioType() == IOSocketsType::eInputs;
+        mindelta = 200
 
-  m_path = QPainterPath{};
-  bool cubic = true;
-  std::string slog = "none:";
-  //!TODO! about 8 cases to handle - dependance of from/to, inp/out/, direction etc
-  /*if (fromOrientU && !toInp) {//u2l
-	  c1.setX(0);
-	  if (m_toPoint.y()>0){
-		  c1.setY(distH);
-	  } else {
-		  c1.setY(0-distH);
-	  }
-	  if (m_toPoint.x()>0){
-		  c1.setX(distW);
-	  } else {
-		  c1.setX(0-distW);
-	  }
-	  c2.setY(0);
-	  //cubic = false;
-	  //m_path.arcTo(m_boundingRect,0,-30);
+        deltaWR = 0
+        deltaWL = 0
+        if (distW<mindelta and (distW<10 or distWS<0)):
+            deltaWR = mindelta-distW
+        if (distW<mindelta and (distW<10 or distWS>0)):
+            deltaWL = mindelta-distW
 
-  } else*/ if (fromOrientU) {//u2r
-	  if (fromInp){
-		  c1.setX(0);
-		  c1.setY(distH);
-		  c2.setX(0);
-		  c2.setY(distH);
-	  } else {
-		  c1.setX(0);
-		  c1.setY(0-distH);
-		  c2.setX(0);
-		  c2.setY(0-distH);
-	  }
-  } else if (toOrientU) {//u2r
-	  if (fromInp){
-		  c1.setX(0-distW);
-		  c1.setY(0);
-		  c2.setX(0-distW);
-		  c2.setY(0);
-	  } else {
-		  c1.setX(distW);
-		  c1.setY(0);
-		  c2.setX(distW);
-		  c2.setY(0);
-	  }
- /* } else if (toOrientU) {
-	  c1.setY(0);
-	  //c1.setY(0);
-	  if (m_toPoint.x()>0){
-		  c1.setX(distW);
-	  } else {
-		  c1.setX(0-distW);
-	  }
-	  c2.setX(0);
-	  if (m_toPoint.y()>0){
-		  c2.setY(m_toPoint.y()-distH);
-	  } else {
-		  c2.setY(0-distH);
-	  }*/
-  } else {//standard case - "from" oriented right and "to" oriented right
-	  if (fromOrientL){
-		  c1.setX(0-distW);
-		  c2.setX(m_toPoint.x() + distW);
-		  c2.setY(m_toPoint.y());
-	  } else {
-		  c1.setX(distW);
-		  c2.setX(m_toPoint.x() - distW);
-		  c2.setY(m_toPoint.y());
-		  slog="stand:";
-	  }
-  }
-      slog += "{},{},{}";
-        '''
-        c1.setX(distW)
-        c1.setY(0)
-        c2.setX(self._toPoint.x() - distW)
-        c2.setY(self._toPoint.y())
+        deltaWD = 0
+        deltaWU = 0
+        if (distH<mindelta and (distH<5 or distHS<0)):
+            deltaWD = mindelta-distH
+        if (distH<mindelta and (distH<5 or distHS>0)):
+            deltaWU = mindelta-distH
+
+        c1x = None
+        c2x = None
+        c1y = None
+        c2y = None 
+        sourceDir = self._fr.effectiveDirection()
+        targetDir = self._to.effectiveDirection() if self._to != None else None
+        
+        if sourceDir == direction.RIGHT:
+            c1x = distW+deltaWR
+            c1y = 0
+        if targetDir == direction.RIGHT:
+            c2x = self._toPoint.x() +distW+deltaWL 
+            c2y = self._toPoint.y()
+        if sourceDir == direction.LEFT:
+            c1x = -distW-deltaWL
+            c1y = 0            
+        if targetDir == direction.LEFT:
+            c2x = self._toPoint.x() -distW-deltaWR
+            c2y = self._toPoint.y()
+
+        if sourceDir == direction.DOWN:
+            c1x = 0
+            c1y = distH+deltaWD
+        if targetDir == direction.DOWN:
+            c2x = self._toPoint.x() 
+            c2y = self._toPoint.y()+distH+deltaWU 
+        if sourceDir == direction.TOP:
+            c1x = 0
+            c1y = -distH-deltaWU            
+        if targetDir == direction.TOP:
+            c2x = self._toPoint.x() 
+            c2y = self._toPoint.y() -distH-deltaWD
+
+        if targetDir == None: #dragging...
+            c2x = self._toPoint.x() 
+            c2y = self._toPoint.y() 
+        
+
+        c1.setX(c1x)
+        c1.setY(c1y)
+        c2.setX(c2x)
+        c2.setY(c2y)
 
         self._path.cubicTo(c1, c2, self._toPoint)
+
+        #self._tmp['linkItemPos'] = self.mapFromScene(linkItemPos)
+        #self._tmp['toPoint']= self._toPoint
+        #self._tmp['c1'] = c1
+        #self._tmp['c2'] = c2
+        
+        
+
 
         #print(f'Elems:{self._path.elementCount()}')
 

@@ -314,7 +314,19 @@ class Module(Object):
         sig = self.newSignal(name=tname,size=tsize)
         kwargs.pop('ioType',None)
         result = self.newIoNode(signal=sig, sigInternal=True, ioType=tIoType,**kwargs)
-        return result  
+        return result 
+
+    def removeIO(self,id):
+        ioNode = self.nodes().byLid(id)
+        dsignal = ioNode.driveSignal()
+        if dsignal != None:
+            self.signals().removeByLid(dsignal.id())
+            del dsignal
+        if ioNode != None:
+            self.nodes().removeByLid(ioNode.id())
+            del ioNode
+
+
 
     def newModule(self, moduleName, **kwargs):
         result = Module(self,moduleName,**kwargs)

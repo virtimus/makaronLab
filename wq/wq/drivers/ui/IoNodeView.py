@@ -72,9 +72,32 @@ class IoNodeView(qtw.QGraphicsItem):
 
     def name(self):
         return self._ionode.name()
+
+    def node(self):
+        return self._ionode
     
     def direction(self):
         return self._direction
+
+    def effectiveDirection(self):
+        result = self._direction 
+        if (self.moduleView().isInvertH()):
+            if (self._direction == direction.LEFT):
+                result = direction.RIGHT
+            elif (self._direction == direction.RIGHT):
+                result = direction.LEFT
+            else:
+                self.raiseExc('noImpl')
+        if (self.moduleView().isRotate()):
+            if result == direction.LEFT:
+                result = direction.DOWN
+            elif result == direction.RIGHT:
+                result= direction.TOP
+            else:
+                self.raiseExc('noImpl')
+        return result
+        
+       
 
     def setHover(self, hover):
         self._isHover = hover 
@@ -195,6 +218,8 @@ class IoNodeView(qtw.QGraphicsItem):
             return
         self._links.push_back(linkItem)
         linkItem.setTo(self)
+        if linkItem.fr().node().driveSignal()!=None:
+            self.node().setDriveSignal(linkItem.fr().node().driveSignal())
         self._used = True
         self._isDrop = False
         pv.acceptDragLink()
@@ -263,6 +288,9 @@ class IoNodeView(qtw.QGraphicsItem):
 
     def moduleId(self):
         return self._ionode.module().id()
+
+    def moduleView(self):
+        return self._ionode.module().view().impl()
 
     def nameWidth(self):
         metrics = qtg.QFontMetrics( self._font )

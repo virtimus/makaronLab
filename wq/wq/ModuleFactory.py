@@ -152,6 +152,9 @@ class ModuleImplBase(metaclass=ABCMeta):
     def newIO(self, **kwargs):
         return self.s().newIO(**kwargs)
 
+    def removeIO(self, id):
+        return self.s().removeIO(id)    
+
     def sig(self, name:str):
         ts = self.s()
         return ts.sigByName(name) 
