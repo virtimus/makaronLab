@@ -1,3 +1,14 @@
+# makaronLab 
+
+"makaronLab" is currently a bunch of experiments with different CPU emulators and simulators.
+
+Integrated some stuff, played with CPU simulation ...
+
+Currently reimplementng wonderfull Spaghetti logic editor/simulator in Python/PyQT
+
+(early stages in wq folder - level of simple d-latch with no serialisation but with new signal/node/module  simulation model)  
+
+
 ## There were few reasons for this project.
 
 First is wonderfull series of videos from Ben Eater on building 8bit cumputer from scratch.

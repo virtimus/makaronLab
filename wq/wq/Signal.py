@@ -28,12 +28,17 @@ class Signal(Object):
             self.raiseExc('Size for signal not specified')
         self._value = False if self._size == 1 else 0
         super(Signal, self).__init__(*args, **kwargs)
-        self._id = len(self.parent().signals())
+        self._id = len(self.parent().graphModule().signals())
+        self._no = len(self.parent().signals())
         #self.parent()._signals[self.id()]=self
+        self.parent().graphModule().addSignal(self)
         self.parent().addSignal(self)
 
     def id(self):
         return self._id
+
+    def no(self):
+        return self._no
 
     def name(self):
         return self._name
@@ -52,7 +57,12 @@ class Signal(Object):
         return self._value
 
     def setValue(self, newVal):
-        self._value = newVal
+        if newVal != self._value:
+            self._value = newVal
+
+    def isOn(self):
+        result = self._value if self.size()==1 else self._value>0
+        return result
     
     def resetValue(self):
         prevValue = self._value

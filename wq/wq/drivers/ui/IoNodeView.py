@@ -7,6 +7,8 @@ from ...wqvector import WqVector
 
 from ... import consts, prop, orientation, direction, colors
 
+#from ...Module import IoNode
+
 from ... import colors
 from ..sim.valuetype import ValueType
 
@@ -28,10 +30,10 @@ class IoNodeView(qtw.QGraphicsItem):
         super(IoNodeView, self).__init__(parent)
         self.m_node = parent
         self._parent = parent
-        self.m_type = ionode.ioType()
+        self._ioType = ionode.ioType()
+        self.m_type = self._ioType #deprecated
         self._ionode = ionode
         self._self = ionode
-        self.m_ioType = direction
         self._direction = direction
         self._font = qtg.QFont()
         self._font.setFamily("Consolas")
@@ -54,11 +56,17 @@ class IoNodeView(qtw.QGraphicsItem):
 
         self._colorSignalOn = None #!TODO!
         self._colorSignalOff = None
-        self._isSignalOn = False
-        self._isSignalOnPrev = None
+        #self._isSignalOn = False
+        #self._isSignalOnPrev = None
 
         self._links = WqVector(IoLinkView)
         self.setValueType(ionode.valueType())
+
+    def mdl(self) -> 'IoNode':
+        return self._ionode
+
+    def isSignalOn(self):
+        return self.mdl().isSignalOn()
 
     def id(self):
         result = self._ionode.id()  if self._ionode != None else None
@@ -124,9 +132,9 @@ class IoNodeView(qtw.QGraphicsItem):
             brush.setColor(colors.C.SOCKETHOVER.qColor())
         elif (self._isDrop):
             brush.setColor(colors.C.SOCKETDROP.qColor())
-        elif (self._isSignalOn):
+        elif (self.isSignalOn()):
             brush.setColor(self._colorSignalOn)
-        elif (not self._isSignalOn):
+        elif (not self.isSignalOn()):
             brush.setColor(self._colorSignalOff)
         #//  else if (m_type == Type::eInput)
         #//    brush.setColor(config.getColor(Config::Color::eSocketInput));
@@ -229,8 +237,13 @@ class IoNodeView(qtw.QGraphicsItem):
         f = linkItem.fr()
         package.connect(f, self) #elementId(), from.socketId(), from->ioFlags(), m_elementId, m_socketId, ioFlags());
 
-        self.setSignal(linkItem.isSignalOn())
+        #self.setSignal(linkItem.isSignalOn())
 
+    def mouseDoubleClickEvent(self, event):
+        #print(f"Double Click{self.id()}")
+        tdsig = self.mdl().driveSignal()
+        tdsig.setValue(not tdsig.value())
+ 
 
     def mousePressEvent(self, event): #QGraphicsSceneMouseEvent
         #Q_UNUSED(event);
@@ -254,7 +267,7 @@ class IoNodeView(qtw.QGraphicsItem):
         linkItem.setColors(self._colorSignalOff, self._colorSignalOn)
         linkItem.setValueType(self._valueType)
         linkItem.setFr(self)
-        linkItem.setSignal(self._isSignalOn)
+        #linkItem.setSignal(self._isSignalOn)
         
         self.scene().addItem(linkItem)
         self._links.push_back(linkItem)
@@ -300,7 +313,7 @@ class IoNodeView(qtw.QGraphicsItem):
         self._colorSignalOff = signalOff
         self._colorSignalOn = signalOn
 
-
+    """
     def setSignal(self, signal): #bool 
         delta = signal != self._isSignalOn
         delta = delta or (self._isSignalOn != self._isSignalOnPrev)
@@ -309,6 +322,7 @@ class IoNodeView(qtw.QGraphicsItem):
         if (self.m_type == NodeIoType.OUTPUT and delta): #// break recursion
             for l in self._links.values():
                 l.setSignal(signal)
+    """
 
     def connect(self, other:IoNodeView): #SocketItem *const
         linkItem = IoLinkView() #/LinkItem;

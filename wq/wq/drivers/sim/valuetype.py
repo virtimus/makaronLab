@@ -19,17 +19,36 @@ class ValueType(Enum):
     def fromInt(cls, ii):
         if ii == 1:
             return ValueType.BOOL
-        if ii == 1:
+        if ii == 2:
             return ValueType.INT
-        if ii == 1:
+        if ii == 3:
             return ValueType.FLOAT
-        if ii == 1:
+        if ii == 4:
             return ValueType.BYTE
-        if ii == 1:
+        if ii == 5:
             return ValueType.WORD64
         return None
 
-    
+    @staticmethod
+    def fromSize(size:int):
+        result = ValueType.BOOL
+        if size > 63:
+            result = ValueType.WORD64
+        elif size > 8:
+            result = ValueType.INT
+        elif size > 1:
+            result = ValueType.BYTE
+        return result
+
+    def toSize(self):
+        tsize = 32
+        if self == ValueType.BOOL:
+            tsize = 1
+        elif self == ValueType.BYTE:
+            tsize = 8
+        elif self == ValueType.WORD64:
+            tsize = 64
+        return tsize
 
         
 

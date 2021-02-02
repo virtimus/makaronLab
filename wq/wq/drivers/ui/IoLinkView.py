@@ -26,7 +26,7 @@ class IoLinkView(qtw.QGraphicsPathItem):
         self._valueType = None
         self._isSnapped = False
         self._isHover = False
-        self._isSignalOn = False
+        ##self._isSignalOn = False
         self._shape =  qtg.QPainterPath() #QPainterPath m_shape{};
         self._path = qtg.QPainterPath() #QPainterPath m_path{};
         self._dashOffset = None #/0.0 #qreal
@@ -93,7 +93,8 @@ class IoLinkView(qtw.QGraphicsPathItem):
         return self._isSnapped
     
     def isSignalOn(self):
-        return self._isSignalOn
+        result = self._fr.isSignalOn() if self._fr != None else False
+        return result
 
     def boundingRect(self):
         return self._shape.boundingRect()
@@ -105,7 +106,7 @@ class IoLinkView(qtw.QGraphicsPathItem):
         #(void)option;
         #(void)widget;
 
-        signalColor = self._colorSignalOn if self._isSignalOn else self._colorSignalOff
+        signalColor = self._colorSignalOn if self.isSignalOn() else self._colorSignalOff
         #QColor const notActive{ (isSelected() ? get_color(Color::eSelected) : signalColor) };
         notActive = colors.C.SELECTED.qColor() if self.isSelected() else signalColor
         #QColor const hover{ get_color(Color::eSocketHover) };
@@ -159,12 +160,12 @@ class IoLinkView(qtw.QGraphicsPathItem):
     def setColors(self, signalOff, signalOn): #QColor const a_
         self._colorSignalOff = signalOff
         self._colorSignalOn = signalOn
-
+    """
     def setSignal(self, signal):
         self._isSignalOn = signal
         if (self._to != None):
             self._to.setSignal(signal)
-
+    """
     def trackNodes(self):
         self.prepareGeometryChange()
         #QPointF const linkItemPos{ m_from->scenePos() };

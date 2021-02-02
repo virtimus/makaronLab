@@ -14,7 +14,7 @@ from ...wqvector import WqVector
 #from ...Module import Module
 
 #using Elements = std::vector<Element *>;
-Elements = WqVector(ModuleImplElement)
+Elements = WqVector() #'Module' ModuleIMpl
 
 """
 struct Connection {
@@ -53,7 +53,19 @@ from ...Timer import Timer
 class AtomicBool():
     def __init__(self, value:bool=False):
         self._value = value
-    
+
+    def __nonzero__(self):
+        return self._value
+
+    def __assign__(self, other):
+        self._value = other
+
+    def on(self, val:bool=None):
+        if val != None:
+            self._value = val
+        return self._value 
+
+
 
 
 class AtomicInt(int):
@@ -89,7 +101,7 @@ class ModuleImplGraph(ModuleImplElement):
         self.m_paused = AtomicBool(False)
         self.m_pauseCount = AtomicInt(0)
         self.m_isExternal = False
-        self.m_elements.push_back(self)
+        #self.m_elements.push_back(self._self)
         self.setDefaultNewInputFlags(IoNodeFlags.defaultFlags)
         self.setDefaultNewOutputFlags(IoNodeFlags.defaultFlags)
 
@@ -185,6 +197,7 @@ class ModuleImplGraph(ModuleImplElement):
 # --- HDR-END -------------------------------------
 
     def calculate(self):
+        '''
         for connection in self.m_connections.values():
             #Element *const source{ get(connection.from_id) };
             sourceIoNode = self.get(connection.frId) 
@@ -199,11 +212,19 @@ class ModuleImplGraph(ModuleImplElement):
             #targetIO[connection.to_socket].value = SOURCE_IO[connection.from_socket].value;
             if (sourceIoNode.driveSignal()!=None):
                 targetIoNode.driveSignal().setValue(sourceIoNode.driveSignal().value())
-  
+        '''
+
+        for node in self.mdl().nodes().values():
+            ds = node.driveSignal()
+            if ds != None and node.signals().size()>0:
+                dv = ds.value()
+                for ss in node.signals().values():
+                    ss.setValue(dv)
+
         for element in self.m_elements.values():
-            if (element == None or element == self):
+            if (element == None or element == self._self):
                 continue
-            element.update(self.m_delta)
+            element.updateTiming(self.m_delta)
             element.calculate()
 
     def add(self, el:'Module'):
@@ -339,7 +360,7 @@ class ModuleImplGraph(ModuleImplElement):
         #auto last = clock_t::now() - ONE_MILLISECOND;
         clock_t = Timer()
         last = clock_t.now() - clock_t.ms(1)
-        while not self.m_quit:
+        while not self.m_quit.on():
             NOW = clock_t.now()
             DELTA = NOW - last
             self.update(DELTA)
@@ -352,59 +373,60 @@ class ModuleImplGraph(ModuleImplElement):
                 #std::this_thread::sleep_for(ONE_MILLISECOND);
                 clock_t.sleepMs(1)
 
-            if (self.m_pause):
-                self.m_paused = True
-                while (self.m_pause):
-                    clock_t.sleep(0) #std::this_thread::yield();
-                self.m_paused = False
+            if (self.m_pause.on()):
+                self.m_paused.on(True)
+                while (self.m_pause.on()):
+                    clock_t.sleepMs(0) #std::this_thread::yield();
+                self.m_paused.on(False)
                 #("Pause stopped..");
 
     def startDispatchThread(self):
-        if (self.m_dispatchThreadStarted):
+        if (self.m_dispatchThreadStarted.on()):
             return
         #("Starting dispatch thread..");
         self.m_dispatchThread = threading.Thread(target=self.dispatchThreadFunction) #std::thread(&Package::dispatchThreadFunction, this);
-        self.m_dispatchThreadStarted = True
+        self.m_dispatchThread.start()
+        self.m_dispatchThreadStarted.on(True)
 
     def quitDispatchThread(self):
-        if (not self.m_dispatchThreadStarted):
+        if (not self.m_dispatchThreadStarted.on()):
             return
         #("Quitting dispatch thread..");
 
-        if (self.m_pause):
+        if (self.m_pause.on()):
             #("Dispatch thread paused, waiting..");
-            while (self.m_pause):
+            while (self.m_pause.on()):
                 Timer.sleep(0) #c std::this_thread::yield();
 
-        self.m_quit = True
+        self.m_quit.on(True)
         if (self.m_dispatchThread.is_alive()):
             #("Waiting for dispatch thread join..");
             self.m_dispatchThread.join(10)
             assert not self.m_dispatchThread.is_alive(), "Problem with stopping dispatchThread"
             #("After dispatch thread join..");
-        self.m_dispatchThreadStarted = False
+        self.m_dispatchThreadStarted.on(False)
 
     def pauseDispatchThread(self):
         if (self.m_package != None):
             self.m_package.pauseDispatchThread()
             return
-        if (not self.m_dispatchThreadStarted):
+        if (not self.m_dispatchThreadStarted.on()):
             return
         self.m_pauseCount.inc() # self++
         #("Trying to pause dispatch thread ({})..", m_pauseCount.load());
         if (self.m_pauseCount > 1):
             return
-        self.m_pause = True
+        self.m_pause.on(True)
         #("Pausing dispatch thread ({})..", m_pauseCount.load());
-        while (not self.m_paused):
-            Timer.sleep(0) # std::this_thread::yield();
+        while (not self.m_paused.on()):
+            Timer.sleepMs(0) # std::this_thread::yield();
 
 
     def resumeDispatchThread(self):
         if (self.m_package != None):
             self.m_package.resumeDispatchThread()
             return
-        if (not self.m_dispatchThreadStarted):
+        if (not self.m_dispatchThreadStarted.on()):
             return
         
         self.m_pauseCount.dec(); ###--;
@@ -412,7 +434,7 @@ class ModuleImplGraph(ModuleImplElement):
         if (self.m_pauseCount > 0):
             return
         #("Resuming dispatch thread ({})..", m_pauseCount.load());
-        self.m_pause = False
+        self.m_pause.on(False)
 
     #def open(std::string const &a_filename)
     def open(self, filename):

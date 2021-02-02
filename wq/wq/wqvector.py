@@ -148,6 +148,7 @@ class WqVector:
         
     def first(self):
         result = list(self._list.keys())[0] if len(self._list.keys())>0 else None
+        result = self._list[result] if result != None else None
         return result   
 
     #return easy iterable list of values without empty slots as default

@@ -22,10 +22,7 @@ class ModuleImplElement(ModuleImplBase):
     def __init__(self, **kwargs):
         #self._name = None (s)
         super(ModuleImplElement, self).__init__(**kwargs)
-        self._maxInputs = consts.MAX_INPUTS
-        self._maxOutputs = consts.MAX_OUTPUTS
-        self._minInputs = 1
-        self._minOutputs = 1
+
         self.m_defaultNewInputFlags = IoNodeFlags()
         self.m_defaultNewOutputFlags = IoNodeFlags()
         self._moduleType = kwargs['moduleType'] if 'moduleType' in kwargs else ModuleType.ATOMIC
@@ -124,24 +121,12 @@ class ModuleImplElement(ModuleImplBase):
         return (self.addInputS(valueType, name, flags, ioType)>0)
 
     def _tsizeFromValueType(self, valueType:ValueType) -> int:
-        tsize = 32
-        if valueType == ValueType.BOOL:
-            tsize = 1
-        elif valueType == ValueType.BYTE:
-            tsize = 8
-        elif valueType == ValueType.WORD64:
-            tsize = 64
-        return tsize
+        return valueType.toSize()
+
 
     def _valueTypeFromSize(size:int):
-        result = ValueType.BOOL
-        if size > 63:
-            result = ValueType.WORD64
-        elif size > 8:
-            result = ValueType.INT
-        elif size > 1:
-            result = ValueType.BYTE
-        return result
+        return ValueType.fromSize(size)
+
             
 
 
@@ -177,7 +162,7 @@ class ModuleImplElement(ModuleImplBase):
         #m_inputs.emplace_back(input); not needed - should be on list
 
         #handleEvent(Event{ EventType::eInputAdded, EventEmpty{} });
-        self.events().inputAdded.emit(EventProps({'inputId':input.id()}))
+        #self.events().inputAdded.emit(EventProps({'inputId':input.id()}))
 
         #return index;
         return input.id()
@@ -254,7 +239,7 @@ class ModuleImplElement(ModuleImplBase):
         
         # handleEvent(Event{ EventType::eOutputAdded, EventEmpty{} });
         #self.outputAdded.emit(EventProps({'outputId':output.id()}))
-        self.events().outputAdded.emit(EventProps({'outputId':output.id()}))
+        #self.events().outputAdded.emit(EventProps({'outputId':output.id()}))
 
         #return index;
         return output.id()  
@@ -324,41 +309,7 @@ class ModuleImplElement(ModuleImplBase):
         #return self.m_package.connect(sourceId, outputId, outputFlags, self.m_id, inputId, inputFlags)
         return self.m_package.connect(self, fr, to)
 
-    def minInputs(self):
-        return self._minInputs
-    
-    def maxInputs(self):
-        return self._maxInputs
-
-
-    
-    def minOutputs(self):
-        return self._minOutputs
-        
-    def maxOutputs(self):
-        return self._maxOutputs
-
-
-
-    def setMinInputs(self, min):
-        if (min > self._maxInputs):
-            return
-        self._minInputs = min
-    
-    def setMaxInputs(self, max):
-        if (max < self._minInputs):
-            return
-        self._maxInputs = max
-
-    def setMinOutputs(self, min):
-        if (min > self._maxOutputs):
-            return
-        self._minOutputs = min
-
-    def setMaxOutputs(self, max):
-        if (max < self._minOutputs):
-            return
-        self._maxOutputs = max 
+ 
 
     def init(self,**kwargs):    
         pass
@@ -368,4 +319,6 @@ class ModuleImplElement(ModuleImplBase):
 
     def calc(self,**kwargs):    
         pass
+
+
 

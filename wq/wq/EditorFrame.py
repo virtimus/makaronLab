@@ -109,10 +109,10 @@ class EditorFrame(MainWindow):
 
         #    self._libModules['wqc.'+k] = { "moduleDef":moduleList[k]
 
-        c6502=wqcLib.createModule('c6502')
-        res = c6502.init({})
+        #c6502=wqcLib.createModule('c6502')
+        #res = c6502.init({})
         #print(res)
-        resp = c6502.open()
+        #resp = c6502.open()
         #'''
         rootModule = Module(self,'rootModule',
             moduleType = ModuleType.GRAPH
@@ -123,9 +123,25 @@ class EditorFrame(MainWindow):
         #andModule = Module(rootModule,'andModule',
         #    impl = 'local/AND'
         #    )
-        andModule = rootModule.newModule('andModule',
+        andModule1 = rootModule.newModule('andModule1',
             impl = 'local/AND'
             )
+
+        andModule2 = rootModule.newModule('andModule2',
+            impl = 'local/AND'
+            )
+
+        notModule = rootModule.newModule('notModule',
+            impl = 'local/NOT'
+            )
+
+        norModule1 = rootModule.newModule('norModule1',
+            impl = 'local/NOR'
+            ) 
+
+        norModule2 = rootModule.newModule('norModule2',
+            impl = 'local/NOR'
+            )           
 
 
         #'''
@@ -294,13 +310,15 @@ class EditorFrame(MainWindow):
     def showEvent(self, event):
         if (EditorFrame._firstTime):
             EditorFrame._firstTime = False
+            tab = self._tabPanel
+            '''
             self.newModuleView()
             #//  openPackage();
-            tab = self._tabPanel
+            
             index = tab.currentIndex()
             moduleViewImpl = tab.impl().widget(index)
             moduleViewImpl.centerOn(0.0, 0.0)
-
+            '''
             self.openModuleView(self._rootModule)
             index = tab.currentIndex()
             moduleViewImpl = tab.impl().widget(index)

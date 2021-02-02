@@ -15,6 +15,7 @@ from ...ModuleFactory import ModuleType
 from .IoNodeView import IoNodeView
 
 from ..sim.valuetype import ValueType
+from ..sim.ionodeflags import IoNodeFlags
 
 from . import stypes
 
@@ -244,7 +245,7 @@ void Node::advance(int a_phase)
                 NAME = out.name()
                 #addSocket(IOSocketsType::eOutputs, static_cast<uint8_t>(i), NAME, OUTPUTS[i].type,OUTPUTS[i].sItemType);
                 self.addSocket(direction.RIGHT,out.id(), NAME, out.valueType(), out.ioType())
-            self._element.setPosition(self.x(), self.y())
+            #self._element.setPosition(self.x(), self.y())
             self._element.iconify(self._mode == WqiShowMode.ICONIFIED)
             self.setName(self._element.name())
             self.updateOutputs()
@@ -805,12 +806,28 @@ auto max_element(Container &a_container, Comparator a_comparator)
 
 
 
-    def addSocket(self, direction, vid, name, valueType:ValueType, mType:ModuleType):
+    def addSocket(self, dir, vid, name, valueType:ValueType, mType:ModuleType):
         ioNode = self._element.nodes().byId(vid)
         #socket = new SocketItem{ this, ioType, a_type };
         #socket->setElementId(m_type == Type::eElement ? m_element->id() : 0);
         #socket->setSocketId(a_id);
-        ioNodeView = IoNodeView(self, ioNode, direction)
+        if ioNode.valueType() == None:
+            if ioNode.signals().size()>0:
+                sig = ioNode.signals().first()
+                valueType = ValueType.fromSize(sig.size())
+                ioNode.setProp('valueType',valueType)
+
+        if ioNode.flags() == None:
+            tflags = IoNodeFlags()
+            '''
+            if (dir == direction.LEFT):
+                tflags = ioNode.module().impl().defaultNewInputFlags()
+            else:
+                tflags = ioNode.module().impl().defaultNewOutputFlags()
+            '''    
+            ioNode.setProp('ioNodeFlags',tflags)
+
+        ioNodeView = IoNodeView(self, ioNode, dir)
         #ioNodeView.setName(a_name);
         ioNodeView.setToolTip(name)
         #ioNodeView.setValueType(valueType);

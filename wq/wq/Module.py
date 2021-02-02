@@ -48,12 +48,18 @@ class Node(Object):
             self.raiseExc(f'Name of Node required')             
                    
         super(Node, self).__init__(*args, **kwargs)
-        self._id = len(self.parent().nodes())
+        self._id = len(self.parent().graphModule().nodes())
+        self._no = len(self.parent().nodes())
         #self.parent()._nodes[self.id()]=self
+        self.parent().graphModule().addNode(self)
         self.parent().addNode(self)
+
             
     def id(self):
         return self._id
+
+    def no(self):
+        return self._no
 
     def module(self):
         return self._parent
@@ -92,8 +98,11 @@ class Node(Object):
     def name(self):
         return self._name
 
-    def driveSignal(self):
+    def driveSignal(self) -> 'Signal':
         return self._driveSignal
+
+    def signals(self):
+        return self._signals
 
     def setDriveSignal(self, signal:'Signal'):
         if self._driveSignal == None:
@@ -107,6 +116,8 @@ class Node(Object):
             else: 
                 self.raiseExc(f'[signal.canDrive]: {msg}')
 
+    def isSignalOn(self):
+        return self.driveSignal().isOn() if self.driveSignal() != None else False
 
     def addSignal(self, signal:'Signal'):
         if self._driveSignal == None:
@@ -191,6 +202,8 @@ class Module(Object):
             self.raiseExc('[Module] Parent has to be descendant of wq.Module or wq.MainWindow')
         if d1 and not ModuleType.GRAPH == parent.mType():
             self.raiseExc('[Module] module can be descendant only of graph module')
+        self._graphModule = self if d2 else parent
+        
 
         if args[1] == None:
             self.raiseExc('[Module] Name has to be given')
@@ -205,6 +218,8 @@ class Module(Object):
             self.raiseExc(f'[Module] moduleType cannot be given for module loaded from lib {self._name}')
         elif not self._isImplStr  and self._moduleType == None:
             self.raiseExc(f'[Module] ''moduleType'' required {self._name}')
+
+
         self._modules = WqVector()
         self._modules.append(0,self)
         self._nodes = WqVector()
@@ -223,6 +238,8 @@ class Module(Object):
             self.raiseExc(f'No impl loaded for module {self.name()}')
         if self.impl().moduleType() == None:
             self.raiseExc(f'Impl for module {self.name()} has not set moduleType')
+        self._moduleType = self.impl().moduleType()
+        
         if d1:
             self._id = len(self.parent().modules())
             self.parent().addModule(self)
@@ -235,6 +252,9 @@ class Module(Object):
 
     def desc(self):
         return self._desc
+
+    def graphModule(self):
+        return self._graphModule
     
     def setDesc(self, dsc:str):
         self._desc = dsc
@@ -258,11 +278,13 @@ class Module(Object):
         return self._moduleType #impl().moduleType()
 
     def sigByName(self, sigName:str):
-        result = self._signalsByName[sigName] if sigName in self._signalsByName else None
+        result = self._signals.filterBy('name',sigName)
+        result = result.first() if result.size()>0 else None
         return result
 
     def nodByName(self, nodName:str):
-        result = self._nodesByName[nodName] if nodName in self._nodesByName else None
+        result = self._nodes.filterBy('name',nodName)
+        result = result.first() if result.size()>0 else None
         return result
 
     def modules(self):#submodules
@@ -274,7 +296,7 @@ class Module(Object):
     def addSignal(self, signal:'Signal'):
         if signal.id() in self._signals:
             self.raiseExc(f'Signal with id {signal.id()} already in list')
-        if signal.name() in self._signals.by('name'):
+        if self.mType() != ModuleType.GRAPH and signal.name() in self._signals.by('name'):
             self.raiseExc(f'Signal with name {signal.name()} already in list')
         #self._signals[signal.id()]=signal
         #self._signalsByName[signal.name()]=signal
@@ -283,7 +305,7 @@ class Module(Object):
     def addNode(self, node:'Node'):
         if node.id() in self._nodes:
             self.raiseExc(f'Node with id {node.id()} already in list')
-        if node.name() in self._nodes.by('name'):
+        if self.mType() != ModuleType.GRAPH and node.name() in self._nodes.by('name'):
             self.raiseExc(f'Node with name {node.name()} already in list')
         #self._nodes[node.id()]=node
         #self._nodesByName[node.name()]=node
@@ -330,10 +352,21 @@ class Module(Object):
 
     def newModule(self, moduleName, **kwargs):
         result = Module(self,moduleName,**kwargs)
+        self.impl().add(result)
         return result             
         
     def isRoot(self):
         return isinstance(self.parent(), MainWindow) #alt id == 0
+
+    def calculate(self):
+        calc = getattr(self.impl(),'calc')
+        if callable(calc):
+            calc()
+
+    def updateTiming(self, delta):
+        uTime = getattr(self.impl(),'updateTiming')
+        if callable(uTime):
+            uTime(delta)        
 
 
 

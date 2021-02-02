@@ -6,7 +6,7 @@ from typing import Callable
 
 from .nodeiotype import NodeIoType
 from .moduletype import ModuleType
-from . import direction
+from . import direction, consts
 
 
 log = logging.getLogger(__name__)
@@ -107,10 +107,17 @@ class ModuleImplBase(metaclass=ABCMeta):
         self._iconifyingHidesCentralWidget = False 
         self._self = None
         self._moduleType = None 
-        self._events = ModuleImplBase.Events()       
+        self._events = ModuleImplBase.Events()  
+        self._maxInputs = consts.MAX_INPUTS
+        self._maxOutputs = consts.MAX_OUTPUTS
+        self._minInputs = 1
+        self._minOutputs = 1     
         pass
 
     def s(self):
+        return self._self
+
+    def mdl(self):
         return self._self
 
     def events(self):
@@ -121,6 +128,10 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     def name(self):
         return self._self.name()
+
+    def setName(self, name):
+        if self._self.name() != name:
+            self._self.setName(name)
 
     def description(self):
         return self.desc()
@@ -137,6 +148,7 @@ class ModuleImplBase(metaclass=ABCMeta):
     def moduleType(self):
         return self._moduleType
 
+
     @abstractmethod
     def init(self,**kwargs):    
         pass
@@ -150,7 +162,13 @@ class ModuleImplBase(metaclass=ABCMeta):
         pass
 
     def newIO(self, **kwargs):
-        return self.s().newIO(**kwargs)
+        result=self.s().newIO(**kwargs)
+        dir = result.direction()
+        if dir == direction.LEFT:
+            self.events().inputAdded.emit(EventProps({'inputId':result.id()}))
+        else:
+            self.events().outputAdded.emit(EventProps({'outputId':result.id()}))
+        return result
 
     def removeIO(self, id):
         return self.s().removeIO(id)    
@@ -181,7 +199,47 @@ class ModuleImplBase(metaclass=ABCMeta):
     def outputs(self):
         return self.s().nodes().filterBy('direction',direction.RIGHT)
 
+    def minInputs(self):
+        return self._minInputs
     
+    def maxInputs(self):
+        return self._maxInputs
+
+
+    
+    def minOutputs(self):
+        return self._minOutputs
+        
+    def maxOutputs(self):
+        return self._maxOutputs
+
+
+
+    def setMinInputs(self, min):
+        if (min > self._maxInputs):
+            return
+        self._minInputs = min
+    
+    def setMaxInputs(self, max):
+        if (max < self._minInputs):
+            return
+        self._maxInputs = max
+
+    def setMinOutputs(self, min):
+        if (min > self._maxOutputs):
+            return
+        self._minOutputs = min
+
+    def setMaxOutputs(self, max):
+        if (max < self._minOutputs):
+            return
+        self._maxOutputs = max   
+
+    def reset(self):
+        pass 
+
+    def updateTiming(self, delta):
+        pass 
 
 
 
@@ -241,7 +299,85 @@ class AndGateModule(ModuleImplBaseLocal):
         }
 
     def calc(s, **kwargs):
-        s.sig('Y').setValue(s.sig('A').value() and s.sig('B').value())    
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        v3 = v1 and v2
+        sY = s.sig('Y')
+        sY.setValue( v3 )
+        #print(f'sY={sY.value()}')   
+        # 
+
+
+class NorGateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from NorGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'NOR',
+            'info':'NOR logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        v3 = True if not (v1 or v2) else False
+        sY = s.sig('Y')
+        sY.setValue( v3 )
+        #print(f'sY={sY.value()}')   
+        # 
+        
+class NotGateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from NotGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'NOT',
+            'info':'NOT logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        return {
+            'Y':y,
+            'A':a
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v3 = not v1 
+        sY = s.sig('Y')
+        sY.setValue( v3 )
+        #print(f'sY={sY.value()}')   
 
 class Test2Module(ModuleImplBase):
     def echo(self):
@@ -252,6 +388,8 @@ class LocalModuleLibrary(ModuleLibraryBase):
 
     _modules = {
         "AND":AndGateModule,
+        "NOT":NotGateModule,
+        "NOR":NorGateModule,
         "test2":Test2Module
     }
 

@@ -63,9 +63,12 @@ class WqDriver(WqDriverBase):
                 result = ModuleViewImpl(None)
                 result._self = self.s()
                 self.pimpl()._scene.addItem(result)
+                el = self.s().module().impl()
+                result.setElement(el)
             else:
                 result = ModuleViewImpl(self.pimpl()) # next levels
                 result._self = self.s()
+                
         result._self = self.s()
         return result; 
 
