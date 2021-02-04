@@ -69,8 +69,8 @@ class PackageViewImpl(ModuleViewImpl):
             name='Icon',
             widget = iconEdit        
         )
-        self.showIOProperties(direction.LEFT)
-        self.showIOProperties(direction.RIGHT)
+        self.showIOProperties(direction.LEFT, self.m_inputsNode)
+        self.showIOProperties(direction.RIGHT, self.m_outputsNode)
 
 
         '''

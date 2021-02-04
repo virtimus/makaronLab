@@ -62,9 +62,12 @@ class ModuleFactory:
 
     @classmethod
     def createModule(cls, modulePath:str):
-        impla = modulePath.split('/')
+        impla = modulePath.split(':')
         lib = ModuleFactory.loadLibrary(impla[0])
+        assert lib != None, f'Problem with loading module library type:{impla[0]}'
         result = lib.createModule(impla[1])
+        assert result != None, f'Problem with loading module:{impla[1]} from library type:{impla[0]}'
+        result._implStr = modulePath
         return result
 
 
@@ -111,8 +114,12 @@ class ModuleImplBase(metaclass=ABCMeta):
         self._maxInputs = consts.MAX_INPUTS
         self._maxOutputs = consts.MAX_OUTPUTS
         self._minInputs = 1
-        self._minOutputs = 1     
+        self._minOutputs = 1
+        self._implStr = None #path in lib (if aplies)     
         pass
+
+    def acceptVisitor(self, v):
+        v.visitModuleImpl(self)
 
     def s(self):
         return self._self
@@ -377,6 +384,52 @@ class NotGateModule(ModuleImplBaseLocal):
         v3 = not v1 
         sY = s.sig('Y')
         sY.setValue( v3 )
+        #print(f'sY={sY.value()}') 
+        # 
+        # 
+
+class TestGModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from TestGraphModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'TESTG',
+            'info':'TESTG Graph module'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )  
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        ) 
+        c = self.newIO(
+            name='C',
+            ioType=IoType.INPUT
+        )         
+
+
+        return {
+            'Y':y,
+            'A':a,
+            'B':b,
+            'C':c
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v3 = not v1 
+        sY = s.sig('Y')
+        sY.setValue( v3 )
         #print(f'sY={sY.value()}')   
 
 class Test2Module(ModuleImplBase):
@@ -390,12 +443,16 @@ class LocalModuleLibrary(ModuleLibraryBase):
         "AND":AndGateModule,
         "NOT":NotGateModule,
         "NOR":NorGateModule,
+        "TESTG":TestGModule,
         "test2":Test2Module
     }
 
     @classmethod
     def createModule(cls, moduleName: str, **kwargs) -> 'ModuleImplBase':
         """ Runs the given command using subprocess """
+
+        #strip slash
+        moduleName = moduleName[1:] if moduleName != None and moduleName.startswith('/') else moduleName
 
         if moduleName not in cls._modules:
             #log.warn('Module %s does not exist in the library', name)
@@ -407,10 +464,21 @@ class LocalModuleLibrary(ModuleLibraryBase):
         return moduleImpl
 
 
+@ModuleFactory.registerLibrary('file')
+class FileModuleLibrary(ModuleLibraryBase):
+
+
+    @classmethod
+    def createModule(cls, moduleName: str, **kwargs) -> 'ModuleImplBase':
+
+        assert False, f'Problem loading module:{moduleName} - currently no implementation of module library type ''file'''
+
+
 
 if __name__ == '__main__':
 
     # Creates a local library
+    #https://www.geeksforgeeks.org/logic-gates-in-python/
     local = ModuleFactory.loadLibrary('local')
     # ... then some modules ...
     test1 = local.createModule('test1')

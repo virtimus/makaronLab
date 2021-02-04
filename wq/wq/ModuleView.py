@@ -23,6 +23,7 @@ class ModuleView(Object):
         args = self._loadInitArgs(args)
         d1 = isinstance(args[0],ModuleView)
         d2 = isinstance(args[0],MainWindow)
+        self._isRoot = d2
         #d3 = args[0] != None
         if not (d1 or d2):
             self.raiseExc('[ModuleView] Parent has to be descendant of wq.ModuleView or wq.MainWindow')
@@ -36,8 +37,8 @@ class ModuleView(Object):
         if (not d3):
             self.raiseExc('[ModuleView] module given has to be descendant or class of Module')
         #args = (args[0], None) 
-        self._moduleViews = {0:self}
-        self._id = 0
+        #self._moduleViews = {0:self}
+        #self._id = 0
         self._moduleView = self.wqD().doModuleView_Init()
         args = (args[0],self._moduleView) #impl
         kwargs.pop('module', None)      
@@ -58,21 +59,29 @@ class ModuleView(Object):
 
         self.wqD().doModuleView_AfterInit()
         if d1: #register in parent
-            self._id = len(self.parent().moduleViews())
+            self.module().graphModule().addModuleView(self)
+            #self._id = len(self.parent().moduleViews())
             #self.parent().addModuleView(self)
-            self.parent()._moduleViews[self._id]=self
+            #self.parent()._moduleViews[self._id]=self
 
-        #recurse into submodules
-        self._moduleViews = {}
-        if len(self._module.modules())>1: #0 is self/root
+        #recurse into submodules - moved to module.addModuleView
+        #'''
+        #self._moduleViews = {}
+        #if len(self._module.modules())>1: #0 is self/root
+        if self._isRoot:
             for tmoduleId in self._module.modules():                
                 if tmoduleId>0: #not self
                     tmodule = self._module.modById(tmoduleId)
                     if (not tmodule.moduleType() in [ModuleType.INPUTS, ModuleType.OUTPUTS]): # inputs/outputs don't need recursive init - view created
                         tModuleView = ModuleView(self,module=tmodule)
-            
+        #''
+
+    def acceptVisitor(self, v):
+        v.visitModuleView(self)  
+
     def id(self):
-        return self._id
+        #return self._id
+        return self.module().id()
 
     def name(self):
         return self.module().name();
@@ -102,7 +111,8 @@ class ModuleView(Object):
         return self._module
 
     def isRoot(self):
-        return self._module.isRoot()
+        #return self._module.isRoot()
+        return self._isRoot
 
     def open(self):
         result = self.wqD().impl().open()

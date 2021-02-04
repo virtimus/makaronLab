@@ -10,6 +10,8 @@ from .nodeiotype import NodeIoType
 from .wqvector import WqVector
 from .moduletype import ModuleType
 
+from .EventSignal import EventProps
+
 """
 CNode is a junction pint between different signals with same size
 here should be decided which signal drives in
@@ -54,7 +56,9 @@ class Node(Object):
         self.parent().graphModule().addNode(self)
         self.parent().addNode(self)
 
-            
+    def acceptVisitor(self, v):
+        v.visitNode(self)
+
     def id(self):
         return self._id
 
@@ -150,6 +154,9 @@ class IoNode(Node):
         if self.ioType() == NodeIoType.INPUT:
             self._driveSignal = None
 
+    def acceptVisitor(self, v):
+        v.visitIoNode(self)
+
     def name(self):
         return self._name
 
@@ -203,6 +210,7 @@ class Module(Object):
         if d1 and not ModuleType.GRAPH == parent.mType():
             self.raiseExc('[Module] module can be descendant only of graph module')
         self._graphModule = self if d2 else parent
+        self._rootModule = self if d2 else parent.rootModule()
         
 
         if args[1] == None:
@@ -225,6 +233,8 @@ class Module(Object):
         self._nodes = WqVector()
         #self._nodesByName = {} handled by WqVector
         self._signals = WqVector()
+        self._moduleViews = WqVector()
+        self._info = None
         self._desc = None
         #self._signalsByName = {}
         self._id = 0
@@ -244,17 +254,29 @@ class Module(Object):
             self._id = len(self.parent().modules())
             self.parent().addModule(self)
 
+    def acceptVisitor(self, visitor):
+        visitor.visitModule(self)
+
+    def moduleViews(self):
+        return self._moduleViews
+
     def id(self):
         return self._id
 
     def name(self):
         return self._name
 
+    def info(self):
+        return self._info
+
     def desc(self):
         return self._desc
 
     def graphModule(self):
         return self._graphModule
+
+    def rootModule(self):
+        return self._rootModule
     
     def setDesc(self, dsc:str):
         self._desc = dsc
@@ -316,6 +338,12 @@ class Module(Object):
         if tid in self._modules:
             self.raiseExc(f'Module with id {tid} already in collection of submodules')
         self._modules.append(tid, module)
+
+    def addModuleView(self,mv:'ModuleView'):
+        tid = mv.id()
+        if tid in self._moduleViews:
+            self.raiseExc(f'ModuleView with id {tid} already in collection of views')
+        self._moduleViews.append(tid, mv)
     
     def newSignal(self, **kwargs):
         from .Signal import Signal

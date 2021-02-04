@@ -86,11 +86,11 @@ class EditorFrame(MainWindow):
         layout.impl().setSpacing(2)
         self._tabPanel = TabPanel(pnl)
         layout.addElement(self._tabPanel)
-        tab = Tab(self._tabPanel)
-        tab2 = Tab(self._tabPanel)
-        tab3= Tab(self._tabPanel)
-        tab4 = Tab(self._tabPanel)
-        tab5 = Tab(self._tabPanel)
+        #tab = Tab(self._tabPanel)
+        #tab2 = Tab(self._tabPanel)
+        #tab3= Tab(self._tabPanel)
+        #tab4 = Tab(self._tabPanel)
+        #tab5 = Tab(self._tabPanel)
         hlayout=Layout(pnl, orient=orientation.HORIZONTAL)
         hlayout.impl().setContentsMargins(6, 6, 6, 6)
         hlayout.impl().setSpacing(2)
@@ -124,26 +124,32 @@ class EditorFrame(MainWindow):
         #    impl = 'local/AND'
         #    )
         andModule1 = rootModule.newModule('andModule1',
-            impl = 'local/AND'
+            impl = 'local:/AND'
             )
 
         andModule2 = rootModule.newModule('andModule2',
-            impl = 'local/AND'
+            impl = 'local:/AND'
             )
 
         notModule = rootModule.newModule('notModule',
-            impl = 'local/NOT'
+            impl = 'local:/NOT'
             )
 
         norModule1 = rootModule.newModule('norModule1',
-            impl = 'local/NOR'
+            impl = 'local:/NOR'
             ) 
 
         norModule2 = rootModule.newModule('norModule2',
-            impl = 'local/NOR'
-            )           
+            impl = 'local:/NOR'
+            )  
 
+        graphModule1 = rootModule.newModule('graphModule1',
+            #impl = 'file:/tmp/test'
+            moduleType = ModuleType.GRAPH
+            )                
 
+        #ff = graphModule1.name()
+        #self._nestedModule = graphModule1
         #'''
         '''
         controlModule = Module(rootModule,'controlModule')
@@ -226,6 +232,11 @@ class EditorFrame(MainWindow):
         helloItem = fileMenu.addAction("&Hello...\tCtrl-H", 
             helpStr="Help string shown in status bar for this menu item",
             onClick=self.OnHello)
+
+        saveItem = fileMenu.addAction("&Save...\tCtrl-S", 
+            helpStr="Help string shown in status bar for this menu item",
+            onClick=self.OnSave)
+
         fileMenu.addSeparator()
         # When using a stock ID we don't need to specify the menu item's
         # label
@@ -261,7 +272,26 @@ class EditorFrame(MainWindow):
 
     def OnHello(self, event=None):
         """Say hello to the user."""
-        MessageBox("Hello again from wxPython")
+        #MessageBox("Hello again from wxPython")
+
+        import json
+
+        print('Hellop')
+        s = json.dumps(self._rootModule.__dict__)
+
+        print(s)
+
+    def OnSave(self, event=None):
+        from .visitors.json import Visitor as JsonVisitor
+        v = JsonVisitor()
+        self._rootModule.acceptVisitor(v)
+
+        print(v._jsD)
+
+        from . import yaml
+
+        with open('/tmp/save.yaml', 'w+') as handle:
+            yaml.dump(v._jsD, handle,default_flow_style=False)
 
 
     def OnAbout(self, event=None):
@@ -323,6 +353,27 @@ class EditorFrame(MainWindow):
             index = tab.currentIndex()
             moduleViewImpl = tab.impl().widget(index)
             moduleViewImpl.centerOn(0.0, 0.0)
+
+            from .visitors.json import Visitor as JsonVisitor
+            v = JsonVisitor()
+            self._rootModule.acceptVisitor(v)
+
+            print(v._jsD)
+
+            from . import yaml
+
+            with open('/tmp/test.yaml', 'w+') as handle:
+                yaml.dump(v._jsD, handle,default_flow_style=False)
+
+            '''
+            self._nestedModule._nestedView = self._nestedModule._view 
+            self._nestedModule._view = None
+            #!TMP!
+            self.openModuleView(self._nestedModule)
+            index = tab.currentIndex()
+            moduleViewImpl = tab.impl().widget(index)
+            moduleViewImpl.centerOn(0.0, 0.0)
+            '''
 
 
         #super(EditorFrame, self).showEvent(event)

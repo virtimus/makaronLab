@@ -29,13 +29,13 @@ class ModuleImplElement(ModuleImplBase):
         
         self.m_package = None #initialisation on driver level
         self.m_node = None
-        self.m_id = None
+        #self.m_id = None
         #self.m_name = None self.s()name
         pass
 
     #id() const noexcept { return m_id; }
-    def id(self):
-        return self.m_id
+    #def id(self):
+    #    return self.m_id
 
     #bool isRoot() { return m_package == nullptr; }
     def isRoot(self):

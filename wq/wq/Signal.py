@@ -16,14 +16,14 @@ class Signal(Object):
             self.raiseExc(f'Name of Signal required')   
         self._info = kwargs['info'] if 'info' in kwargs else None
         self._desc = kwargs['desc'] if 'desc' in kwargs else None
-        self._driveNode = None
-        if 'driveNode' in kwargs:
-            self.addNode(kwargs['driveNode'])       
-        self._nodes = WqVector(Node) 
-        if self._driveNode != None and self._driveNode.size() != None:
-            self._size = self._driveNode.size()
-        else: 
-            self._size = kwargs['size'] if 'size' in kwargs else None
+#        self._driveNode = None
+#        if 'driveNode' in kwargs:
+#            self.addNode(kwargs['driveNode'])       
+#        self._nodes = WqVector(Node) 
+#        if self._driveNode != None and self._driveNode.size() != None:
+#            self._size = self._driveNode.size()
+#        else: 
+        self._size = kwargs['size'] if 'size' in kwargs else None
         if self._size == None:
             self.raiseExc('Size for signal not specified')
         self._value = False if self._size == 1 else 0
@@ -33,6 +33,9 @@ class Signal(Object):
         #self.parent()._signals[self.id()]=self
         self.parent().graphModule().addSignal(self)
         self.parent().addSignal(self)
+
+    def acceptVisitor(self, v):
+        v.visitSignal(self)
 
     def id(self):
         return self._id
@@ -70,10 +73,12 @@ class Signal(Object):
             self._value = False
         else:
             self._value = 0
-        if self._value != prevValue and self._driveNode != None: #delta propagation ?
-            self._driveNode.resetValue()
+#        if self._value != prevValue and self._driveNode != None: #delta propagation ?
+#            self._driveNode.resetValue()
 
-
+##    def driveNode(self):
+##        return self._driveNode
+'''
     def setDriveNode(self, node:Node):
         if self._driveNode == None:
             self._driveNode = node
@@ -86,7 +91,7 @@ class Signal(Object):
             else: 
                 self.raiseExc(f'[node.canDrive]: {msg}')
 
-    def nodes():
+    def nodes(self):
         return self._nodes
 
     def addNode(self, node:Node):
@@ -98,3 +103,5 @@ class Signal(Object):
         if self._driveNode.size()!=node.size():
             self.raiseExc('Node size differs')
         self._nodes.append(node.id(),node) 
+
+'''

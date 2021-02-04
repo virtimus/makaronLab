@@ -26,15 +26,21 @@ class WqDriver(WqDriverBase):
             result = ModuleFactory.createModule(impl)
             result._self = self.s()
             self._modImplInit = result.init()
+            if 'info' in self._modImplInit:
+                result._self._info = self._modImplInit['info']
             self._modImplOpen = result.open() 
         elif self.s().isRoot(): #impl for root module (package?)
             result = ModuleImplGraph(moduleType=self.s().moduleType())
             result._self = self.s()
             pass
+        elif self.s().moduleType() == ModuleType.GRAPH:
+            result = ModuleImplGraph(moduleType=self.s().moduleType())
+            result._self = self.s()
+            #result.newIO(name="T",ioType=IoType.INPUT)
         elif self.s().moduleType() in [ModuleType.INPUTS,ModuleType.OUTPUTS]:
             result = ModuleImplIO(moduleType=self.s().moduleType())
             result._self = self.s()    
-            result.m_package = self.s().parent().impl()      
+            result.m_package = self.s().parent().impl()          
         else: #!TODO! impl for non root module (element) or maybe chace if atomic and exception unhandled?
             result = ModuleImplElement(moduleType=self.s().moduleType())
             result._self = self.s()

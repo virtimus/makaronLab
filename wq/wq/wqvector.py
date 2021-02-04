@@ -121,6 +121,12 @@ class WqVector:
         self._updateIndexes(element)
         return result
 
+    def push(self, el):
+        return self.push_back(el)
+
+    def pop(self):
+        return self.remove(self.last())    
+
     def remove(self, element,**kwargs):
         result = None
         indexUpdate = not kwargs['noIndexUpdate'] if 'noIndexUpdate' in kwargs else True
@@ -142,14 +148,20 @@ class WqVector:
 
 
     def last(self):
-        result = list(self._list.keys())[-1] if len(self._list.keys())>0 else None
-        result = self._list[result] if result != None else None
-        return result
+        #//result = list(self._list.keys())[-1] if len(self._list.keys())>0 else None
+        #result = self._list[result] if result != None else None
+        for n in reversed(list(self._list.keys())):
+            if self._list[n] != None:
+                return self._list[n]
+        return None
         
     def first(self):
-        result = list(self._list.keys())[0] if len(self._list.keys())>0 else None
-        result = self._list[result] if result != None else None
-        return result   
+        #result = list(self._list.keys())[0] if len(self._list.keys())>0 else None
+        #result = self._list[result] if result != None else None
+        for n in list(self._list.keys()):
+            if self._list[n] != None:
+                return self._list[n]        
+        return None 
 
     #return easy iterable list of values without empty slots as default
     def values(self):

@@ -587,29 +587,31 @@ void Node::advance(int a_phase)
             widget = descEdit
         )        
 
-    def showIOProperties(self, dr):
+    def showIOProperties(self, dr, modImpl=None):
         INPUTS = dr == direction.LEFT
-        ios = self._element.inputs() if INPUTS else self._element.outputs()
+        tel = self._element if modImpl==None else modImpl._element
+        ioEventTarget = self if modImpl==None else modImpl
+        ios = tel.inputs() if INPUTS else tel.outputs()
         IOS_SIZE = ios.size()
-        MIN_IOS_SIZE = self._element.minInputs() if INPUTS else self._element.minOutputs()
-        MAX_IOS_SIZE = self._element.maxInputs() if INPUTS else self._element.maxOutputs()
+        MIN_IOS_SIZE = tel.minInputs() if INPUTS else tel.minOutputs()
+        MAX_IOS_SIZE = tel.maxInputs() if INPUTS else tel.maxOutputs()
         ADDING_DISABLED = MIN_IOS_SIZE == MAX_IOS_SIZE
 
         pTitle = 'Inputs' if INPUTS else 'Outputs'
         self.propertiesInsertTitle(pTitle)
 
         def countValueChanged(value):
-            SIZE = self._element.inputs().size() if INPUTS else self._element.outputs().size()
+            SIZE = tel.inputs().size() if INPUTS else tel.outputs().size()
             if (SIZE < value):
                 if INPUTS:
-                    self.addInput()
+                    ioEventTarget.addInput()
                 else:
-                    self.addOutput()
+                    ioEventTarget.addOutput()
             else:
                 if INPUTS:
-                    self.removeInput()
+                    ioEventTarget.removeInput()
                 else:
-                    self.removeOutput()
+                    ioEventTarget.removeOutput()
 
         count = qtw.QSpinBox()
         count.setRange(MIN_IOS_SIZE, MAX_IOS_SIZE)
@@ -629,7 +631,7 @@ void Node::advance(int a_phase)
             if (io.flags().canChangeName()):
                 ioName =  qtw.QLineEdit(io.name()) #QString::fromStdString(IO.name) } };
                 def editingFinished(self):
-                    self._element.setIOName(io,ioName.text())
+                    tel.setIOName(io,ioName.text())
                 ioName.editingFinished.connect(editingFinished)
             else:
                 ioName = qtw.QTableWidgetItem(io.name())
