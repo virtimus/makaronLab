@@ -92,7 +92,7 @@ class Node(Object):
     def resetValue(self):
         if self._driveSignal != None:
             self._driveSignal.resetValue()
-    
+
     def desc(self):
         return self._desc
 
@@ -112,13 +112,18 @@ class Node(Object):
         if self._driveSignal == None:
             self._driveSignal = signal
         else:
-            if self._driveSignal.size()!=signal.size():
-                self.raiseExc('Signal size differs')
-            msg = signal.canDrive()
-            if msg == None:
+            if signal == None:
+                tid = self._driveSignal.id()
+                self.signals().removeByLid(tid)
                 self._driveSignal = signal
-            else: 
-                self.raiseExc(f'[signal.canDrive]: {msg}')
+            else:
+                if self._driveSignal.size()!=signal.size():
+                    self.raiseExc('Signal size differs')
+                msg = signal.canDrive()
+                if msg == None:
+                    self._driveSignal = signal
+                else: 
+                    self.raiseExc(f'[signal.canDrive]: {msg}')
 
     def isSignalOn(self):
         return self.driveSignal().isOn() if self.driveSignal() != None else False
@@ -132,6 +137,9 @@ class Node(Object):
         if self._driveSignal.size()!=signal.size():
             self.raiseExc('Signal size differs')            
         self._signals.append(lid,signal)
+
+    def connect(self, targetNodeId, **kwargs):
+        pass
 
 class IoNode(Node):
     def __init__(self, *args, **kwargs): 

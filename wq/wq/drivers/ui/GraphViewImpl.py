@@ -30,6 +30,7 @@ class GraphViewImpl(qtw.QGraphicsView):
         super(GraphViewImpl,self).__init__(scene, parent)
         self._element = None
         self._gridDensity = None
+        
         self._selectedModule = None 
         self._scheduledScalings = None
         self._properties = editorFrame._propertiesTable
@@ -143,6 +144,9 @@ class GraphViewImpl(qtw.QGraphicsView):
 
     def s(self):
         return self._self 
+
+    def mdl(self):
+        return self._self
 
     def module(self):
         return self._self.module() 

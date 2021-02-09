@@ -1,4 +1,4 @@
-from . import consts
+from . import consts, console
 from .drivers.ui import pyqt5 as drvQt
 from .drivers.ui import wxWidgets as drvWx
 from .drivers import loader as wqLoader
@@ -59,15 +59,7 @@ class Object():
         #self._wqImpl = wqImpl
 
     def _initHandleArg(self, name:str, **kwargs):
-        defD = kwargs
-        kwargs = defD['kwargs']
-        trequired = defD['required'] if 'required' in defD else False
-        tdefault = defD['default'] if 'default' in defD else None
-        result = kwargs[name] if name in kwargs else tdefault
-        if result == None and trequired:
-            tclname = self.__class__.__name__
-            self.raiseExc('[_initHandleArg] Required keyword argument {name} missing for {tclname}')
-        return result
+        return console.handleArg(self, name,**kwargs)
 
 
     def _loadParent(self,*args, **kwargs): 

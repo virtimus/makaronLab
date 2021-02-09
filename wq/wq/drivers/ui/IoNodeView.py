@@ -2,6 +2,8 @@ import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
 import PyQt5.QtGui  as qtg
 
+import sip
+
 from ...nodeiotype import NodeIoType
 from ...wqvector import WqVector
 
@@ -120,7 +122,93 @@ class IoNodeView(qtw.QGraphicsItem):
         result = qtc.QRectF( -(IoNodeView.SIZE / 2.), -(IoNodeView.SIZE / 2.), IoNodeView.SIZE,IoNodeView.SIZE )
         return result
 
+
+
+
+
+
     def paint(self, painter, option, widget=None):
+        #Q_UNUSED(a_option);
+        #Q_UNUSED(a_widget);
+        rect = self.boundingRect()
+        startAngle = -90 * 16
+        spanAngle = 180 * 16
+
+        pen = qtg.QPen(colors.C.SOCKETBORDER.qColor())
+        pens = None
+        pen.setWidth(2)
+        brush =  qtg.QBrush()
+        if (self._isHover):
+            brush.setColor(colors.C.SOCKETHOVER.qColor())
+        elif (self._isDrop):
+            brush.setColor(colors.C.SOCKETDROP.qColor())
+        elif (self.isSignalOn()):
+            brush.setColor(self._colorSignalOn)
+        elif (not self.isSignalOn()):
+            brush.setColor(self._colorSignalOff)
+        pens = qtg.QPen(brush.color())
+        #//  else if (m_type == Type::eInput)
+        #//    brush.setColor(config.getColor(Config::Color::eSocketInput));
+        #//  else if (m_type == Type::eOutput)
+        #//    brush.setColor(config.getColor(Config::Color::eSocketOutput));
+        if (self.m_type == NodeIoType.DYNAMIC):
+            brush.setStyle(qtc.Qt.Dense5Pattern)
+        else:
+            brush.setStyle(qtc.Qt.SolidPattern)
+
+        painter.setPen(pen)
+        painter.setBrush(brush)
+        if (self.m_type == NodeIoType.OUTPUT):
+            painter.drawEllipse(rect)
+            #painter.drawArc(rect.adjusted(-4, -4, +4, +4), startAngle, spanAngle)
+            #painter.setPen(brush)
+            if (self._used or self._links.itemCount()>0):
+                painter.setPen(pens)
+            painter.drawArc(rect.adjusted(-2, -2, +2, +2), startAngle, spanAngle)
+        elif (self.m_type == NodeIoType.DYNAMIC):
+            painter.drawEllipse(rect)
+            painter.drawArc(rect.adjusted(-2, -2, +2, +2), startAngle, spanAngle)
+        else:
+            painter.drawEllipse(rect)
+            #painter.drawArc(rect.adjusted(-4, -4, +4, +4), startAngle, spanAngle)
+            #painter.setPen(brush)
+            painter.setPen(pens)
+            painter.drawArc(rect.adjusted(-2, -2, +2, +2), startAngle, spanAngle)
+            if (not self._used):
+                #painter.save()
+                painter.setPen(qtc.Qt.NoPen)
+                painter.setBrush(pen.color())
+                painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
+                #painter.restore()
+            
+        '''
+        if (not self._used and ):
+            painter.save()
+            painter.setPen(qtc.Qt.NoPen)
+            painter.setBrush(pen.color())
+            if (self.m_type == NodeIoType.OUTPUT):
+                painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
+            elif (self.m_type == NodeIoType.DYNAMIC):
+                painter.drawRect(rect.adjusted(4, 4, -4, -4))
+                painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
+            else:
+                painter.drawRect(rect.adjusted(4, 4, -4, -4))
+            painter.restore()
+        '''
+
+        if ( not self._nameHidden):
+            pen.setColor(colors.C.FONTNAME.qColor())
+            painter.setPen(pen)
+            painter.setFont(self._font)
+            metrics = qtg.QFontMetrics(self._font)
+            FONT_HEIGHT = metrics.height()
+            if (direction.LEFT == self.direction()):
+                painter.drawText((rect.width()) - 4, (FONT_HEIGHT / 2) - metrics.strikeOutPos(), self.name())
+            else:
+                painter.drawText(-metrics.width(self.name()) - IoNodeView.SIZE + IoNodeView.SIZE / 3, (FONT_HEIGHT / 2) - metrics.strikeOutPos(), self.name())
+
+
+    def paint1(self, painter, option, widget=None):
         #Q_UNUSED(a_option);
         #Q_UNUSED(a_widget);
         rect = self.boundingRect()
@@ -155,7 +243,7 @@ class IoNodeView(qtw.QGraphicsItem):
         else:
             painter.drawRect(rect)
         
-        if (self._used):
+        if (not self._used):
             painter.save()
             painter.setPen(qtc.Qt.NoPen)
             painter.setBrush(pen.color())
@@ -224,12 +312,16 @@ class IoNodeView(qtw.QGraphicsItem):
         linkItem = pv.dragLink()
         if (linkItem == None):
             return
+        '''
         self._links.push_back(linkItem)
         linkItem.setTo(self)
         if linkItem.fr().node().driveSignal()!=None:
             self.node().setDriveSignal(linkItem.fr().node().driveSignal())
         self._used = True
         self._isDrop = False
+        '''
+        self.finishIoLinkView(linkItem)
+
         pv.acceptDragLink()
 
         #package = pv.package() #!TODO!
@@ -250,6 +342,29 @@ class IoNodeView(qtw.QGraphicsItem):
         if (self.m_type == NodeIoType.INPUT):#input cannot be a start for link
             return
         self.setCursor(qtc.Qt.ClosedHandCursor)
+        
+        
+    def newIoLinkView(self):
+        linkItem = IoLinkView() #new LinkItem;
+        linkItem.setColors(self._colorSignalOff, self._colorSignalOn)
+        linkItem.setValueType(self._valueType)
+        linkItem.setFr(self)
+        #linkItem.setSignal(self._isSignalOn)
+        self._links.push_back(linkItem)
+        self.scene().addItem(linkItem)
+        return linkItem
+
+    def finishIoLinkView(self,linkItem:IoLinkView):
+        if (linkItem == None):
+            return
+        self._links.push_back(linkItem)
+        linkItem.setTo(self)
+        if linkItem.fr().node().driveSignal()!=None:
+            self.node().setDriveSignal(linkItem.fr().node().driveSignal())
+        self._used = True
+        self._isDrop = False
+        pass
+        
 
     def mouseMoveEvent(self, event): #QGraphicsSceneMouseEvent
         #Q_UNUSED(event);
@@ -262,7 +377,9 @@ class IoNodeView(qtw.QGraphicsItem):
         mime = qtc.QMimeData()
         drag = qtg.QDrag(event.widget())
         drag.setMimeData(mime)
+        
 
+        '''
         linkItem = IoLinkView() #new LinkItem;
         linkItem.setColors(self._colorSignalOff, self._colorSignalOn)
         linkItem.setValueType(self._valueType)
@@ -271,6 +388,9 @@ class IoNodeView(qtw.QGraphicsItem):
         
         self.scene().addItem(linkItem)
         self._links.push_back(linkItem)
+        '''
+        linkItem = self.newIoLinkView()
+        
         view = self.scene().views()[0]
         view.setDragLink(linkItem)
 
@@ -282,6 +402,7 @@ class IoNodeView(qtw.QGraphicsItem):
         else:
             self._used = True
         self.setCursor(qtc.Qt.OpenHandCursor)
+        print(f'Used{self._used}')
 
 
     def mouseReleaseEvent(self, event): #QGraphicsSceneMouseEvent
@@ -299,11 +420,17 @@ class IoNodeView(qtw.QGraphicsItem):
     def setName(self, name:str):
         self._ionode.setName(name)
 
+    def module(self):
+        return self._ionode.module()
+
     def moduleId(self):
-        return self._ionode.module().id()
+        self.module().id()
 
     def moduleView(self):
-        return self._ionode.module().view().impl()
+        return self.module().view().impl()
+
+    def graphModule(self):
+        return self.module().graphModule()
 
     def nameWidth(self):
         metrics = qtg.QFontMetrics( self._font )
@@ -325,17 +452,30 @@ class IoNodeView(qtw.QGraphicsItem):
     """
 
     def connect(self, other:IoNodeView): #SocketItem *const
+        link = self.linkBetween(self, other)
+        if (link != None): #already connected
+            return
+        '''
         linkItem = IoLinkView() #/LinkItem;
         linkItem.setColors(self._colorSignalOff, self._colorSignalOn)
         linkItem.setValueType(self._valueType)
         linkItem.setFr(self)
-        linkItem.setTo(other)
         self._links.push_back(linkItem)
+        self.scene().addItem(linkItem)
+        '''
+        linkItem = self.newIoLinkView()
+
         self._used = True
+
+        
+        '''
+        linkItem.setTo(other)
         other._links.push_back(linkItem)
         other._used = True
         other._isDrop = False
-        self.scene().addItem(linkItem)
+        '''
+        other.finishIoLinkView(linkItem)
+        
 
     def linkBetween(self, fr, to): #SocketItem *const
         for l in self._links.values():
@@ -352,6 +492,7 @@ class IoNodeView(qtw.QGraphicsItem):
     def removeLink(self, linkItem): #LinkItem *const
         #it = std::remove(std::begin(m_links), std::end(m_links), a_linkItem);
         self._links.remove(linkItem)
+        self._used = self._links.itemCount()>0
 
     def disconnect(self, other): #SocketItem *const
         link = self.linkBetween(self, other)
@@ -365,11 +506,11 @@ class IoNodeView(qtw.QGraphicsItem):
         #auto const TO_IOFLAGS = a_other->ioFlags();
 
         #auto const packageView = m_node->packageView();
-        moduleView = self.parent().moduleView()
+        graphModuleViewImpl = self.graphModule().impl()
         #auto const package = packageView->package();
 
         #package->disconnect(FROM_ID, FROM_SOCKET_ID, FROM_IOFLAGS, TO_ID, TO_SOCKET_ID, TO_IOFLAGS);
-        moduleView.disconnect(self, other)
+        graphModuleViewImpl.disconnect(self.id(),self.id(), other.id(),other.id())
 
         self.removeLink(link)
         other.removeLink(link)
@@ -381,6 +522,7 @@ class IoNodeView(qtw.QGraphicsItem):
         other._used = False
         other._isHover = False
         #delete link;
+        sip.delete(link)
         link = None
 
 

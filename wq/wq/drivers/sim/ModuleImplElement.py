@@ -91,6 +91,8 @@ class ModuleImplElement(ModuleImplBase):
     def s(self):
         return self._self
 
+    def mdl(self):
+        return self._self
 
 
     def setName(self, name:str):

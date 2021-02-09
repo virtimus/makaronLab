@@ -1,5 +1,5 @@
 
-from . import consts
+from . import consts, console
 from . import orientation
 from . import direction
 from .moduletype import ModuleType
@@ -185,6 +185,35 @@ class EditorFrame(MainWindow):
 
         #signal.addSlavePin(pinRef)
 
+    def newSidePanel(self, **kwargs):
+        tparent = console.handleArg(self,'parent',kwargs = kwargs,
+            required = True,
+            desc = 'Parent object for SidePanel',)
+
+        tside = console.handleArg(self,'side',kwargs = kwargs,
+            required = True,
+            desc = 'Side of Panel(direction enum)')
+
+        tsize = console.handleArg(self,'size',kwargs = kwargs,
+            default = 200,
+            desc = 'Size of panel')
+        
+        twidget = console.handleArg(self,'widget',kwargs = kwargs,
+            required = True,
+            desc = 'Panel widget')
+        if (console.isArgHelp(**kwargs)):
+            return ['newSidePanel',tparent,tside,tsize,twidget]
+
+        tpanel = SidePanel(tparent, 
+            side=tside
+            )
+        tpanel.setOpenEasingCurve(qtc.QEasingCurve.Type.OutElastic);
+        tpanel.setCloseEasingCurve(qtc.QEasingCurve.Type.InElastic);
+        tpanel.setPanelSize(tsize)
+        tpanel.init()
+        tpanel.setWidgetResizable(True)
+        tpanel.setWidget(twidget)
+        return tpanel
 
         
     def createSidePanels(self, parent):
@@ -212,6 +241,13 @@ class EditorFrame(MainWindow):
             self._panelRight = tpanel
         rightPanel()
 
+        self._console = console.newConsoleWidget(self)
+        self._panelBottom = self.newSidePanel(
+            parent = parent.impl(),
+            side = direction.DOWN,
+            widget = self._console
+        )
+
 
     def makeMenuBar(self):
         """
@@ -222,6 +258,7 @@ class EditorFrame(MainWindow):
 
         menuBar = MenuBar(self)
         fileMenu = menuBar.addMenu("&File")
+        editMenu = menuBar.addMenu("&Edit")
         helpMenu = menuBar.addMenu("&Help")
 
 
@@ -236,6 +273,12 @@ class EditorFrame(MainWindow):
         saveItem = fileMenu.addAction("&Save...\tCtrl-S", 
             helpStr="Help string shown in status bar for this menu item",
             onClick=self.OnSave)
+
+        deleteItem = editMenu.addAction("&Delete...\tDel", 
+            helpStr="Help string shown in status bar for this menu item",
+            onClick=self.OnDeleteItem)
+
+        deleteItem.setShortcut('Del')
 
         fileMenu.addSeparator()
         # When using a stock ID we don't need to specify the menu item's
@@ -292,6 +335,14 @@ class EditorFrame(MainWindow):
 
         with open('/tmp/save.yaml', 'w+') as handle:
             yaml.dump(v._jsD, handle,default_flow_style=False)
+
+    def OnDeleteItem(self, event=None):
+        print('DEletteeee')
+        tab = self._tabPanel
+        index = tab.currentIndex()
+        graphViewImpl = tab.impl().widget(index)
+        graphViewImpl.deleteElement()
+        pass
 
 
     def OnAbout(self, event=None):
@@ -351,8 +402,8 @@ class EditorFrame(MainWindow):
             '''
             self.openModuleView(self._rootModule)
             index = tab.currentIndex()
-            moduleViewImpl = tab.impl().widget(index)
-            moduleViewImpl.centerOn(0.0, 0.0)
+            graphViewImpl = tab.impl().widget(index)
+            graphViewImpl.centerOn(0.0, 0.0)
 
             from .visitors.json import Visitor as JsonVisitor
             v = JsonVisitor()

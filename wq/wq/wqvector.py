@@ -18,9 +18,19 @@ class WqVector:
     #count of list elements
     def count(self):
         return len(self._list)
+
+    def itemCount(self):
+        result = 0
+        for i in self._list:
+            result += 1 if  self._list[i] != None else 0
+        return result
+
     
     def size(self):
         return self.count()
+
+    def empty(self):
+        return self.itemCount()==0
     
     def __len__(self):
         return self.count()

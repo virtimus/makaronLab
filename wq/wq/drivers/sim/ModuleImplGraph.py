@@ -220,6 +220,10 @@ class ModuleImplGraph(ModuleImplElement):
                 dv = ds.value()
                 for ss in node.signals().values():
                     ss.setValue(dv)
+            elif ds == None and node.signals().size()>0: #this means disconnected == False
+                dv = False
+                for ss in node.signals().values():
+                    ss.setValue(dv)
 
         for element in self.m_elements.values():
             if (element == None or element == self._self):
@@ -327,14 +331,16 @@ class ModuleImplGraph(ModuleImplElement):
     def disconnect(self, sourceModuleId, sourceId, targetModuleId, targetId):
         self.pauseDispatchThread()
         #Element *const target{ get(a_targetId) };
-        targetIoNode = self.get(targetId)
+        #targetIoNode = self.get(targetId)
+        targetIoNode = self.mdl().graphModule().nodes().byLid(targetId)
         #spaghetti::log::debug("Disconnecting source: {}@{} from target: {}@{}", a_sourceId, static_cast<int>(a_outputId),
         #                a_targetId, static_cast<int>(a_inputId));
         #auto &targetInput = a_inputFlags != 2 ? target->m_inputs[a_inputId] : target->m_outputs[a_inputId];
         #targetInput.id = 0;
         #targetInput.slot = 0;
         #targetInput.inFlags = 0;
-        self.resetIOSocketValue(targetIoNode)
+        #self.resetIOSocketValue(targetIoNode)
+        targetIoNode.setDriveSignal(None)
 
         #auto it = std::remove_if(std::begin(m_connections), std::end(m_connections), [=](Connection &a_connection) {
         #return a_connection.from_id == a_sourceId && a_connection.from_socket == a_outputId && a_connection.from_flags == a_outputFlags
