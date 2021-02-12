@@ -33,6 +33,8 @@ class EditorFrame(MainWindow):
     def __init__(self, parent, title=None,wqImpl=None):
         # ensure the parent's __init__ is called
         super(EditorFrame, self).__init__(parent)
+        self._app = parent
+        self._consoleWidget = None
 
         self._openModules = dict({})
 
@@ -241,11 +243,11 @@ class EditorFrame(MainWindow):
             self._panelRight = tpanel
         rightPanel()
 
-        self._console = console.newConsoleWidget(self)
+        self._consoleWidget = console.newConsoleWidget(self)
         self._panelBottom = self.newSidePanel(
             parent = parent.impl(),
             side = direction.DOWN,
-            widget = self._console
+            widget = self._consoleWidget
         )
 
 
@@ -306,7 +308,18 @@ class EditorFrame(MainWindow):
         #//s//elf.Bind(wq.EVT_MENU, self.OnHello, helloItem)
         #//self.Bind(wq.EVT_MENU, self.OnExit,  exitItem)
         #//self.Bind(wq.EVT_MENU, self.OnAbout, aboutItem)
+    #@api-method
+    def consoleWidget(self):
+        return self._consoleWidget
+        
+    #@api-method
+    def consoleNamespace(self):
+        result = self._consoleWidget._namespace if self._consoleWidget != None else None
+        return result
 
+    #@api-method
+    def app(self):
+        return self._app
 
     def OnExit(self, event=None):
         """Close the frame, terminating the application."""
@@ -327,7 +340,7 @@ class EditorFrame(MainWindow):
     def OnSave(self, event=None):
         from .visitors.json import Visitor as JsonVisitor
         v = JsonVisitor()
-        self._rootModule.acceptVisitor(v)
+        self.acceptVisitor(v)
 
         print(v._jsD)
 
@@ -413,7 +426,7 @@ class EditorFrame(MainWindow):
 
             from . import yaml
 
-            with open('/tmp/test.yaml', 'w+') as handle:
+            with open('/tmp/bootDump.yaml', 'w+') as handle:
                 yaml.dump(v._jsD, handle,default_flow_style=False)
 
             '''
@@ -428,3 +441,31 @@ class EditorFrame(MainWindow):
 
 
         #super(EditorFrame, self).showEvent(event)
+
+    def acceptVisitor(self, v):
+        v.visitEditor(self)
+
+    #@API-method
+    def rootModuleCount(self):
+        tabPanelWidget = self._tabPanel.impl() #QTabWidget
+        assert tabPanelWidget != None, '[editorFrame.rootModuleByInd] tabPanel impl not found'
+        tc = tabPanelWidget.count()
+        return tc
+
+    #@API-method
+    def rootModuleByInd(self, ind:int):
+        tabPanelWidget = self._tabPanel.impl() #QTabWidget
+        assert tabPanelWidget != None, '[editorFrame.rootModuleByInd] tabPanel impl not found'
+        tabWidget = tabPanelWidget.widget(ind)
+        assert tabWidget != None, f'[editoFrame.rootModuleByInd] tabWidget[{ind}] not found'
+        module = tabWidget._self.module()
+        assert module != None, f'[editoFrame.rootModuleByInd] in tabWidget[{ind}] module not found'
+        return module
+
+    def rootModuleSelectedIndex(self):
+        return self._tabPanel.currentIndex()
+    
+    def rootModuleSelected(self):
+        return self.rootModuleByInd(self.rootModuleSelectedIndex())
+
+    

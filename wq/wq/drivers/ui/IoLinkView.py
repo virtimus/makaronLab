@@ -33,9 +33,6 @@ class IoLinkView(qtw.QGraphicsPathItem):
         self._tmp = {}
         '''
          QRectF m_boundingRect{};
-  
-  
-
   QColor m_colorSignalOn{};
   QColor m_colorSignalOff{};
 
@@ -48,7 +45,8 @@ class IoLinkView(qtw.QGraphicsPathItem):
         self.setZValue(-1)
         self.setAcceptHoverEvents(True)
 
-
+    def __del__(self):
+        self.setHover(False)
 
     def type(self):
         return IOLINK_TYPE
@@ -153,9 +151,9 @@ class IoLinkView(qtw.QGraphicsPathItem):
     def setHover(self, hover):
         self._isHover = hover
         if (self._fr != None):
-            self._fr.setHover(self._isHover)
+            self._fr.setOutHover(self._isHover)
         if (self._to != None):
-            self._to.setHover(self._isHover)
+            self._to.setInHover(self._isHover)
 
     def setColors(self, signalOff, signalOn): #QColor const a_
         self._colorSignalOff = signalOff
@@ -218,8 +216,8 @@ class IoLinkView(qtw.QGraphicsPathItem):
         c2x = None
         c1y = None
         c2y = None 
-        sourceDir = self._fr.effectiveDirection()
-        targetDir = self._to.effectiveDirection() if self._to != None else None
+        sourceDir = self._fr.effectiveDir()
+        targetDir = self._to.effectiveDir() if self._to != None else None
         
         if sourceDir == direction.RIGHT:
             c1x = distW+deltaWR

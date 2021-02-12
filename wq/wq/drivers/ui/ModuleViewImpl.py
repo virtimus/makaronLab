@@ -88,11 +88,20 @@ class ModuleViewImpl(qtw.QGraphicsItem):
     def moduleView(self): #for use by view elements
         return self._self
 
+    #@deprecated->nodeViewsByDir
     def inputs(self):
-        return self._nodeViews.filterBy('direction',direction.LEFT)
+        #return self._nodeViews.filterBy('direction',direction.LEFT)
+        return self.nodeViewsByDir(direction.LEFT)
     
+    #@deprecated->nodeViewsByDir
     def outputs(self):
-        return self._nodeViews.filterBy('direction',direction.RIGHT)
+        #return self._nodeViews.filterBy('direction',direction.RIGHT)
+        return self.nodeViewsByDir(direction.RIGHT)
+
+    #@api-method
+    def nodeViewsByDir(self, dir:direction.Dir):
+        return self._nodeViews.filterBy('dir',dir)
+
 
     def nodeViews(self):
         return self._nodeViews
@@ -375,7 +384,7 @@ void Node::advance(int a_phase)
 
 
     #EOrientation orientation
-    def direction(self):
+    def dir(self):
         dir = direction.RIGHT
         if (self._rotate):
             if (not self._invertH):
@@ -457,7 +466,7 @@ void Node::advance(int a_phase)
         elif mType == ModuleType.OUTPUTS:
             self.showIOProperties(direction.RIGHT)
 
-    def _getInpDirection(self):
+    def _getInpDir(self):
         dir = direction.LEFT # for input default dir is LEFT but ...       
         if self.mType() == ModuleType.INPUTS: #if it is INPUTS module - direction for input is right
             dir = direction.RIGHT
@@ -466,20 +475,16 @@ void Node::advance(int a_phase)
     def heInputAdded(self, event):
         inpId = event.props('inputId')
         inp = self._element.inputs().byId(inpId)
-        #INPUTS = self._element.inputs()
-        #SIZE = inputs().size();
-        #auto const &INPUT = INPUTS.back();
-        #addSocket(IOSocketsType::eInputs, static_cast<uint8_t>(SIZE), QString::fromStdString(INPUT.name), INPUT.type,INPUT.sItemType);
-        dir = self._getInpDirection()
+        dir = self._getInpDir()
         self.addSocket(dir, inp.id(), inp.name(), inp.valueType(), inp.ioType())
         self.calculateBoundingRect()
     
     def heInputRemoved(self,event):
-        dir = self._getInpDirection()
+        dir = self._getInpDir()
         self.removeSocket(dir)
         self.calculateBoundingRect()
 
-    def _getOutDirection(self):
+    def _getOutDir(self):
         dir = direction.RIGHT # default for output socket
         if self.mType() == ModuleType.OUTPUTS:
             dir = direction.LEFT
@@ -488,16 +493,12 @@ void Node::advance(int a_phase)
     def heOutputAdded(self, event):
         outId = event.props('outputId')
         out = self._element.outputs().byId(outId)
-        #INPUTS = self._element.inputs()
-        #SIZE = inputs().size();
-        #auto const &INPUT = INPUTS.back();
-        #addSocket(IOSocketsType::eInputs, static_cast<uint8_t>(SIZE), QString::fromStdString(INPUT.name), INPUT.type,INPUT.sItemType);
-        dir = self._getOutDirection()
+        dir = self._getOutDir()
         self.addSocket(dir, out.id(), out.name(), out.valueType(), out.ioType())
         self.calculateBoundingRect()
 
     def heOutputRemoved(self, event):
-        dir = self._getOutDirection()
+        dir = self._getOutDir()
         self.removeSocket(dir)
         self.calculateBoundingRect()
 
@@ -587,11 +588,12 @@ void Node::advance(int a_phase)
             widget = descEdit
         )        
 
-    def showIOProperties(self, dr, modImpl=None):
-        INPUTS = dr == direction.LEFT
+    def showIOProperties(self, dir:direction.Dir, modImpl=None):
+        INPUTS = dir == direction.LEFT
         tel = self._element if modImpl==None else modImpl._element
         ioEventTarget = self if modImpl==None else modImpl
-        ios = tel.inputs() if INPUTS else tel.outputs()
+        #ios = tel.inputs() if INPUTS else tel.outputs()
+        ios = tel.nodesByDir(dir)
         IOS_SIZE = ios.size()
         MIN_IOS_SIZE = tel.minInputs() if INPUTS else tel.minOutputs()
         MAX_IOS_SIZE = tel.maxInputs() if INPUTS else tel.maxOutputs()
@@ -601,7 +603,8 @@ void Node::advance(int a_phase)
         self.propertiesInsertTitle(pTitle)
 
         def countValueChanged(value):
-            SIZE = tel.inputs().size() if INPUTS else tel.outputs().size()
+            #SIZE = tel.inputs().size() if INPUTS else tel.outputs().size()
+            SIZE = ios.size()
             if (SIZE < value):
                 if INPUTS:
                     ioEventTarget.addInput()
@@ -742,7 +745,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         yOffset = ROUNDED_SOCKET_SIZE + NAME_OFFSET
         sinp = 0.0
         sout = width
-        if (self._element != None and (direction.LEFT == self.direction() or direction.DOWN == self.direction())):
+        if (self._element != None and (direction.LEFT == self.dir() or direction.DOWN == self.dir())):
             sinp = width
             sout = 0.0
         for inp in self.inputs().values():
@@ -760,6 +763,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
     def changeOutputName(self, vid:int, name):
         self.changeIOName(direction.RIGHT, vid, name)
 
+    #@deprecated
     def addInput(self):
         SIZE = self._element.inputs().size()
         INPUT_NAME = f'#{SIZE}'
@@ -771,6 +775,9 @@ auto max_element(Container &a_container, Comparator a_comparator)
             tnt = NodeIoType.OUTPUT
         self._element.addInput(TYPE, INPUT_NAME, self._element.defaultNewInputFlags(), tnt)
         self.m_packageView.showProperties()
+
+    def addLeftIO(self):
+        return self.addInput()
 
 
     def removeInput(self):
@@ -795,6 +802,9 @@ auto max_element(Container &a_container, Comparator a_comparator)
             tnt = NodeIoType.INPUT            
         self._element.addOutput(TYPE, OUTPUT_NAME, self._element.defaultNewOutputFlags(), tnt)
         self.m_packageView.showProperties()
+
+    def addRightIO(self):
+        return self.addInput()
 
     def removeOutput(self):
         self._element.removeOutput()
@@ -839,7 +849,8 @@ auto max_element(Container &a_container, Comparator a_comparator)
         else:
             ioNodeView.showName()
 
-        self.nodeViews().push_back(ioNodeView)
+        #self.nodeViews().push_back(ioNodeView)
+        self.nodeViews().append(ioNodeView.id(),ioNodeView)
 
 
 
@@ -861,7 +872,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         assert(self._element != None)
         
         INPUTS = direction == direction.LEFT
-        #auto &io = INPUTS ? m_element->inputs()[a_socketId] : m_element->outputs()[a_socketId];
+
         io = self._element.nodes().byId(socketId)
 
         if (not io.flags().valueTypeAllowed(vType)):
@@ -883,33 +894,10 @@ auto max_element(Container &a_container, Comparator a_comparator)
     def updateOutputs(self):
         if (self._element == None or self.mType() == ModuleType.OUTPUTS):
             return 
-        '''
-        IS_ELEMENT = self.mType() == ModuleType.ATOMIC
-        ELEMENT_IOS = IS_ELEMENT ? m_element->outputs() : m_element->inputs();
-  auto const &NODE_IOS = m_outputs;
-  size_t const SIZE{ ELEMENT_IOS.size() };
-  for (size_t i = 0; i < SIZE; ++i) {
-    switch (ELEMENT_IOS[i].type) {
-      case ValueType::eBool: {
-        bool const SIGNAL{ std::get<bool>(ELEMENT_IOS[i].value) };
-        NODE_IOS[static_cast<int>(i)]->setSignal(SIGNAL);
-        break;
-      }
-      default: break;
-    }
-  }
-}
-    '''
-
-
-
 
     def setIcon(self, ico:str):
         self._iconPath = ico
         self._icon.load(ico)
-
-       
-
 
     def findMaxNameWidth(self,coll):
         #!TODO!

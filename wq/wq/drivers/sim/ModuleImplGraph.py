@@ -197,23 +197,6 @@ class ModuleImplGraph(ModuleImplElement):
 # --- HDR-END -------------------------------------
 
     def calculate(self):
-        '''
-        for connection in self.m_connections.values():
-            #Element *const source{ get(connection.from_id) };
-            sourceIoNode = self.get(connection.frId) 
-            #Element *const target{ get(connection.to_id) };
-            targetIoNode = self.get(connection.toId)
-            #auto const IS_SOURCE_SELF = connection.from_id == 0;
-            IS_SOURCE_SELF = sourceIoNode.parent().mType() in [ModuleType.INPUTS, ModuleType.OUTPUTS]
-            #auto const IS_TARGET_SELF = connection.to_id == 0;
-            IS_TARGET_SELF = targetIoNode.parent().mType() in [ModuleType.INPUTS, ModuleType.OUTPUTS]
-            #auto const &SOURCE_IO =  IS_SOURCE_SELF || connection.from_flags != 2  ? source->inputs() : source->outputs();
-            #auto &targetIO =  IS_TARGET_SELF || connection.to_flags == 2 ? target->outputs() : target->inputs();
-            #targetIO[connection.to_socket].value = SOURCE_IO[connection.from_socket].value;
-            if (sourceIoNode.driveSignal()!=None):
-                targetIoNode.driveSignal().setValue(sourceIoNode.driveSignal().value())
-        '''
-
         for node in self.mdl().nodes().values():
             ds = node.driveSignal()
             if ds != None and node.signals().size()>0:

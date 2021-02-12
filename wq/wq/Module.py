@@ -124,16 +124,20 @@ class Node(Object):
                     self._driveSignal = signal
                 else: 
                     self.raiseExc(f'[signal.canDrive]: {msg}')
+        self.addSignal(signal)
 
     def isSignalOn(self):
         return self.driveSignal().isOn() if self.driveSignal() != None else False
 
     def addSignal(self, signal:'Signal'):
+        if signal == None:
+            return 
         if self._driveSignal == None:
             self.setDriveSignal(signal)
         lid = signal.id()
         if lid in self._signals:
-            self.raiseExc(f'Signal with id {lid} already added')
+            #self.raiseExc(f'Signal with id {lid} already added')
+            return
         if self._driveSignal.size()!=signal.size():
             self.raiseExc('Signal size differs')            
         self._signals.append(lid,signal)
@@ -151,9 +155,9 @@ class IoNode(Node):
         if tsignal == None:
             self.raiseExc(f'Signal required fo ioNode')
         self._name = kwargs['name'] if 'name' in kwargs else tsignal.name()
-        self._direction = kwargs['direction'] if 'direction' in kwargs else None
-        if self._direction == None:
-            self._direction = direction.LEFT if self.ioType() == NodeIoType.INPUT else direction.RIGHT
+        self._dir = kwargs['direction'] if 'direction' in kwargs else None
+        if self._dir == None:
+            self._dir = direction.LEFT if self.ioType() == NodeIoType.INPUT else direction.RIGHT
 
         super(IoNode, self).__init__(*args, **kwargs)
         #for ioNode driveSignal is external or internal depending on type?
@@ -168,8 +172,8 @@ class IoNode(Node):
     def name(self):
         return self._name
 
-    def direction(self):
-        return self._direction
+    def dir(self):
+        return self._dir
 
     def extSignals(self):
         return self._extSignals

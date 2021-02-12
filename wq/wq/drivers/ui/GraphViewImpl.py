@@ -219,60 +219,6 @@ class GraphViewImpl(qtw.QGraphicsView):
         self.m_inputs.setPropertiesTable(self._properties)
         self.m_outputs.setPropertiesTable(self._properties)
 
-
-        #Registry &registry{ /*Registry::get()*/m_editor->RegistryGet() };
-        '''
-        auto const &elements = m_package->elements();
-        size_t const SIZE{ elements.size() };
-        for (size_t i = 1; i < SIZE; ++i) {
-        auto const element = elements[i];
-        auto const node = registry.createNode(element->hash());
-        auto const nodeName = QString::fromStdString(registry.elementName(element->hash()));
-        auto const nodeIcon = QString::fromStdString(registry.elementIcon(element->hash()));
-        auto const nodePath = QString::fromLocal8Bit(element->type());
-
-        element->setNode(node);
-        m_nodes[element->id()] = node;
-
-        element->isIconified() ? node->iconify() : node->expand();
-        node->setPackageView(this);
-        node->setPropertiesTable(m_properties);
-        node->setName(nodeName);
-        node->setPath(nodePath);
-        node->setIcon(nodeIcon);
-        node->setPos(element->position().x, element->position().y);
-        node->setElement(element);
-        m_scene->addItem(node);
-
-        m_nodesModel->add(node);
-        m_nodesProxyModel->sort(0);
-        }
-
-        auto const &connections = m_package->connections();
-        for (auto const &connection : connections) {
-        auto const SOURCE_ID = connection.from_id;
-        auto const SOURCE_SOCKET = connection.from_socket;
-        auto const SOURCE_IOFLAGS = connection.from_flags;
-        auto const TARGET_ID = connection.to_id;
-        auto const TARGET_SOCKET = connection.to_socket;
-        auto const TARGET_IOFLAGS = connection.to_flags;
-
-        auto const source = SOURCE_ID != 0 ? getNode(SOURCE_ID) : m_packageNode->inputsNode();
-        auto const target = TARGET_ID != 0 ? getNode(TARGET_ID) : m_packageNode->outputsNode();
-        auto const sourceIos = SOURCE_IOFLAGS == 2 /*&& SOURCE_ID != 0*/ ? source->outputs():source->inputs();
-        if (SOURCE_SOCKET>=sourceIos.size()){
-            spaghetti::log::info("Przekroczenie dlugości wektora source dla: {}",source->name().toUtf8().constData());
-        }
-        auto const sourceSocket =  sourceIos[SOURCE_SOCKET];
-        auto const targetIos = TARGET_IOFLAGS == 2 /*&& TARGET_ID != 0*/ ? target->outputs() : target->inputs();
-        if (TARGET_SOCKET>=targetIos.size()){
-            spaghetti::log::info("Przekroczenie dlugości wektora target dla:{} ",target->name().toUtf8().constData());
-        }
-        auto const targetSocket =  targetIos[TARGET_SOCKET];
-        sourceSocket->connect(targetSocket);
-        }
-        ''' 
-
     def dragEnterEvent(self, event): #QDragEnterEvent *a_
         mimeData = event.mimeData()
         #//  mimeData->setData("metadata/is_package", IS_PACKAGE);

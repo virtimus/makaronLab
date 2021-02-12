@@ -1,0 +1,389 @@
+rootModule:
+  0:
+    name: rootModule
+    mType: GRAPH
+    desc: null
+    rootModuleId: 0
+    graphModuleId: 0
+    class: <class 'wq.Module.Module'>
+    modules:
+      1:
+        name: andModule1
+        mType: ATOMIC
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        nodes:
+          0:
+            name: Y
+            _no_: 0
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 0
+            signals:
+              0: {}
+            ioType: OUTPUT
+          1:
+            name: A
+            _no_: 1
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 6
+            signals:
+              1: {}
+            ioType: INPUT
+          2:
+            name: B
+            _no_: 2
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 11
+            signals:
+              2: {}
+            ioType: INPUT
+        signals:
+          0:
+            name: Y
+            _no_: 0
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+          1:
+            name: A
+            _no_: 1
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+          2:
+            name: B
+            _no_: 2
+            size: 1
+            value: 1
+            class: <class 'wq.Signal.Signal'>
+        view:
+          1:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          1:
+            name: andModule1
+            info: AND logic gate
+            desc: null
+            class: <class 'wq.ModuleFactory.AndGateModule'>
+            implStr: local:/AND
+      2:
+        name: andModule2
+        mType: ATOMIC
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        nodes:
+          3:
+            name: Y
+            _no_: 0
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 3
+            signals:
+              3: {}
+            ioType: OUTPUT
+          4:
+            name: A
+            _no_: 1
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 6
+            signals:
+              4: {}
+            ioType: INPUT
+          5:
+            name: B
+            _no_: 2
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 0
+            signals:
+              5: {}
+            ioType: INPUT
+        signals:
+          3:
+            name: Y
+            _no_: 0
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+          4:
+            name: A
+            _no_: 1
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+          5:
+            name: B
+            _no_: 2
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+        view:
+          2:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          2:
+            name: andModule2
+            info: AND logic gate
+            desc: null
+            class: <class 'wq.ModuleFactory.AndGateModule'>
+            implStr: local:/AND
+      3:
+        name: notModule
+        mType: ATOMIC
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        nodes:
+          6:
+            name: Y
+            _no_: 0
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 6
+            signals:
+              6: {}
+            ioType: OUTPUT
+          7:
+            name: A
+            _no_: 1
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 8
+            signals:
+              7: {}
+            ioType: INPUT
+        signals:
+          6:
+            name: Y
+            _no_: 0
+            size: 1
+            value: 1
+            class: <class 'wq.Signal.Signal'>
+          7:
+            name: A
+            _no_: 1
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+        view:
+          3:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          3:
+            name: notModule
+            info: NOT logic gate
+            desc: null
+            class: <class 'wq.ModuleFactory.NotGateModule'>
+            implStr: local:/NOT
+      4:
+        name: norModule1
+        mType: ATOMIC
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        nodes:
+          8:
+            name: Y
+            _no_: 0
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 8
+            signals:
+              8: {}
+            ioType: OUTPUT
+          9:
+            name: A
+            _no_: 1
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 11
+            signals:
+              9: {}
+            ioType: INPUT
+          10:
+            name: B
+            _no_: 2
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 0
+            signals:
+              10: {}
+            ioType: INPUT
+        signals:
+          8:
+            name: Y
+            _no_: 0
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+          9:
+            name: A
+            _no_: 1
+            size: 1
+            value: 1
+            class: <class 'wq.Signal.Signal'>
+          10:
+            name: B
+            _no_: 2
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+        view:
+          4:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          4:
+            name: norModule1
+            info: NOR logic gate
+            desc: null
+            class: <class 'wq.ModuleFactory.NorGateModule'>
+            implStr: local:/NOR
+      5:
+        name: norModule2
+        mType: ATOMIC
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        nodes:
+          11:
+            name: Y
+            _no_: 0
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 11
+            signals:
+              11: {}
+            ioType: OUTPUT
+          12:
+            name: A
+            _no_: 1
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 3
+            signals:
+              12: {}
+            ioType: INPUT
+          13:
+            name: B
+            _no_: 2
+            info: null
+            desc: null
+            class: <class 'wq.Module.IoNode'>
+            driveSignal: 0
+            signals:
+              13: {}
+            ioType: INPUT
+        signals:
+          11:
+            name: Y
+            _no_: 0
+            size: 1
+            value: 1
+            class: <class 'wq.Signal.Signal'>
+          12:
+            name: A
+            _no_: 1
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+          13:
+            name: B
+            _no_: 2
+            size: 1
+            value: 0
+            class: <class 'wq.Signal.Signal'>
+        view:
+          5:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          5:
+            name: norModule2
+            info: NOR logic gate
+            desc: null
+            class: <class 'wq.ModuleFactory.NorGateModule'>
+            implStr: local:/NOR
+      6:
+        name: graphModule1
+        mType: GRAPH
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        view:
+          6:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          6:
+            name: graphModule1
+            info: null
+            desc: null
+            class: <class 'wq.drivers.sim.ModuleImplGraph.ModuleImplGraph'>
+            implStr: null
+      7:
+        name: moduleInputs
+        mType: INPUTS
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        view:
+          7:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          7:
+            name: moduleInputs
+            info: null
+            desc: null
+            class: <class 'wq.drivers.sim.ModuleImplIO.ModuleImplIO'>
+            implStr: null
+      8:
+        name: moduleOutputs
+        mType: OUTPUTS
+        desc: null
+        rootModuleId: 0
+        graphModuleId: 0
+        class: <class 'wq.Module.Module'>
+        view:
+          8:
+            class: <class 'wq.ModuleView.ModuleView'>
+        impl:
+          8:
+            name: moduleOutputs
+            info: null
+            desc: null
+            class: <class 'wq.drivers.sim.ModuleImplIO.ModuleImplIO'>
+            implStr: null
+    view:
+      0:
+        class: <class 'wq.ModuleView.ModuleView'>
+    impl:
+      0:
+        name: rootModule
+        info: null
+        desc: null
+        class: <class 'wq.drivers.sim.ModuleImplGraph.ModuleImplGraph'>
+        implStr: null

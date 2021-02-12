@@ -7,6 +7,7 @@ from ..Module import Module, Node, IoNode
 from ..Signal import Signal
 from ..ModuleView import ModuleView
 from ..ModuleFactory import ModuleImplBase
+from ..EditorFrame import EditorFrame
 from ..wqvector import WqVector
 
 from ..dict import UnsortableOrderedDict as UODict
@@ -34,8 +35,12 @@ class Visitor:
             print('[WARN] self._cstack == None')
         if not name in self._cstack:
             self._cstack[name] = OrderedDict()
-        self._cstack[name][id] = c
-        self._cstack = self._cstack[name][id]
+        if (id != None):
+            self._cstack[name][id] = c
+            self._cstack = self._cstack[name][id]
+        else:#none as id means 'only one object'
+            self._cstack[name] = c
+            self._cstack = self._cstack[name]            
         if self._cstack == None:
             print('[WARN] self._cstack == None')      
         return c
@@ -46,6 +51,30 @@ class Visitor:
             print('[WARN] self._cstack == None')        
         return self._cstack
 
+    def visitEditor(self,ed:EditorFrame):
+        self._ckey = 'editorFrame'
+        c = self.pushState(None)
+        appClass = str(ed.app().__class__) if ed.app() != None else None
+        conClass = str(ed.consoleWidget().__class__) if ed.consoleWidget() != None else None
+        
+        c['app']=OrderedDict({
+            'class':appClass    
+        })
+        c['consoleWidget']=OrderedDict({
+            'class':conClass
+        })
+        
+        self._ckey ='rootModuleByInd' 
+        i = 0
+        tc = ed.rootModuleCount()
+        for ti in range(i,tc, 1):
+            c = self.pushState(ti)
+            module = ed.rootModuleByInd(ti)
+            module.acceptVisitor(self) 
+            self.popState()
+
+        #ed._rootModule.acceptVisitor(self)
+        self.popState()
 
 
     def visitModule(self, mod:Module):
@@ -53,11 +82,14 @@ class Visitor:
         if tid in self._visitedModules:
             return
         self._visitedModules.append(tid, mod)
-        tname = 'modules'  
+        tname = 'modules'
+        tids = tid  
         if (tid == 0):#root
-            tname = 'rootModule' 
+            tname = 'rootModule'
+            tids = None
+
         self._ckey = tname
-        c = self.pushState(tid) 
+        c = self.pushState(tids) 
         
         c['name'] = mod.name()
         c['mType'] = mod.mType().name
@@ -102,7 +134,9 @@ class Visitor:
 #        for n in sig.nodes().values():
 #            self.pushState(s.id())
 #            self.popState()
+# nodes collection reduced from signal - to be verified if needed there
         self.popState()
+
 
 
     def visitNode(self, nod:Node):

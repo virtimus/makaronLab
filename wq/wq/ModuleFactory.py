@@ -170,7 +170,7 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     def newIO(self, **kwargs):
         result=self.s().newIO(**kwargs)
-        dir = result.direction()
+        dir = result.dir()
         if dir == direction.LEFT:
             self.events().inputAdded.emit(EventProps({'inputId':result.id()}))
         else:
@@ -199,12 +199,19 @@ class ModuleImplBase(metaclass=ABCMeta):
     def nodes(self):
         return self.s().nodes()
 
-    #'inputs' is historical name deprecated in fact it is ionode on left !TODO! remimplement using nodes() vector
-    def inputs(self):
-        return self.nodes().filterBy('direction',direction.LEFT)
+    def nodesByDir(self, dir:direction.Dir):
+        return self.nodes().filterBy('dir',dir)
 
+    #'inputs' is historical name deprecated in fact it is ionode on left !TODO! remimplement using nodes() vector
+    #@deprecated
+    def inputs(self):
+        #return self.nodes().filterBy('direction',direction.LEFT)
+        return self.nodesByDir(direction.LEFT)
+
+    #@deprecated
     def outputs(self):
-        return self.s().nodes().filterBy('direction',direction.RIGHT)
+        #return self.s().nodes().filterBy('direction',direction.RIGHT)
+        return self.nodesByDir(direction.RIGHT)
 
     def minInputs(self):
         return self._minInputs

@@ -28,7 +28,7 @@ IONODE_TYPE = stypes.IONODE_TYPE
 #SocketItem
 class IoNodeView(qtw.QGraphicsItem):
     SIZE = 16
-    def __init__(self, parent:'ModuleViewImpl', ionode:'IoNode', direction):
+    def __init__(self, parent:'ModuleViewImpl', ionode:'IoNode', dir:direction.Dir):
         super(IoNodeView, self).__init__(parent)
         self.m_node = parent
         self._parent = parent
@@ -36,7 +36,7 @@ class IoNodeView(qtw.QGraphicsItem):
         self.m_type = self._ioType #deprecated
         self._ionode = ionode
         self._self = ionode
-        self._direction = direction
+        self._dir = dir
         self._font = qtg.QFont()
         self._font.setFamily("Consolas")
         self._font.setPointSize(10)
@@ -51,6 +51,8 @@ class IoNodeView(qtw.QGraphicsItem):
             self.setAcceptDrops(True)
 
         self._isHover = False
+        self._inHover = False
+        self._outHover = False
         self._isDrop = False
         self._used = False
         self._nameHidden = False
@@ -86,15 +88,15 @@ class IoNodeView(qtw.QGraphicsItem):
     def node(self):
         return self._ionode
     
-    def direction(self):
-        return self._direction
+    def dir(self):
+        return self._dir
 
-    def effectiveDirection(self):
-        result = self._direction 
+    def effectiveDir(self):
+        result = self._dir 
         if (self.moduleView().isInvertH()):
-            if (self._direction == direction.LEFT):
+            if (self._dir == direction.LEFT):
                 result = direction.RIGHT
-            elif (self._direction == direction.RIGHT):
+            elif (self._dir == direction.RIGHT):
                 result = direction.LEFT
             else:
                 self.raiseExc('noImpl')
@@ -110,7 +112,13 @@ class IoNodeView(qtw.QGraphicsItem):
        
 
     def setHover(self, hover):
-        self._isHover = hover 
+        self._isHover = hover
+
+    def setOutHover(self, hover):
+        self._outHover = hover 
+
+    def setInHover(self, hover):
+        self._inHover = hover 
 
     def type(self):
         return IONODE_TYPE
@@ -131,14 +139,15 @@ class IoNodeView(qtw.QGraphicsItem):
         #Q_UNUSED(a_option);
         #Q_UNUSED(a_widget);
         rect = self.boundingRect()
-        startAngle = -90 * 16
+        isInvert = self._parent.isInvertH()
+        startAngle = 90*16 if isInvert else -90 * 16
         spanAngle = 180 * 16
 
         pen = qtg.QPen(colors.C.SOCKETBORDER.qColor())
         pens = None
         pen.setWidth(2)
         brush =  qtg.QBrush()
-        if (self._isHover):
+        if (self._isHover or self._inHover):
             brush.setColor(colors.C.SOCKETHOVER.qColor())
         elif (self._isDrop):
             brush.setColor(colors.C.SOCKETDROP.qColor())
@@ -146,7 +155,10 @@ class IoNodeView(qtw.QGraphicsItem):
             brush.setColor(self._colorSignalOn)
         elif (not self.isSignalOn()):
             brush.setColor(self._colorSignalOff)
-        pens = qtg.QPen(brush.color())
+        #pens = qtg.QPen(brush.color())
+        pens = self._colorSignalOn if self.isSignalOn() else self._colorSignalOff
+        if (self._outHover and self.m_type == NodeIoType.OUTPUT):
+            pens = colors.C.SOCKETHOVER.qColor()
         #//  else if (m_type == Type::eInput)
         #//    brush.setColor(config.getColor(Config::Color::eSocketInput));
         #//  else if (m_type == Type::eOutput)
@@ -202,7 +214,7 @@ class IoNodeView(qtw.QGraphicsItem):
             painter.setFont(self._font)
             metrics = qtg.QFontMetrics(self._font)
             FONT_HEIGHT = metrics.height()
-            if (direction.LEFT == self.direction()):
+            if (direction.LEFT == self.dir()):
                 painter.drawText((rect.width()) - 4, (FONT_HEIGHT / 2) - metrics.strikeOutPos(), self.name())
             else:
                 painter.drawText(-metrics.width(self.name()) - IoNodeView.SIZE + IoNodeView.SIZE / 3, (FONT_HEIGHT / 2) - metrics.strikeOutPos(), self.name())
@@ -262,7 +274,7 @@ class IoNodeView(qtw.QGraphicsItem):
             painter.setFont(self._font)
             metrics = qtg.QFontMetrics(self._font)
             FONT_HEIGHT = metrics.height()
-            if (direction.LEFT == self.direction()):
+            if (direction.LEFT == self.dir()):
                 painter.drawText((rect.width()) - 4, (FONT_HEIGHT / 2) - metrics.strikeOutPos(), self.name())
             else:
                 painter.drawText(-metrics.width(self.name()) - IoNodeView.SIZE + IoNodeView.SIZE / 3, (FONT_HEIGHT / 2) - metrics.strikeOutPos(), self.name())
@@ -272,13 +284,15 @@ class IoNodeView(qtw.QGraphicsItem):
         #Q_UNUSED(event);
         self._isHover = True
         for l in self._links.values():
-            l.setHover(self._isHover)
+            if l.to() == self:
+                l.setHover(self._isHover)
 
     def hoverLeaveEvent(self, event): #QGraphicsSceneHoverEvent
         #Q_UNUSED(event)
         self._isHover = False
         for l in self._links.values():
-            l.setHover(self._isHover)
+            if l.to() == self:
+                l.setHover(self._isHover)
 
     def dragEnterEvent(self, event): #QGraphicsSceneDragDropEvent
         #Q_UNUSED(event)
@@ -511,7 +525,8 @@ class IoNodeView(qtw.QGraphicsItem):
 
         #package->disconnect(FROM_ID, FROM_SOCKET_ID, FROM_IOFLAGS, TO_ID, TO_SOCKET_ID, TO_IOFLAGS);
         graphModuleViewImpl.disconnect(self.id(),self.id(), other.id(),other.id())
-
+        
+        link.setHover(False)
         self.removeLink(link)
         other.removeLink(link)
         
@@ -519,9 +534,13 @@ class IoNodeView(qtw.QGraphicsItem):
             self._used = False
         
         self._isHover = False
+        #//self.setOutHover(False)
+        #//self.setInHover(False)
         other._used = False
         other._isHover = False
+ 
         #delete link;
+        
         sip.delete(link)
         link = None
 
