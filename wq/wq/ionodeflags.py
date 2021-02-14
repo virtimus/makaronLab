@@ -1,5 +1,6 @@
 
 from .valuetype import ValueType
+from . import consts
 
 class IoNodeFlags:
 
@@ -16,7 +17,9 @@ class IoNodeFlags:
             canHoldFloat = False,
             canHoldByte = False,
             canHoldWord64 = False,
-            canHoldAllValues = False    
+            canHoldAllValues = False,
+            max = consts.MAX_PINS, 
+            min = 0   
             ):
         self._canHoldAllValues = canHoldAllValues
         self._canChangeName = canChangeName
@@ -25,6 +28,24 @@ class IoNodeFlags:
         self._canHoldFloat = canHoldFloat
         self._canHoldByte  = canHoldByte
         self._canHoldWord64 = canHoldWord64
+        self._max = max
+        self._min = min
+
+    def min(self):
+        return self._min
+
+    def setIfMin(self, min):
+        if self._max<min:
+            return
+        self._min = min
+
+    def max(self):
+        return self._max
+
+    def setIfMax(self, max):
+        if self._min>max:
+            return
+        self._max = max
 
 
     def valueTypeAllowed(self, vType:ValueType):

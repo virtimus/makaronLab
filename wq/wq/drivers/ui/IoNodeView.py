@@ -12,11 +12,13 @@ from ... import consts, prop, orientation, direction, colors
 #from ...Module import IoNode
 
 from ... import colors
-from ..sim.valuetype import ValueType
+from ...valuetype import ValueType
 
 from .IoLinkView import IoLinkView
 
 from . import stypes
+
+from ...ModuleFactory import ModuleType
 
 #class IoLinkView:
 #    pass 
@@ -41,7 +43,7 @@ class IoNodeView(qtw.QGraphicsItem):
         self._font.setFamily("Consolas")
         self._font.setPointSize(10)
  
-        self. setFlags(qtw.QGraphicsItem.ItemIsMovable | qtw.QGraphicsItem.ItemIsFocusable | qtw.QGraphicsItem.ItemSendsScenePositionChanges)
+        self.setFlags(qtw.QGraphicsItem.ItemIsMovable | qtw.QGraphicsItem.ItemIsFocusable | qtw.QGraphicsItem.ItemSendsScenePositionChanges)
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(qtc.Qt.LeftButton)
         self.setZValue(1)
@@ -98,6 +100,10 @@ class IoNodeView(qtw.QGraphicsItem):
                 result = direction.RIGHT
             elif (self._dir == direction.RIGHT):
                 result = direction.LEFT
+            elif (self._dir == direction.TOP):
+                result = direction.DOWN
+            elif (self._dir == direction.DOWN):
+                result = direction.TOP                
             else:
                 self.raiseExc('noImpl')
         if (self.moduleView().isRotate()):
@@ -105,6 +111,10 @@ class IoNodeView(qtw.QGraphicsItem):
                 result = direction.DOWN
             elif result == direction.RIGHT:
                 result= direction.TOP
+            elif result == direction.TOP:
+                result= direction.LEFT
+            elif result == direction.DOWN:
+                result= direction.RIGHT
             else:
                 self.raiseExc('noImpl')
         return result
@@ -141,6 +151,8 @@ class IoNodeView(qtw.QGraphicsItem):
         rect = self.boundingRect()
         isInvert = self._parent.isInvertH()
         startAngle = 90*16 if isInvert else -90 * 16
+        if self.module().mType() == ModuleType.IO and self.dir() in [direction.TOP,direction.DOWN]:
+            startAngle = 0*16 if isInvert else -180 * 16 
         spanAngle = 180 * 16
 
         pen = qtg.QPen(colors.C.SOCKETBORDER.qColor())

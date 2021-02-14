@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventS
 #import PyQt5.QtCore as qtc
 #import PyQt5.QtGui  as qtg
 
-from .valuetype import ValueType
+from ...valuetype import ValueType
 
 from .ModuleImplElement import ModuleImplElement    
 from .ModuleImplGraph import ModuleImplGraph
@@ -37,7 +37,7 @@ class WqDriver(WqDriverBase):
             result = ModuleImplGraph(moduleType=self.s().moduleType())
             result._self = self.s()
             #result.newIO(name="T",ioType=IoType.INPUT)
-        elif self.s().moduleType() in [ModuleType.INPUTS,ModuleType.OUTPUTS]:
+        elif self.s().moduleType() in [ModuleType.IO]:
             result = ModuleImplIO(moduleType=self.s().moduleType())
             result._self = self.s()    
             result.m_package = self.s().parent().impl()          

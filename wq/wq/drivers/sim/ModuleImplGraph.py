@@ -8,7 +8,7 @@ from ...ModuleFactory import IoType, ModuleFactory, ModuleImplBase, ModuleType
 
 from .ModuleImplElement import ModuleImplElement
 
-from .ionodeflags import IoNodeFlags
+from ...ionodeflags import IoNodeFlags
 
 from ...wqvector import WqVector
 #from ...Module import Module
@@ -26,6 +26,7 @@ struct Connection {
     uint8_t to_flags{};
 };
 """
+'''
 class Connection:
     def __init__(self, frModId, frId, toModId, toId):
         self._frModId = frModId
@@ -47,7 +48,7 @@ class Connection:
 
     
 Connections = WqVector(Connection)
-
+'''
 from ...Timer import Timer
 
 class AtomicBool():
@@ -64,8 +65,6 @@ class AtomicBool():
         if val != None:
             self._value = val
         return self._value 
-
-
 
 
 class AtomicInt(int):
@@ -90,9 +89,9 @@ class ModuleImplGraph(ModuleImplElement):
         self.m_packagePath = ''
         self.m_packageIcon = ':/unknown.png'
         self.m_elements = Elements
-        self.m_connections = Connections
+        #self.m_connections = Connections
         #std::vector<size_t> m_free{};
-        self.m_dependencies = WqVector(WqVector)
+        #self.m_dependencies = WqVector(WqVector)
         self.m_free = WqVector(int)
         self.m_dispatchThread = threading.Thread()
         self.m_dispatchThreadStarted = AtomicBool(False)
@@ -102,8 +101,8 @@ class ModuleImplGraph(ModuleImplElement):
         self.m_pauseCount = AtomicInt(0)
         self.m_isExternal = False
         #self.m_elements.push_back(self._self)
-        self.setDefaultNewInputFlags(IoNodeFlags.defaultFlags)
-        self.setDefaultNewOutputFlags(IoNodeFlags.defaultFlags)
+        #self.setDefaultNewInputFlags(IoNodeFlags.defaultFlags)
+        #self.setDefaultNewOutputFlags(IoNodeFlags.defaultFlags)
 
     def __del__(self):
         #SIZE = self.m_elements.size()
@@ -136,26 +135,6 @@ class ModuleImplGraph(ModuleImplElement):
     def setPackageIcon(self, icon):
         self.m_packageIcon = icon
         
-    #Element *add(char const *const a_name) { return add(string::hash(a_name)); }
-    #Element *add(string::hash_t const a_hash);
-
-    #void remove(Element *const a_element) { remove(a_element->id()); }
-    #void remove(size_t const a_id);
-
-    #Element *get(size_t const a_id) const;
-
-    #bool connect(size_t const a_sourceId, uint8_t const a_sourceSocket, uint8_t const a_sourceFlags, size_t const a_targetId,
-    #          uint8_t const a_targetSocket, uint8_t const a_targetFlags);
-    #bool disconnect(size_t const a_sourceId, uint8_t const a_outputId,  uint8_t const a_outputFlags, size_t const a_targetId, uint8_t const a_inputId, uint8_t const a_inputFlags);
-
-    #void dispatchThreadFunction();
-
-    #void startDispatchThread();
-    #void quitDispatchThread();
-    #void pauseDispatchThread();
-    #void resumeDispatchThread();
-
-    #void setInputsPosition(double const a_x, double const a_y);
     def setInputsPosition(self, position):
         self.m_inputsPosition = position
 
@@ -172,8 +151,8 @@ class ModuleImplGraph(ModuleImplElement):
     def elements(self):
         return self.m_elements
     
-    def connections(self):
-        return self.m_connections
+    #def connections(self):
+    #    return self.m_connections
 
     #void open(std::string const &a_filename);
     #void save(std::string const &a_filename);
@@ -238,22 +217,6 @@ class ModuleImplGraph(ModuleImplElement):
         assert result != None,  f'Element with lid:{lid} not found'
         return result
 
-    def findConnections(self, sourceModuleId, sourceId, targetModuleId, targetId) -> WqVector:
-        result = self.m_connections.filterBy('targetModuleId',targetModuleId)
-        if result.size()==0:
-            return result
-        result = result.filterBy('targetId',targetId)
-        if result.size() == 0:
-            return result
-        result = result.filterBy('sourceModuleId',sourceModuleId)
-        if result.size() == 0:
-            return result
-        result = result.filterBy('sourceId',sourceId)    
-        return result
-
-    #bool Package::connect(size_t const a_sourceId, uint8_t const a_sourceSocket, uint8_t const a_sourceFlags, size_t const a_targetId,
-    #                  uint8_t const a_targetSocket, uint8_t const a_targetFlags)
-
     def connect(self, fr, to): #IoNodeView to IoNodeView
         #self.connectById(fr.id(),to.id()) 
         #def connectById(self, sourceId, targetId):
@@ -262,83 +225,13 @@ class ModuleImplGraph(ModuleImplElement):
         targetId = to.id()
         sourceModuleId = fr.moduleId()
         targetModuleId = to.moduleId()
-        #sourceIoNode = self.get(sourceId)
-        #targetIoNode = self.get(targetId)
-        #log.info("Connecting source: {}@{}@{} to target: {}@{}@{}", a_sourceId, static_cast<int>(a_sourceSocket),static_cast<int>(a_sourceFlags),
-        #                a_targetId, static_cast<int>(a_targetSocket),static_cast<int>(a_targetFlags));
-
-
-        #bool isSourcePackage = (str1.compare(source->type())==0) && !source->isRoot();
-
-        #//auto const &SOURCE =  sourceFlags == 2 && a_sourceId != 0 ? source->m_outputs : source->m_inputs;
-        #//auto const &SOURCE = (isSourcePackage && a_sourceId != 0) || (sourceFlags != 2 && a_sourceId != 0) ? source->m_outputs : source->m_inputs;
-        #auto const &SOURCE =  a_sourceId == 0  ?  source->m_inputs : source->m_outputs;
-        #//a_targetId != 0 &&
-        #uint8_t  targetFlags = a_targetFlags;
-        #/*if (str1.compare(target->type())==0) {
-        #targetFlags = ( a_targetFlags == 2 )?1:2;
-        #}*/
-
-        #//bool isTargetPackage = (str1.compare(target->type())==0) && !target->isRoot();
-
-        #//auto &TARGET = (isTargetPackage && a_targetId != 0) || (targetFlags != 2 && a_targetId != 0) ? target->m_inputs : target->m_outputs;
-        #auto &TARGET = a_targetId == 0 ? target->m_outputs : target->m_inputs ;
-        #auto const SOURCE_SIZE = SOURCE.size();
-        #auto const TARGET_SIZE = TARGET.size();
-        #assert(a_sourceSocket < SOURCE_SIZE && "Socket ID don't exist");
-        #assert(a_targetSocket < TARGET_SIZE && "Socket ID don't exist");
-
-        #TARGET[a_targetSocket].id = a_sourceId;
-        #TARGET[a_targetSocket].slot = a_sourceSocket;
-        #TARGET[a_targetSocket].inFlags = sourceFlags;
-
-        #spaghetti::log::info("Notifying {}({})@{} when {}({})@{} changes..", a_targetId, target->name(),
-        #                static_cast<int32_t>(a_targetSocket), a_sourceId, source->name(),
-        #                static_cast<int32_t>(a_sourceSocket));
-        cons = self.findConnections(sourceModuleId, sourceId, targetModuleId, targetId)
-        assert cons.size() == 0,'Already connected ({sourceId},{targetId})'
-        nConnection = Connection(sourceModuleId, sourceId, targetModuleId, targetId)
-        self.m_connections.push_back(nConnection)
-        #auto &dependencies = m_dependencies[a_sourceId];
-        #auto const IT = std::find(std::begin(dependencies), std::end(dependencies), a_targetId);
-        #if (IT == std::end(dependencies)) dependencies.push_back(a_targetId);
-        dependencies = self.m_dependencies.byLid(sourceId)
-        if (dependencies == None):
-            dependencies = WqVector(int)
-        dependencies.push_back(targetId)
         self.resumeDispatchThread()
         return True
 
-    #bool Package::disconnect(size_t const a_sourceId, uint8_t const a_outputId, uint8_t const a_outputFlags,size_t const a_targetId,
-    #                     uint8_t const a_inputId, uint8_t const a_inputFlags)
     def disconnect(self, sourceModuleId, sourceId, targetModuleId, targetId):
         self.pauseDispatchThread()
-        #Element *const target{ get(a_targetId) };
-        #targetIoNode = self.get(targetId)
         targetIoNode = self.mdl().graphModule().nodes().byLid(targetId)
-        #spaghetti::log::debug("Disconnecting source: {}@{} from target: {}@{}", a_sourceId, static_cast<int>(a_outputId),
-        #                a_targetId, static_cast<int>(a_inputId));
-        #auto &targetInput = a_inputFlags != 2 ? target->m_inputs[a_inputId] : target->m_outputs[a_inputId];
-        #targetInput.id = 0;
-        #targetInput.slot = 0;
-        #targetInput.inFlags = 0;
-        #self.resetIOSocketValue(targetIoNode)
         targetIoNode.setDriveSignal(None)
-
-        #auto it = std::remove_if(std::begin(m_connections), std::end(m_connections), [=](Connection &a_connection) {
-        #return a_connection.from_id == a_sourceId && a_connection.from_socket == a_outputId && a_connection.from_flags == a_outputFlags
-    	#	&& a_connection.to_id == a_targetId && a_connection.to_socket == a_inputId && a_connection.to_flags == a_inputFlags;
-        #m_connections.erase(it, std::end(m_connections));
-        cons = self.findConnections(sourceModuleId, sourceId, targetModuleId, targetId)
-        for conLid in cons:
-            self.m_connections.removeByLid(conLid)
-
-        #auto &dependencies = m_dependencies[a_sourceId];
-        #dependencies.erase(std::find(std::begin(dependencies), std::end(dependencies), a_targetId), std::end(dependencies));
-        deps = self.m_dependencies.byLid(sourceId)
-        if deps != None:
-            self.m_dependencies.remove(deps)
-
         self.resumeDispatchThread()
         return True
 

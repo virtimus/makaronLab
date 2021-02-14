@@ -435,7 +435,7 @@ class GraphViewImpl(qtw.QGraphicsView):
         self._selectedNode.showProperties()
         self._properties.horizontalHeader().setStretchLastSection(True)
 
-    def deleteElement(self):
+    def deleteElement(self): #@todo should be changed to ed->model command and->event->remove->view/impl/model roundtrip
         selectedItems = self.m_scene.selectedItems()
 
         self.m_timer.stop()
@@ -456,6 +456,11 @@ class GraphViewImpl(qtw.QGraphicsView):
                 tfrom = link.fr()
                 tto = link.to()
                 tfrom.disconnect(tto)
+                sig = tfrom.mdl().driveSignal()
+                tto.mdl().removeSignal(sig)
+                del link
+                #model
+
         self.m_timer.start()
         self.showProperties()
 

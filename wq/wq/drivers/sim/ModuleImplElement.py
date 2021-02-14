@@ -2,14 +2,14 @@ from ... import direction, consts
 
 from ...ModuleFactory import IoType, ModuleFactory, ModuleImplBase, ModuleType
 
-from .ionodeflags import IoNodeFlags
+from ...ionodeflags import IoNodeFlags
 
 from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventSignal
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
 import PyQt5.QtGui  as qtg
 
-from .valuetype import ValueType
+from ...valuetype import ValueType
 
 
 from ...EventSignal import EventProps
@@ -23,8 +23,7 @@ class ModuleImplElement(ModuleImplBase):
         #self._name = None (s)
         super(ModuleImplElement, self).__init__(**kwargs)
 
-        self.m_defaultNewInputFlags = IoNodeFlags()
-        self.m_defaultNewOutputFlags = IoNodeFlags()
+
         self._moduleType = kwargs['moduleType'] if 'moduleType' in kwargs else ModuleType.ATOMIC
         
         self.m_package = None #initialisation on driver level
@@ -49,18 +48,7 @@ class ModuleImplElement(ModuleImplBase):
 
 
 
-    #uint8_t defaultNewInputFlags() const { return m_defaultNewInputFlags; }
-    def defaultNewInputFlags(self):
-        return self.m_defaultNewInputFlags
 
-    def setDefaultNewInputFlags(self, flags):
-        self.m_defaultNewInputFlags = flags
-
-    def defaultNewOutputFlags(self):
-        return self.m_defaultNewOutputFlags
-
-    def setDefaultNewOutputFlags(self, flags):
-        self.m_defaultNewOutputFlags = flags
 
 
     #Package *package() const { return m_package; }  
@@ -130,11 +118,27 @@ class ModuleImplElement(ModuleImplBase):
         return ValueType.fromSize(size)
 
             
-
+    def addIoNode(self,dir:direction.Dir, valueType:ValueType, name:str, flags:IoNodeFlags, ioType:IoType) -> int:
+        index = self.nodesByDir(dir).size()
+        if (index+1 > self.defaultFlags(dir).max()):
+            return -1
+        tsize = self._tsizeFromValueType(valueType)
+        io = self.newIO(
+            name = name,
+            direction = dir,
+            size = tsize,
+            ioType = ioType,
+            props = {
+                'ioNodeFlags':flags,
+                'valueType':valueType
+            }
+        )        
+        self.resetIOSocketValue(io)
+        return io.id()
 
     def addInputS(self, valueType:ValueType, name:str, flags:IoNodeFlags, ioType:IoType) -> int:
         index = self.inputs().size()
-        if (index + 1 > self._maxInputs):
+        if (index + 1 > self.maxInputs()):
             return -1
 
         #IOSocket input{};
@@ -183,6 +187,15 @@ class ModuleImplElement(ModuleImplBase):
         #handleEvent(Event{ EventType::eIONameChanged, EventIONameChanged{ OLD_NAME, a_name, a_input, true } });
         self.events().ioNameChanged.emit(EventIONameChanged( OLD_NAME, name, inputId, True))
 
+    def removeIoNode(self, dir:direction.Dir):
+        tinp = self.nodesByDir(dir).last()
+        #self.nodes().remove(tinp)
+        #handleEvent(Event{ EventType::eInputRemoved, EventEmpty{} });
+        inpId = tinp.id()
+        self.removeIO(inpId)
+        del tinp
+        self.events().ioNodeRemoved.emit(EventProps({'nodeId':inpId,'dir':dir}))
+
     def removeInput(self):
         tinp = self.inputs().last()
         #self.nodes().remove(tinp)
@@ -210,7 +223,7 @@ class ModuleImplElement(ModuleImplBase):
 	#  
     def addOutputS(self, valueType:ValueType, name:str, flags:IoNodeFlags, ioType:IoType):
         index = self.outputs().size()
-        if (index + 1 > self._maxOutputs):
+        if (index + 1 > self.maxOutputs()):
             return -1
 
         #IOSocket output{};

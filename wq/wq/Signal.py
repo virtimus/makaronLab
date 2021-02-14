@@ -28,7 +28,8 @@ class Signal(Object):
             self.raiseExc('Size for signal not specified')
         self._value = False if self._size == 1 else 0
         super(Signal, self).__init__(*args, **kwargs)
-        self._id = len(self.parent().graphModule().signals())
+        #self._id = len(self.parent().graphModule().signals())
+        self._id = self.parent().graphModule().signals().nextId()
         self._no = len(self.parent().signals())
         #self.parent()._signals[self.id()]=self
         self.parent().graphModule().addSignal(self)

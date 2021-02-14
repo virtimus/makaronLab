@@ -1,4 +1,4 @@
-from ... import consts, prop, orientation, direction, colors
+from . import consts, prop, orientation, direction, colors
 
 from enum import Enum
 

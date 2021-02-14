@@ -3,7 +3,7 @@ import PyQt5.QtCore as qtc
 import PyQt5.QtGui  as qtg
 
 from ... import colors
-from ..sim.valuetype import ValueType
+from ...valuetype import ValueType
 
 from ... import consts, prop, orientation, direction, colors
 

@@ -28,7 +28,7 @@ from ..driverBase import WqDriverBase
 from enum import Enum
 
 
-from ..sim.valuetype import ValueType
+from ...valuetype import ValueType
 
 from .IoLinkView import IoLinkView
 from .IoNodeView import IoNodeView
@@ -224,7 +224,7 @@ class WqDriver(WqDriverBase):
             result.setWindowTitle(self._self._kwargs['title'])
 
         #result = qtw.QFrame()
-        result.resize(1600, 980)
+        result.resize(1200, 980)
         '''
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)

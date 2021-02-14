@@ -7,6 +7,8 @@ from .moduletype import ModuleType
 
 from enum import Enum
 
+from . import direction
+
 
 from PyQt5.QtGui import QBrush, QColor, QPen
 
@@ -47,15 +49,42 @@ class ModuleView(Object):
             self._inputsView = ModuleView(self,
                 module=Module(self.module(),
                     'moduleInputs',
-                    moduleType=ModuleType.INPUTS
+                    moduleType=ModuleType.IO,
+                    props = {
+                        'dir': direction.LEFT
+                    }
+
                     )
                 )
             self._outputsView = ModuleView(self,
                 module=Module(self.module(),
                     'moduleOutputs',
-                    moduleType=ModuleType.OUTPUTS
+                    moduleType=ModuleType.IO,
+                    props = {
+                        'dir':direction.RIGHT
+                    }
                     )
-                )  
+                )
+            self._topsView = ModuleView(self,
+                module=Module(self.module(),
+                    'moduleTops',
+                    moduleType=ModuleType.IO,
+                    props = {
+                        'dir':direction.TOP
+                    }
+                    )
+                ) 
+            self._downsView = ModuleView(self,
+                module=Module(self.module(),
+                    'moduleDowns',
+                    moduleType=ModuleType.IO,
+                    props = {
+                        'dir':direction.DOWN
+                    }
+                    )
+                )
+               
+
 
         self.wqD().doModuleView_AfterInit()
         if d1: #register in parent
@@ -72,7 +101,7 @@ class ModuleView(Object):
             for tmoduleId in self._module.modules():                
                 if tmoduleId>0: #not self
                     tmodule = self._module.modById(tmoduleId)
-                    if (not tmodule.moduleType() in [ModuleType.INPUTS, ModuleType.OUTPUTS]): # inputs/outputs don't need recursive init - view created
+                    if (not tmodule.moduleType() in [ModuleType.IO]): # inputs/outputs don't need recursive init - view created
                         tModuleView = ModuleView(self,module=tmodule)
         #''
 

@@ -44,13 +44,13 @@ class ConsoleCtrl:
 
     def registerCommand(self, name:str, handler, asGlobal=False):
         assert name not in self._registeredCommands, f'Method with name {name} already registered'
-        assert callable(handler), f'Handler not callable for command:{name} (registration problem)'
+        #assert callable(handler), f'Handler not callable for command:{name} (registration problem)'
         if asGlobal and self._globalNamespace !=None:
             self._globalNamespace[name] = handler
         else:
             self._registeredCommands[name] = handler
 
-
+    #def registerAutoCorrection(self,)
 
 namespace = {} #{'pg': pg, 'np': np}
 text = 'makaronLab CLI'

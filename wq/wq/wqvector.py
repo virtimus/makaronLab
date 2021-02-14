@@ -6,7 +6,7 @@ class WqVector:
         self._cls = cls
         self._list = {}
         self._indexes = {}
-        self._nextId = 0
+        #self._nextId = 0
         pass
 
     def __iter__(self):
@@ -16,7 +16,7 @@ class WqVector:
         return self._list.__next__()
 
     #count of list elements
-    def count(self):
+    def size(self):
         return len(self._list)
 
     def itemCount(self):
@@ -26,14 +26,14 @@ class WqVector:
         return result
 
     
-    def size(self):
-        return self.count()
+    #def count(self):
+    #    return self.count()
 
     def empty(self):
         return self.itemCount()==0
     
     def __len__(self):
-        return self.count()
+        return self.size()
     
     def raiseExc(self, a0):
         raise Exception(a0)
@@ -71,9 +71,13 @@ class WqVector:
             if tkey != None:
                 ind[tkey]=el
 
-    def _updateNextId(self, lid:int):
-        if self._nextId<lid:
-            self._nextId=lid
+    def nextId(self):
+        result = 0 if len(self._list.keys()) == 0 else max(self._list.keys())+1
+        return result 
+
+    #def _updateNextId(self, lid:int):
+    #    if self._nextId<lid:
+    #        self._nextId=lid
 
     def by(self, attr:str, value=None):
         if not attr in self._indexes: #we don't have index - build it
@@ -120,14 +124,15 @@ class WqVector:
             self.raiseExc('[WqVector] append failed - element with id({id}) already in list')
         else:
             self._list[lid]=element
-            self._updateNextId(lid+1)
+            #self._updateNextId(lid+1)
             self._updateIndexes(element) 
 
     def push_back(self, element):
         self._validateCls(element)
-        self._list[self._nextId] = element
-        result = self._nextId
-        self._updateNextId(self._nextId+1)
+        result = self.nextId()
+        self._list[result] = element
+        #result = self._nextId
+        #self._updateNextId(self._nextId+1)
         self._updateIndexes(element)
         return result
 
@@ -140,10 +145,14 @@ class WqVector:
     def remove(self, element,**kwargs):
         result = None
         indexUpdate = not kwargs['noIndexUpdate'] if 'noIndexUpdate' in kwargs else True
+        tlid = None
         for lid in self._list:
             if (element == self._list[lid]):
-                result = self._list[lid]
-                self._list[lid] = None
+                tlid = lid
+        if tlid != None:
+            result = self._list[lid]    
+            self._list[lid] = None
+            del self._list[lid]
         if (result != None and indexUpdate):
             self._rebuildIndexes()
         return result

@@ -17,6 +17,25 @@ class Dir(Enum):
     TOP = (2, "TOP")
     RIGHT = (3, "RIGHT")
     DOWN = (4,"DOWN")
+    def __init__(self, num, label):
+        self._num = num
+        self._label = label
+    
+    def label(self):
+        return self._label
+
+    def oposite(self):
+        if LEFT == self:
+            return RIGHT
+        elif RIGHT == self:
+            return LEFT
+        elif TOP == self:
+            return DOWN
+        elif DOWN == self:
+            return TOP
+        return None
+        
+
 
 LEFT = Dir.LEFT
 TOP = Dir.TOP

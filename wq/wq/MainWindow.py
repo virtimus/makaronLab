@@ -52,7 +52,7 @@ class MainWindow(Element.Element):
         result = self.raiseNoImpl('MainWindow','Bind') if self.isQt() else self._mainWindow.Bind(a0,a1,a2)
         return result
 
-    def CreateStatusBar(self):
+    def buildStatusBar(self):
         result = self._mainWindow.statusBar() if self.isQt() else self._mainWindow.CreateStatusBar()
         return result
 

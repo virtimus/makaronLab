@@ -50,7 +50,8 @@ class Node(Object):
             self.raiseExc(f'Name of Node required')             
                    
         super(Node, self).__init__(*args, **kwargs)
-        self._id = len(self.parent().graphModule().nodes())
+        #self._id = len(self.parent().graphModule().nodes())
+        self._id = self.parent().graphModule().nodes().nextId()
         self._no = len(self.parent().nodes())
         #self.parent()._nodes[self.id()]=self
         self.parent().graphModule().addNode(self)
@@ -141,6 +142,14 @@ class Node(Object):
         if self._driveSignal.size()!=signal.size():
             self.raiseExc('Signal size differs')            
         self._signals.append(lid,signal)
+
+    def removeSignal(self, sig:'Signal'):
+        if sig == None:
+            return
+        self._signals.removeByLid(sig.id())
+        if self.driveSignal()!=None and self.driveSignal().id() == sig.id():
+            self.setDriveSignal(None)
+
 
     def connect(self, targetNodeId, **kwargs):
         pass
@@ -244,6 +253,7 @@ class Module(Object):
         self._modules.append(0,self)
         self._nodes = WqVector()
         #self._nodesByName = {} handled by WqVector
+        self._tabIndex = None
         self._signals = WqVector()
         self._moduleViews = WqVector()
         self._info = None
@@ -266,6 +276,12 @@ class Module(Object):
             self._id = len(self.parent().modules())
             self.parent().addModule(self)
 
+    def tabIndex(self):
+        return self._tabIndex
+    
+    def setTabIndex(self, n:int):
+        self._tabIndex = n
+
     def acceptVisitor(self, visitor):
         visitor.visitModule(self)
 
@@ -277,6 +293,9 @@ class Module(Object):
 
     def name(self):
         return self._name
+
+    def setName(self, n:str):
+        self._name = n
 
     def info(self):
         return self._info
@@ -299,11 +318,20 @@ class Module(Object):
     def view(self):
         return self._view
 
+    #@api
     def nodes(self):
         return self._nodes
+    #@api
+    def nods(self):
+        return self.nodes()
     
+    #@api
     def signals(self):
         return self._signals
+
+    #@api
+    def sigs(self):
+        return self.signals()
 
     def mType(self):
         return self.moduleType()
@@ -321,8 +349,13 @@ class Module(Object):
         result = result.first() if result.size()>0 else None
         return result
 
+    #@api
     def modules(self):#submodules
         return self._modules
+        
+    #@api
+    def mods(self):
+        return self.modules()
 
     def modById(self, id):
         return self._modules.byLid(id)

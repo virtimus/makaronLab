@@ -75,6 +75,8 @@ IoType = NodeIoType
 
 from .EventSignal import EventSignal, EventBase, EventProps
 
+from .ionodeflags import IoNodeFlags
+
 class EventNameChanged:
     def __init__(self, oldName:str, newName:str):
         self._oldName = oldName
@@ -99,10 +101,12 @@ class ModuleImplBase(metaclass=ABCMeta):
         elementNameChanged = EventSignal(EventNameChanged)
         inputAdded = EventSignal(EventProps)
         outputAdded = EventSignal(EventProps)
+        ioNodeAdded = EventSignal(EventProps)
         ioNameChanged = EventSignal(EventIONameChanged)
         inputRemoved = EventSignal(EventProps)
         outputRemoved = EventSignal(EventProps)
         ioTypeChanged = EventSignal(EventIOTypeChanged)
+        ioNodeRemoved = EventSignal(EventProps)
         pass    
     def __init__(self, **kwargs):
         """ Constructor """
@@ -111,12 +115,84 @@ class ModuleImplBase(metaclass=ABCMeta):
         self._self = None
         self._moduleType = None 
         self._events = ModuleImplBase.Events()  
-        self._maxInputs = consts.MAX_INPUTS
-        self._maxOutputs = consts.MAX_OUTPUTS
-        self._minInputs = 1
-        self._minOutputs = 1
-        self._implStr = None #path in lib (if aplies)     
+        self._implStr = None #path in lib (if aplies) 
+        self._defaultFlags = IoNodeFlags()
+        #self._defaultOutputFlags = IoNodeFlags(max=consts.MAX_OUTPUTS)
+        #self._defaultDynamicFlags = IoNodeFlags(max=consts.MAX_DYNAMICS)    
         pass
+
+    #@deprecated-start - replace with IoNodeFlags
+    #uint8_t defaultNewInputFlags() const { return m_defaultNewInputFlags; }
+    #def defaultNewInputFlags(self):
+    #    return self.m_defaultNewInputFlags
+
+    #def setDefaultNewInputFlags(self, flags):
+    #    self.m_defaultNewInputFlags = flags
+
+    #def defaultNewOutputFlags(self):
+    #    return self.m_defaultNewOutputFlags
+
+    #def setDefaultNewOutputFlags(self, flags):
+    #    self.m_defaultNewOutputFlags = flags
+
+    #@deprecated -> defaultFlags(dir).min()
+    def minInputs(self):
+        #return self._minInputs
+        return self.defaultFlags(NodeIoType.INPUT).min()
+    
+    #@deprecated -> limitsIoNodes(dir).max()
+    def maxInputs(self):
+        #return self._maxInputs
+        return self.defaultFlags(NodeIoType.INPUT).max()
+    
+    def minOutputs(self):
+        #return self._minOutputs
+        return self.defaultFlags(NodeIoType.OUTPUT).min()
+        
+    def maxOutputs(self):
+        #return self._maxOutputs
+        return self.defaultFlags(NodeIoType.OUTPUT).max()
+
+
+
+    def setMinInputs(self, min):
+        #if (min > self.maxInputs()):
+        #    return
+        #self._minInputs = min
+        self.defaultFlags(NodeIoType.INPUT).setIfMin(min)
+    
+    def setMaxInputs(self, max):
+        #if (max < self.minInputs()):
+        #    return
+        #self._maxInputs = max
+        self.defaultFlags(NodeIoType.INPUT).setIfMax(max)
+
+    def setMinOutputs(self, min):
+        #if (min > self._maxOutputs):
+        #    return
+        #self._minOutputs = min
+        self.defaultFlags(NodeIoType.OUTPUT).setIfMin(min)
+
+    def setMaxOutputs(self, max):
+        #if (max < self._minOutputs):
+        #    return
+        #self._maxOutputs = max 
+        self.defaultFlags(NodeIoType.OUTPUT).setIfMax(max)
+        
+    def setIconifyingHidesCentralWidget(self, hide):
+        self._iconifyingHidesCentralWidget = hide
+        
+    def iconifyingHidesCentralWidget(self):
+        return self._iconifyingHidesCentralWidget
+    #@deprecated-stop
+
+    def defaultFlags(self,dir:direction.Dir):
+        #if (NodeIoType.INPUT == ioType):
+        #    return self._defaultInputFlags
+        #elif NodeIoType.OUTPUT == ioType:
+        #    return self._defaultOutputFlags
+        #else:
+        return self._defaultFlags
 
     def acceptVisitor(self, v):
         v.visitModuleImpl(self)
@@ -171,13 +247,15 @@ class ModuleImplBase(metaclass=ABCMeta):
     def newIO(self, **kwargs):
         result=self.s().newIO(**kwargs)
         dir = result.dir()
-        if dir == direction.LEFT:
+        if dir in [direction.TOP,direction.DOWN]:
+            self.events().ioNodeAdded.emit(EventProps({'nodeId':result.id()}))
+        elif dir == direction.LEFT:
             self.events().inputAdded.emit(EventProps({'inputId':result.id()}))
         else:
             self.events().outputAdded.emit(EventProps({'outputId':result.id()}))
         return result
 
-    def removeIO(self, id):
+    def removeIO(self, id): #todo event emmiter
         return self.s().removeIO(id)    
 
     def sig(self, name:str):
@@ -190,11 +268,7 @@ class ModuleImplBase(metaclass=ABCMeta):
     def isIconified(self):
         return self._isIconified
 
-    def setIconifyingHidesCentralWidget(self, hide):
-        self._iconifyingHidesCentralWidget = hide
-        
-    def iconifyingHidesCentralWidget(self):
-        return self._iconifyingHidesCentralWidget
+
     
     def nodes(self):
         return self.s().nodes()
@@ -213,41 +287,7 @@ class ModuleImplBase(metaclass=ABCMeta):
         #return self.s().nodes().filterBy('direction',direction.RIGHT)
         return self.nodesByDir(direction.RIGHT)
 
-    def minInputs(self):
-        return self._minInputs
-    
-    def maxInputs(self):
-        return self._maxInputs
-
-
-    
-    def minOutputs(self):
-        return self._minOutputs
-        
-    def maxOutputs(self):
-        return self._maxOutputs
-
-
-
-    def setMinInputs(self, min):
-        if (min > self._maxInputs):
-            return
-        self._minInputs = min
-    
-    def setMaxInputs(self, max):
-        if (max < self._minInputs):
-            return
-        self._maxInputs = max
-
-    def setMinOutputs(self, min):
-        if (min > self._maxOutputs):
-            return
-        self._minOutputs = min
-
-    def setMaxOutputs(self, max):
-        if (max < self._minOutputs):
-            return
-        self._maxOutputs = max   
+  
 
     def reset(self):
         pass 

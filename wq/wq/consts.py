@@ -16,6 +16,8 @@ WQ_IMPL_SIM='sim.default'
 from wx import ID_EXIT
 from wx import ID_ABOUT
 
+MAX_PINS = 256
 MAX_INPUTS = 256
 MAX_OUTPUTS = 256
+MAX_DYNAMICS = 256
  
