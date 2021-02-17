@@ -21,8 +21,10 @@ from . import stypes
 
 from enum import Enum
 
+from ...EventSignal import EventProps
+
 class WqiShowMode(Enum):
-    ICONIFIED = 1
+    COLLAPSED = 1
     EXPANDED = 2
 
 
@@ -81,12 +83,25 @@ class ModuleViewImpl(qtw.QGraphicsItem):
         self.m_packageView = None
         self._rotation = 0
         super(ModuleViewImpl,self).__init__(parent)
+        #self.setContextMenuPolicy(qtc.Qt.ActionsContextMenu)
 
     def s(self):
         return self._self
 
     def moduleView(self): #for use by view elements
         return self._self
+
+    #@api
+    def mdlv(self) -> 'ModuleView':
+        return self._self
+    
+    #@api
+    def mdl(self) -> 'Module':
+        return self._self.module()
+
+    #@api
+    def events(self):
+        return self.mdlv().events()
 
     #@deprecated->nodeViewsByDir
     def inputs(self):
@@ -144,6 +159,12 @@ class ModuleViewImpl(qtw.QGraphicsItem):
     def mType(self):
         return self.module().moduleType()
 
+    def setSelected(self, item):
+        if (self.m_packageView != None):
+            self.m_packageView.setSelectedNode(item)
+            self.m_packageView.showProperties()
+        
+
     #QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange a_change, QVariant const &a_value)
     def itemChange(self, change, value):
         #(void)change;
@@ -154,8 +175,10 @@ class ModuleViewImpl(qtw.QGraphicsItem):
             for item in selectedItems:
                 if (item.type() == NODE_TYPE):
                     lastSelected = item
-            self.m_packageView.setSelectedNode(lastSelected)
-            self.m_packageView.showProperties()
+            if isinstance(lastSelected,ModuleViewImpl) and lastSelected.mdlv()!=None:
+                self.mdlv().setSelectedModule(lastSelected.mdlv().module())
+            else:
+                self.setSelected(lastSelected)
         elif change == qtw.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             POSITION = value #.toPointF()
             X = round(POSITION.x() / 10.0) * 10.0 
@@ -187,14 +210,6 @@ class ModuleViewImpl(qtw.QGraphicsItem):
 
 
     '''!TODO!
-void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *a_event)
-{
-  auto const MODIFIERS = QApplication::keyboardModifiers();
-
-  if (!((MODIFIERS & Qt::ControlModifier) && open())) (m_mode == Mode::eIconified) ? expand() : iconify();
-
-  QGraphicsItem::mouseDoubleClickEvent(a_event);
-}
 
 void Node::advance(int a_phase)
 {
@@ -242,6 +257,8 @@ void Node::advance(int a_phase)
         self._element.events().outputRemoved.connect(self.heOutputRemoved)
         self._element.events().ioNodeAdded.connect(self.heIoNodeAdded)
         self._element.events().ioNodeRemoved.connect(self.heIoNodeRemoved)
+        self._element.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked)
+        #self._element.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked2)
 
 
         INPUTS = self._element.inputs()
@@ -257,7 +274,7 @@ void Node::advance(int a_phase)
                 #addSocket(IOSocketsType::eOutputs, static_cast<uint8_t>(i), NAME, OUTPUTS[i].type,OUTPUTS[i].sItemType);
                 self.addSocket(direction.RIGHT,out.id(), NAME, out.valueType(), out.ioType())
             #self._element.setPosition(self.x(), self.y())
-            self._element.iconify(self._mode == WqiShowMode.ICONIFIED)
+            #self._element.collapse(self._mode == WqiShowMode.COLLAPSED)
             self.setName(self._element.name())
             self.updateOutputs()
         elif mType == ModuleType.IO:
@@ -287,7 +304,7 @@ void Node::advance(int a_phase)
             self._element.setName(name)
             self.setToolTip(f'{name}{self._element.id()}')
         else:
-            self.setToolTip(f'{name}');
+            self.setToolTip(f'{name}')
 
 
     def setIcon(self, icon):
@@ -303,12 +320,13 @@ void Node::advance(int a_phase)
         self._showName = False
         self.calculateBoundingRect()
         
-    def iconify(self):
+    def collapse(self):
         if (self._element != None):
-            self._element.iconify(True)
-            if (self._element.iconifyingHidesCentralWidget() and self._centralWidget != None):
+            #self._element.collapse(True)
+            self._collapsed = True
+            if (self._element.hideCWOnCollapse() and self._centralWidget != None):
                 self._centralWidget.hide()
-        self._mode = WqiShowMode.ICONIFIED
+        self._mode = WqiShowMode.COLLAPSED
         for inp in self.inputs().values():
             inp.hideName()
         for out in self.outputs().values():
@@ -317,9 +335,10 @@ void Node::advance(int a_phase)
 
     def expand(self):
         if (self._element != None):
-            self._element.iconify(False)
+            #self._element.collapse(False)
+            self._collapsed = False
         
-            if (self._element.iconifyingHidesCentralWidget() and self._centralWidget != None):
+            if (self._element.hideCWOnCollapse() and self._centralWidget != None):
                 self._centralWidget.show()
             
         self._mode = WqiShowMode.EXPANDED
@@ -332,8 +351,33 @@ void Node::advance(int a_phase)
 
         self.calculateBoundingRect()
 
+    #@api
+    def switchView(self):
+        if self._mode == WqiShowMode.EXPANDED:
+            self.collapse()
+        else:
+            self.expand()
 
+    def contextMenuEvent(self, event):
+        menu = qtw.QMenu()
+        quitAction = menu.addAction("Quit")
+        quitAction.triggered.connect(self.test)
+        selectedAction = menu.exec(event.screenPos())
+        #action = menu.exec_(self.mapToGlobal(event.pos()))
+        #if action == quitAction:
+        #    qApp.quit()
 
+    def test(self):
+        print('testttyy')
+
+    def mouseDoubleClickEvent(self, event):
+        if event.button() == qtc.Qt.RightButton:
+            return
+        evProps = EventProps({
+            'event': event,
+            'moduleId':self.mdl().id()
+        })
+        self.mdl().events().moduleDoubleClicked.emit(evProps)
 
 
 
@@ -507,6 +551,16 @@ void Node::advance(int a_phase)
         dir = self._getIoDir(event.props('dir'))
         self.removeSocket(dir)
         self.calculateBoundingRect()
+
+    def heModuleDoubleClicked(self,event):
+        MODIFIERS = qtw.QApplication.keyboardModifiers()
+        if MODIFIERS & qtc.Qt.ControlModifier:
+            self.mdlv().showDetailWindow(event=event)
+        else:
+            self.switchView()
+
+    #def heModuleDoubleClicked2(self,event):
+    #    print('dupa')
 
     def _getIoDir(self,dir:direction.Dir):
         result = dir
@@ -923,9 +977,6 @@ auto max_element(Container &a_container, Comparator a_comparator)
 
     def addSocket(self, dir, vid, name, valueType:ValueType, mType:ModuleType):
         ioNode = self._element.nodes().byId(vid)
-        #socket = new SocketItem{ this, ioType, a_type };
-        #socket->setElementId(m_type == Type::eElement ? m_element->id() : 0);
-        #socket->setSocketId(a_id);
         if ioNode.valueType() == None:
             if ioNode.signals().size()>0:
                 sig = ioNode.signals().first()
@@ -947,7 +998,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         ioNodeView.setToolTip(name)
         #ioNodeView.setValueType(valueType);
 
-        if (self._mode == WqiShowMode.ICONIFIED):
+        if (self._mode == WqiShowMode.COLLAPSED):
             ioNodeView.hideName()
         else:
             ioNodeView.showName()
@@ -1004,9 +1055,12 @@ auto max_element(Container &a_container, Comparator a_comparator)
         self._iconPath = ico
         self._icon.load(ico)
 
-    def findMaxNameWidth(self,coll):
-        #!TODO!
-        return 5
+    def findMaxNameWidth(self,coll:WqVector):
+        result = None
+        if (coll!=None and coll.size()>0):
+            result = coll.by('nameWidth',coll.byModifier.MAX)
+        result = result.nameWidth() if result!=None else 5
+        return result
 
 
 

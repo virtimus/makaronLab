@@ -101,13 +101,13 @@ class GraphViewImpl(qtw.QGraphicsView):
         self.m_inputs.setElement(self.m_package)
         self.m_inputs.setIcon(":/logic/inputs.png")
         self.m_inputs.setPackageView(self)
-        self.m_inputs.iconify()
+        self.m_inputs.collapse()
         #self.m_outputs.setType(NodeType::eOutputs);
         self.m_outputs.setPos(self.m_package.outputsPosition().x(), self.m_package.outputsPosition().y())
         self.m_outputs.setElement(self.m_package)
         self.m_outputs.setIcon(":/logic/outputs.png")
         self.m_outputs.setPackageView(self)
-        self.m_outputs.iconify()
+        self.m_outputs.collapse()
 
         self.m_packageNode.setInputsNode(self.m_inputs)
         self.m_packageNode.setOutputsNode(self.m_outputs)
@@ -299,7 +299,7 @@ class GraphViewImpl(qtw.QGraphicsView):
                 package.setPackagePath(file)
                 #//m_dragNode->setPackagePath(file);
             self.m_dragNode.setElement(element)
-            self.m_dragNode.iconify()
+            self.m_dragNode.collapse()
 
             self.m_nodes.append(element.id(),self.m_dragNode)
             #self.m_nodesModel.add(self.m_dragNode);
@@ -427,7 +427,6 @@ class GraphViewImpl(qtw.QGraphicsView):
     def center(self):
         self.centerOn(0.0, 0.0)
 
-
     def showProperties(self):
         self._properties.clear()
         self._properties.setColumnCount(2)
@@ -499,3 +498,6 @@ class GraphViewImpl(qtw.QGraphicsView):
     def updateGrid(self, scale):
         newDensity = GridDensity.LARGE if scale >= 0.85 else GridDensity.SMALL 
         self._gridDensity = newDensity
+
+    def setSelected(self, item):
+        pass

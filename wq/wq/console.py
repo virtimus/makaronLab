@@ -23,10 +23,13 @@ def isArgHelp(**kwargs):
     return 'help' in kwargs and kwargs['help']==True
 
 
-
+from .EventSignal import EventBase, EventSignal, EventProps
 
 
 class ConsoleCtrl:
+    class Events(EventBase):
+        pass
+
     def __init__(self, parent, **kwargs):
         self._parent = parent
         self._registeredCommands = {'registerCommand':self.registerCommand}

@@ -50,7 +50,8 @@ class ValueType(Enum):
             tsize = 64
         return tsize
 
-        
+    def fits(self,value):
+        return True    
 
     def number(self):
         return self._number

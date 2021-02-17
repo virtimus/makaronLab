@@ -189,6 +189,45 @@
 		(*value) &= ~(1UL << bitPos);
 		}
 
+void C_getBinStr16(uint16_t value, char* buff){
+	  short v;
+	  for (int i=0;i<16;i++){
+		  v = C_getBit16(value,i);
+		  buff[15-i]=(v>0)?'1':'0';
+	  }
+	  buff[16]='\x0';
+}
+
+void C_getBinStr8(uint8_t value, char* buff){
+	  //char buff[9];
+	  short v;
+	  for (int i=0;i<8;i++){
+		  v = C_getBit8(value,i);
+		  buff[7-i]=(v>0)?'1':'0';
+	  }
+	  buff[8]='\x0';
+	  //return &buff;
+}
+
+char* C_getHexStr16(uint16_t value){
+	//std::stringstream sstream;
+	//sstream << std::setfill('0') << std::setw(4) << std::hex << value;
+	char output[6];
+	sprintf(output,"%04x",value);
+	//std::string result = output;
+	return &output;
+	}
+
+char* C_getHexStr8(uint8_t value){
+	//std::stringstream sstream;
+	//sstream << std::setfill('0') << std::setw(2) << std::hex << value;
+	//std::string result = sstream.str();
+	char output[4];
+	sprintf(output,"%02x",value);
+	//std::string result = output;
+	return &output;
+	}
+
  void wq6502_init(wq6502Info_t* info){
 	size_t iv = init();
 	//wq6502Info_t info;
@@ -197,9 +236,15 @@
 	return info;
 }
 
-uint64_t wq6502_calc(size_t iv, uint64_t pv){
 
+
+uint64_t wq6502_calc(size_t iv, uint64_t pv){
+	char buff[20];
 	wq6502Info_t* pb= &wq6502a.buf[iv];
+
+#ifdef Q3C_CLASSIC_6502
+	return m6502_tick(&pb->cpu, pv);
+#else
 
 	//C65Pins _pins;
 
@@ -208,25 +253,26 @@ uint64_t wq6502_calc(size_t iv, uint64_t pv){
 const bool pinPHI2 = C_pins_getPin(pv,CPINS_PHI2);
 const bool clockDelta =(pinPHI2 != pb->prevClock);
 
-const bool clockRise = true;//(pinPHI2 && !wq6502a.buf[iv].prevClock);
+const bool clockRise = (pinPHI2 && !wq6502a.buf[iv].prevClock);//true;//
 wq6502a.buf[iv].prevClock = pinPHI2;
-const bool pinRDY = true; //C_pins_getPin(pv,CPINS_RDY);
-
+const bool pinRDY = C_pins_getPin(pv,CPINS_RDY);//true; //
 
 const bool pinRESB = C_pins_getPin(pv,CPINS_RESB);
 const bool resetRise = (pinRESB && !wq6502a.buf[iv].prevResb);
+
 if (resetRise){
 	  //C65::consoleAppendF("C65C02: pin RESB rise - ===RESET=== ...",NULL);
 	  // full reset sequence as shown for 6520C
 
 	  //set reset PIN in m6502
-    auto bp = M6502_PIN_RES;
+    short bp = M6502_PIN_RES;
     C_setBit(&wq6502a.buf[iv].pins,bp);
 
 }
+
 pb->prevResb = pinRESB;
 //bool pinA23 = C_pins_getPin(pv,CPINS_A23);
-const bool outRESB = C_pins_getPin(pv,CPINS_RESB);
+//const bool outRESB = C_pins_getPin(pv,CPINS_RESB);
 //spaghetti::log::info("pin PHI2 is:{}",pinPHI2);
 //spaghetti::log::info("pin RDY is:{}",pinRDY);
 //spaghetti::log::info("pin RESB is:{}",pinRESB);
@@ -239,10 +285,13 @@ if (pinRDY){
 
 			uint8_t val;
 			//uint64_t pinsIn = pins;
+
 			pb->pins = m6502_tick(&pb->cpu, pb->pins);
 			//uint64_t pinsOut = pins;
 			const uint16_t addr = M6502_GET_ADDR(wq6502a.buf[iv].pins);
 			if (wq6502a.buf[iv].pins & M6502_RW) { /* memory read */
+
+				C_pins_setPin(&pv, CPINS_RWB,true);
 
 				val = wq6502a.buf[iv].RAM[addr];
 
@@ -252,19 +301,30 @@ if (pinRDY){
 					val=wq6502a.buf[iv].ROM[taddr];
 				}
 
+				printf("R ");
+
 				//spaghetti::log::info("{} {} {} {} {}",getBinStr(address),getBinStr(*value),getHexStr(address),"r",getHexStr(*value));
 				//consoleAppendF("onRead6502: {} {} {} {} {}",getBinStr(addr).c_str(),getBinStr(val).c_str(),getHexStr(addr).c_str(),"r",getHexStr(val).c_str());
 
 				M6502_SET_DATA(wq6502a.buf[iv].pins, val);
+
 			}
 			else { /* memory write */
+
+				C_pins_setPin(&pv, CPINS_RWB,false);
 
 				val = M6502_GET_DATA(wq6502a.buf[iv].pins);
 
 				//consoleAppendF("onWrite6502: {} {} {} {} {}",getBinStr(addr).c_str(),getBinStr(val).c_str(),getHexStr(addr).c_str(),"W",getHexStr(val).c_str());
 
 				wq6502a.buf[iv].RAM[addr] = val;
+
+				printf("W ");
 			}
+			C_getBinStr16(addr,buff);
+			printf(" ADR:%s",buff);
+			C_getBinStr8(val,buff);
+			printf(" DTA:%s\n",buff);
 
         for (int i=0;i<16;i++){
             const bool bit = (C_getBit16(addr,i)==1);
@@ -275,7 +335,7 @@ if (pinRDY){
             const bool bit = (C_getBit8(val,i)==1);
             C_pins_setPin(&pv,CPINS_D0+i,bit);
         }
- 		//C_pins_setPin(&pv, 63,true);
+
 
 	  } else {
 		  //spaghetti::log::info("C65C02: waiting clock tick...");
@@ -284,7 +344,9 @@ if (pinRDY){
 	  // halted state
 	  //spaghetti::log::info("C65C02: in HALTED state.");
 }
+
 	return pv;
+#endif
 }// calculate
 
 //} namespace wq6502

@@ -26,5 +26,10 @@ int pyDictSetObject(PyObject *dict, const char *key, PyObject *pyVal){
     return PyDict_SetItemString(dict, key, pyVal);
 }
 
+PyObject * pyDictGetItem(PyObject *dict,const char *key){
+    return PyDict_GetItemString(dict, key);
+}
+
+
 
 #endif //WQ_WQC_H

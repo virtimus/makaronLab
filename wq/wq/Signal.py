@@ -1,10 +1,13 @@
-
+from . import consts
 from .Object import Object
 #from .Pin import Pin
 from .Module import Module
 from .Module import Node
 
 from .wqvector import WqVector
+
+
+from .valuetype import ValueType
 
 class Signal(Object):
     def __init__(self, *args, **kwargs):
@@ -26,6 +29,8 @@ class Signal(Object):
         self._size = kwargs['size'] if 'size' in kwargs else None
         if self._size == None:
             self.raiseExc('Size for signal not specified')
+        assert self._size<=consts.MAX_SIGNAL_SIZE, f'Max signal size overflow({self._size})'
+        self._valueType = ValueType.fromSize(self._size)
         self._value = False if self._size == 1 else 0
         super(Signal, self).__init__(*args, **kwargs)
         #self._id = len(self.parent().graphModule().signals())
@@ -53,16 +58,30 @@ class Signal(Object):
     def setSize(self, nsize:int):
         if self._size == nsize:
             return
+        assert nsize<=consts.MAX_SIGNAL_SIZE, f'Max signal size overflow({nsize})'
         self._size = nsize
+        self._valueType = ValueType.fromSize(self._size)
         #for node in self._nodes.values():!TODO! disconnect?
         #    node.setSize()
 
+    def valueType(self):
+        return self._valueType 
+        
     def value(self):
         return self._value
 
+    def valueAsUInt(self):
+        result = self._value 
+        if self.size()<2:
+            result = 1 if self._value else 0
+        return result
+
     def setValue(self, newVal):
         if newVal != self._value:
-            self._value = newVal
+            if newVal != None and self._valueType.fits(newVal):
+                self._value = newVal
+            else:
+                assert False, f'Value:{newVal} overflows signal size:{self._size}'
 
     def isOn(self):
         result = self._value if self.size()==1 else self._value>0

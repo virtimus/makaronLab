@@ -21,6 +21,7 @@ from ... import consts, prop, orientation, direction, colors
 from ...moduletype import ModuleType
 from ...nodeiotype import NodeIoType
 from ...wqvector import WqVector
+from ...EventSignal import EventProps
 
 from ..driverBase import WqDriverBase
 
@@ -40,11 +41,41 @@ from .GraphViewImpl import GraphViewImpl
 #    pass 
 
 
+class Q3Scene(qtw.QGraphicsScene):
+    def __init__(self,*args, **kwargs):
+        super(Q3Scene,self).__init__(*args, **kwargs)
+
+    def contextMenuEvent(self, event):
+        # Check it item exists on event position
+        item = self.itemAt(event.scenePos(),qtg.QTransform()) #.toPoint(),qtg.QTransform.TxNone)
+        if item:
+            # Try run items context if it has one
+            try:
+                item.contextMenuEvent(event)
+                return
+            except:
+                pass
+
+        menu = qtw.QMenu()
+        action = menu.addAction('ACTION')
+
+class DetailWindowBaseImpl(qtw.QWidget):
+    def __init__(self,parent):
+        self._parent=parent
+        super(qtw.QWidget, self).__init__()
+
+
+    def resizeEvent(self, event):
+        self._parent.parent().events().detailWindowResized.emit(EventProps({'event':event}))
+        #print(f'WinResizeEV{dir(event)}')
+
+    #windowDidResize
 class WqDriver(WqDriverBase):
 
     def doModuleView_Init(self):
         if self.s().isRoot():#@s:PackageView::PackageView
-            sc = qtw.QGraphicsScene(self.pimpl())            
+            #sc = qtw.QGraphicsScene(self.pimpl()) 
+            sc = Q3Scene(self.pimpl())           
             #result = qtw.QGraphicsView(sc,self.pimpl())
             package = self.s().module().impl() 
             result = GraphViewImpl(sc,self.pimpl(),self.p(), package) #'''EditorFrame'''
@@ -85,75 +116,14 @@ class WqDriver(WqDriverBase):
             self.s()._inputsView.setProp(prop.PositionY,0.0)
             self.s()._outputsView.setProp(prop.PositionX,400.0)
             self.s()._outputsView.setProp(prop.PositionY,0.0)
-            #tImpl.__class__ = MainWindow
-            ##tImpl.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
-            ##tImpl.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing | QPainter.HighQualityAntialiasing | QPainter.SmoothPixmapTransform)
-            ##tImpl.setDragMode(QGraphicsView.ScrollHandDrag)
-            ##tImpl.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-            ##tImpl.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-            ##tImpl.setResizeAnchor(QGraphicsView.NoAnchor)
-            ##tImpl.setTransformationAnchor(QGraphicsView.AnchorViewCenter)
-            ##tImpl.setOptimizationFlags(QGraphicsView.DontSavePainterState | QGraphicsView.DontAdjustForAntialiasing)
-            ##tImpl.setObjectName("PackageView")
 
-            #m_nodesProxyModel->setSourceModel(m_nodesModel);
-
-            ##tImpl._scene.setItemIndexMethod(QGraphicsScene.NoIndex)
-            ##tImpl._scene.setSceneRect(-32000, -32000, 64000, 64000)
-            ##tImpl._scene.setObjectName("PackageViewScene")
-
-            ##brush = QBrush(QColor(169, 169, 169, 32))
-            ##tImpl._scene.setBackgroundBrush(brush)
-
-            #m_inputs->setPropertiesTable(m_properties);
-            #m_outputs->setPropertiesTable(m_properties);
-
-            #m_packageNode->setPropertiesTable(m_properties);
-
-            ##tImpl.setAcceptDrops(True)
-            '''
-            using NodeType = Node::Type;
-            m_inputs->setType(NodeType::eInputs);
-            m_inputs->setPos(m_package->inputsPosition().x, m_package->inputsPosition().y);
-            m_inputs->setElement(m_package);
-            m_inputs->setIcon(":/logic/inputs.png");
-            m_inputs->setPackageView(this);
-            m_inputs->iconify();
-            m_outputs->setType(NodeType::eOutputs);
-            m_outputs->setPos(m_package->outputsPosition().x, m_package->outputsPosition().y);
-            m_outputs->setElement(m_package);
-            m_outputs->setIcon(":/logic/outputs.png");
-            m_outputs->setPackageView(this);
-            m_outputs->iconify();
-
-            m_packageNode->setInputsNode(m_inputs);
-            m_packageNode->setOutputsNode(m_outputs);
-            m_packageNode->setElement(m_package);
-
-            if (m_package->name().empty()) {
-            auto &registry = /*Registry::get()*/m_editor->RegistryGet();
-            m_package->setName(registry.elementName("logic/package"));
-            }
-
-            m_scene->addItem(m_inputs);
-            m_scene->addItem(m_outputs);
-
-            //m_timer.setInterval(1000 / 60);
-            //m_timer.setInterval(5000);
-            m_timer.setInterval(1);
-
-            connect(&m_timer, &QTimer::timeout, [this]() { m_scene->advance(); });
-            m_timer.start();
-
-            if (m_standalone) m_package->startDispatchThread();
-            '''
         else: #Node::Node
             tImpl._nameFont.setFamily("Consolas")
             tImpl._nameFont.setPointSize(8)
 
             tImpl.setFlags(qtw.QGraphicsItem.ItemIsMovable | qtw.QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemSendsGeometryChanges)
 
-            tImpl.iconify()
+            tImpl.collapse()
             tImpl.setGraphView(self.pimpl())
             pass #nop
         self.callAfterInit(tImpl)
@@ -296,6 +266,7 @@ class WqDriver(WqDriverBase):
         result.setSizePolicy(sizePolicy)
         '''
         #result.setMinimumSize(QtCore.QSize(2080, 1630))
+        result.setTabsClosable(True)
         return result
 
     def doTabPanel_AddTab(self, obj, title):
@@ -370,6 +341,15 @@ class WqDriver(WqDriverBase):
         result = self.impl().setFont(font)
         return result 
         
+
+    def doDetailWindow_Init(self):
+        result = DetailWindowBaseImpl(self.s())
+        result._self = self.s()
+        return result
+
+    def doDetailWindow_Show(self):
+        result = self.impl().show()  
+        return result
 
 
 

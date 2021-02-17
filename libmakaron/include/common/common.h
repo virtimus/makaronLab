@@ -1,6 +1,8 @@
 #pragma once
 #define GLFW_INCLUDE_NONE
+#ifndef Q3C_EXCL_GLFW
 #include "GLFW/glfw3.h"
+#endif
 //''#include "flextgl/flextGL.h"
 #ifndef CHIPSCPC_IMPL
 #define COMMON_IMPL
@@ -17,7 +19,9 @@
 #endif
 
 #include "extools/sokol/sokol_app.h"
+#ifndef Q3C_EXCL_AUDIO
 #include "extools/sokol/sokol_audio.h"
+#endif
 #include "extools/sokol/sokol_args.h"
 #include "extools/sokol/sokol_time.h"
 #include "clock.h"

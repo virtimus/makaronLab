@@ -63,10 +63,13 @@ class ModuleFactory:
     @classmethod
     def createModule(cls, modulePath:str):
         impla = modulePath.split(':')
-        lib = ModuleFactory.loadLibrary(impla[0])
-        assert lib != None, f'Problem with loading module library type:{impla[0]}'
-        result = lib.createModule(impla[1])
-        assert result != None, f'Problem with loading module:{impla[1]} from library type:{impla[0]}'
+        libName = impla[0]
+        moduleName = impla[1]
+        moduleName = moduleName[1:] if moduleName != None and moduleName.startswith('/') else moduleName
+        lib = ModuleFactory.loadLibrary(libName)
+        assert lib != None, f'Problem with loading module library type:{libName}'
+        result = lib.createModule(moduleName)
+        assert result != None, f'Problem with loading module:{moduleName} from library type:{libName}'
         result._implStr = modulePath
         return result
 
@@ -107,11 +110,13 @@ class ModuleImplBase(metaclass=ABCMeta):
         outputRemoved = EventSignal(EventProps)
         ioTypeChanged = EventSignal(EventIOTypeChanged)
         ioNodeRemoved = EventSignal(EventProps)
+        moduleDoubleClicked = EventSignal(EventProps)
+        detailWindowResized = EventSignal(EventProps)
         pass    
     def __init__(self, **kwargs):
         """ Constructor """
-        self._isIconified = False 
-        self._iconifyingHidesCentralWidget = False 
+        #self._isCollapsed = False todel 
+        self._hideCWOnCollapse = False 
         self._self = None
         self._moduleType = None 
         self._events = ModuleImplBase.Events()  
@@ -179,11 +184,11 @@ class ModuleImplBase(metaclass=ABCMeta):
         #self._maxOutputs = max 
         self.defaultFlags(NodeIoType.OUTPUT).setIfMax(max)
         
-    def setIconifyingHidesCentralWidget(self, hide):
-        self._iconifyingHidesCentralWidget = hide
+    def setHideCWOnCollapse(self, hide):
+        self._hideCWOnCollapse = hide
         
-    def iconifyingHidesCentralWidget(self):
-        return self._iconifyingHidesCentralWidget
+    def hideCWOnCollapse(self):
+        return self._hideCWOnCollapse
     #@deprecated-stop
 
     def defaultFlags(self,dir:direction.Dir):
@@ -202,6 +207,9 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     def mdl(self):
         return self._self
+
+    def mdlv(self):
+        return self._self.view()
 
     def events(self):
         return self._events
@@ -262,11 +270,17 @@ class ModuleImplBase(metaclass=ABCMeta):
         ts = self.s()
         return ts.sigByName(name) 
 
-    def iconify(self, iconify):
-        self._isIconified = iconify
+    def signals(self):
+        return self.mdl().signals()
+    
+    def sigs(self):
+        return self.signals()
 
-    def isIconified(self):
-        return self._isIconified
+    #def collapse(self, n):
+    #    self._isCollapsed = n
+
+    #def isCollapsed(self):
+    #    return self._isCollapsed
 
 
     

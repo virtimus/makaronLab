@@ -14,13 +14,18 @@ from PyQt5.QtGui import QBrush, QColor, QPen
 
 from PyQt5.QtCore import QPointF
 
+from .DetailWindow import DetailWindow
 
+import threading
 
 
 class ModuleView(Object):
     def __init__(self, *args, **kwargs):
         #self._gridDensity = None
-        self._selectedModule = None 
+        self._selectedModule = None
+        self._parentTab = None 
+        self._detailWindow = None
+        self._avcThread = None
         #self._scheduledScalings = None;  
         args = self._loadInitArgs(args)
         d1 = isinstance(args[0],ModuleView)
@@ -104,6 +109,28 @@ class ModuleView(Object):
                     if (not tmodule.moduleType() in [ModuleType.IO]): # inputs/outputs don't need recursive init - view created
                         tModuleView = ModuleView(self,module=tmodule)
         #''
+        if self.module().impl()!=None and hasattr(self.module().impl(),'__afterViewCreated__'):
+            ac = getattr(self.module().impl(),'__afterViewCreated__')
+            if (callable(ac)):
+                ac()
+                #self.startInThread(ac)
+
+    #def startInThread(self, tocall):
+    #    self._avcThread = threading.Thread(target=tocall) #std::thread(&Package::dispatchThreadFunction, this);
+    #    self._avcThread.start()
+
+    def events(self):
+        return self.module().events()
+
+    def parentTab(self):
+        return self._parentTab
+
+    def setParentTab(self, tab):
+        self._parentTab = tab
+
+    def tabIndex(self):       
+        result = self._parentTab.parent().indexOf(self._parentTab) if self._parentTab != None and self._parentTab.parent()!=None else None
+        return result
 
     def acceptVisitor(self, v):
         v.visitModuleView(self)  
@@ -148,9 +175,21 @@ class ModuleView(Object):
         return result
     
     #@s:PackageView::setSelectedNode
-    def setSelectedModule(self, module):
-        self._selectedModule = module if module != None else self.module()
+    #@api
+    def setSelectedModule(self, module:Module):
+        tmod = module if module != None else self.module()
+        if tmod.view()!=None:
+            self.impl().setSelected(tmod.view().impl())
+            if tmod.view().detailWindow()!=None:
+                if tmod.view().detailWindow().impl().isVisible():
+                    tmod.view().detailWindow().show()
+                    tmod.view().detailWindow().impl().activateWindow()
+        self._selectedModule = tmod
         return self._selectedModule
+    
+    #@api
+    def modsel(self,module:Module):
+        return self.setSelectedModule(module)
 
     #@s:PackageView::showProperties()
     def showProperties(self):
@@ -170,7 +209,24 @@ class ModuleView(Object):
 #    def wheelEvent(self, event):
 #        self.wqD().doModuleView_wheelEvent(event)
 
+    def detailWindow(self):
+        return self._detailWindow
+
+    def showDetailWindow(self,**kwargs):
+        tevent = self._initHandleArg('event',
+            kwargs = kwargs,
+            default = None,
+            desc = 'Optional event param'
+            )
+        if self._detailWindow == None:
+            self._detailWindow = DetailWindow(**kwargs) if self._detailWindow == None else self._detailWindow
+        self._detailWindow.setEvent(tevent)
+        self._detailWindow.show()
+        self.module().graphModule().view().setSelectedModule(self.module())
 
 
-  
+
+            
+
+
 

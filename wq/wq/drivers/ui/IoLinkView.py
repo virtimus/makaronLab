@@ -29,7 +29,7 @@ class IoLinkView(qtw.QGraphicsPathItem):
         ##self._isSignalOn = False
         self._shape =  qtg.QPainterPath() #QPainterPath m_shape{};
         self._path = qtg.QPainterPath() #QPainterPath m_path{};
-        self._dashOffset = None #/0.0 #qreal
+        self._dashOffset = 0.0 #None #/0.0 #qreal
         self._tmp = {}
         '''
          QRectF m_boundingRect{};

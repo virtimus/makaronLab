@@ -10,7 +10,7 @@
 	#include <m6502.h>
 
 	//extern uint8_t ROM[];
-
+#define Q3C_CLASSIC_6502
 		
 
     #define M6502_PIN_A0 0
@@ -21,9 +21,12 @@
     #define M6502_PIN_NMI 27
     #define M6502_PIN_RDY 28
     #define M6502_PIN_RES 30
-
+#ifndef Q3C_CLASSIC_6502
 	//pins order on api level
 	#define CPINS_RDY 1
+	#define CPINS_IRQB 3
+	#define CPINS_NMIB 5
+	#define CPINS_SYNC 6
 	//#define CPINS_A23 31;
 	#define CPINS_RESB 32
 	#define CPINS_PHI2O 33
@@ -32,7 +35,18 @@
 	#define CPINS_D0 39
 
 	#define CPINS_PHI2 35 //PHI2
-
+	#define CPINS_RWB 38
+#else//Q3C_CLASSIC_6502
+	#define CPINS_A0 M6502_PIN_A0 
+	#define CPINS_D0 M6502_PIN_D0
+	#define CPINS_RWB M6502_PIN_RW
+	#define CPINS_SYNC M6502_PIN_SYNC
+	#define CPINS_IRQB M6502_PIN_IRQ
+	#define CPINS_NMIB M6502_PIN_NMI
+	#define CPINS_RDY M6502_PIN_RDY
+	#define CPINS_RESB M6502_PIN_RES
+	#define CPINS_PHI2 62 //PHI2 
+#endif//Q3C_CLASSIC_6502
 
 /*	struct wq6502_CPins {
 		using siType = spaghetti::SocketItemType;

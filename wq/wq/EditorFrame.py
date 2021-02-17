@@ -77,6 +77,7 @@ class EditorFrame(MainWindow):
         self._tabPanel = TabPanel(pnl)
         layout.addElement(self._tabPanel)
         self._tabPanel.impl().currentChanged.connect(self.onTabChanged)
+        self._tabPanel.impl().tabCloseRequested.connect(self.onTabCloseRequested)
         #tab = Tab(self._tabPanel)
         #tab2 = Tab(self._tabPanel)
         #tab3= Tab(self._tabPanel)
@@ -89,7 +90,17 @@ class EditorFrame(MainWindow):
         pnl.impl().setLayout(hlayout.impl())
 
     def onTabChanged(self, event=None):
-        self._moduleViewIndex = event   
+        self._moduleViewIndex = event
+
+    def onTabCloseRequested(self, event=None):
+        index = event
+        lmodule = self.rootModules().filterBy('tabIndex',index)
+        module =lmodule.first()
+        module = self.rootModules().remove(module) 
+        moduleView = module.view()
+        self._tabPanel.impl().removeTab(index)
+        del moduleView
+
 
     def buildLibraries(self):
         #load libraries
@@ -302,15 +313,17 @@ class EditorFrame(MainWindow):
             moduleView.showProperties()
             title = module.name()
             self._moduleViewIndex = self._tabPanel.addTab(moduleView, title)
-            module.setTabIndex(self._moduleViewIndex)
-            self.rootModules().append(self._moduleViewIndex,module)
+            tabWidget = self._tabPanel.impl().widget(self._moduleViewIndex)
+            moduleView.setParentTab(tabWidget)
+            self.rootModules().append(self.rootModules().nextId(),module)
         self._tabPanel.impl().setCurrentIndex(self._moduleViewIndex)
         self._moduleView = module.view()
         return self._moduleViewIndex
                       
 
     def newModuleView(self):
-        module = Module(self, f"New-{self.rootModules().nextId()}", moduleType=ModuleType.GRAPH)
+        tnextId = self.rootModules().nextId()
+        module = Module(self, f"New-{tnextId}", moduleType=ModuleType.GRAPH, id=tnextId)
         self.openModuleView(module)
 
     _firstTime = True 
@@ -385,7 +398,7 @@ class EditorFrame(MainWindow):
         return self.rootModuleByInd(self.rootModuleSelectedIndex())
 
     #@api
-    def rootModules(self):
+    def rootModules(self) -> WqVector(Module):
         return self._rootModules
 
     #@api
@@ -457,8 +470,22 @@ class EditorFrame(MainWindow):
         graphModule1 = rootModule.newModule('graphModule1',
             #impl = 'file:/tmp/test'
             moduleType = ModuleType.GRAPH
-            )                
-
+            )
+        
+        from .ModuleLibraryWqc import ModuleLibraryWqc
+        '''
+        m6502Module = rootModule.newModule('m6502Module',
+            #type=ModuleType.ATOMIC,
+            impl='wqc:/c6502'
+            )
+        '''
+        #'''
+        cpcModule = rootModule.newModule('cpcModule',
+            #type=ModuleType.ATOMIC,
+            impl='wqc:/CPC'
+            )
+        #'''
+        
         #ff = graphModule1.name()
         #self._nestedModule = graphModule1
         #'''

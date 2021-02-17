@@ -1,6 +1,9 @@
+from enum import Enum
+
 
 #WqVector is a king of a list which can be consifered as sequence of elements with unchangable id
 #The list have some additional features like adding indexes and search by them
+
 class WqVector:
     def __init__(self, cls=None):
         self._cls = cls
@@ -79,14 +82,26 @@ class WqVector:
     #    if self._nextId<lid:
     #        self._nextId=lid
 
+    class byModifier(Enum):
+        MAX = 1
+
     def by(self, attr:str, value=None):
         if not attr in self._indexes: #we don't have index - build it
             self._buildIndex(attr)  
         result = self._indexes[attr]
         if value == None:
             return result
+        elif isinstance(value, self.byModifier):
+            if value == self.byModifier.MAX:
+                tmax = max(result.keys()) if len(result)>0 else None
+                result = result[tmax] if tmax != None else None
+                return result
+            else:
+                assert False, f'byModifier{value} not implemented'
         result = result[value] if value in result else None
         return result
+
+
 
     def filterBy(self, attr:str, value):
         result = WqVector(self._cls)
@@ -151,8 +166,8 @@ class WqVector:
                 tlid = lid
         if tlid != None:
             result = self._list[lid]    
-            self._list[lid] = None
-            del self._list[lid]
+            self._list[tlid] = None
+            del self._list[tlid]
         if (result != None and indexUpdate):
             self._rebuildIndexes()
         return result

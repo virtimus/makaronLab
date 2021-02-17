@@ -34,8 +34,8 @@ class IoNodeView(qtw.QGraphicsItem):
         super(IoNodeView, self).__init__(parent)
         self.m_node = parent
         self._parent = parent
-        self._ioType = ionode.ioType()
-        self.m_type = self._ioType #deprecated
+        #self._ioType = ionode.ioType()
+        #self.m_type = self._ioType #deprecated, redundant
         self._ionode = ionode
         self._self = ionode
         self._dir = dir
@@ -68,8 +68,13 @@ class IoNodeView(qtw.QGraphicsItem):
         self._links = WqVector(IoLinkView)
         self.setValueType(ionode.valueType())
 
+    #@api
     def mdl(self) -> 'IoNode':
         return self._ionode
+
+    #@api
+    def ioType(self):
+        return self.mdl().ioType()
 
     def isSignalOn(self):
         return self.mdl().isSignalOn()
@@ -149,10 +154,21 @@ class IoNodeView(qtw.QGraphicsItem):
         #Q_UNUSED(a_option);
         #Q_UNUSED(a_widget);
         rect = self.boundingRect()
+        tiotype = self.ioType()
+        tdir = self.dir()
+        #effectivedir do not apply here because of rotation is handled by scene
         isInvert = self._parent.isInvertH()
-        startAngle = 90*16 if isInvert else -90 * 16
-        if self.module().mType() == ModuleType.IO and self.dir() in [direction.TOP,direction.DOWN]:
-            startAngle = 0*16 if isInvert else -180 * 16 
+        isInvertN = isInvert 
+        if (tiotype == NodeIoType.OUTPUT and tdir==direction.LEFT) or (tiotype == NodeIoType.INPUT and tdir==direction.RIGHT):
+            isInvertN = not isInvert
+        startAngle = 90*16 if isInvertN else -90 * 16
+        startAngleOutside = 90*16 if isInvertN else -90 * 16
+        startAngleInside = -90 * 16  if isInvertN else 90*16
+        if self.module().mType() == ModuleType.IO:
+            if self.dir() in [direction.TOP,direction.DOWN]:
+                startAngle = 0*16 if isInvert else -180 * 16
+                startAngleOutside = 0*16 if isInvert else -180 * 16
+                startAngleInside = -180 * 16  if isInvert else 0*16                 
         spanAngle = 180 * 16
 
         pen = qtg.QPen(colors.C.SOCKETBORDER.qColor())
@@ -169,29 +185,30 @@ class IoNodeView(qtw.QGraphicsItem):
             brush.setColor(self._colorSignalOff)
         #pens = qtg.QPen(brush.color())
         pens = self._colorSignalOn if self.isSignalOn() else self._colorSignalOff
-        if (self._outHover and self.m_type == NodeIoType.OUTPUT):
+        if (self._outHover and tiotype == NodeIoType.OUTPUT):
             pens = colors.C.SOCKETHOVER.qColor()
-        #//  else if (m_type == Type::eInput)
+        #//  else if (tiotype == Type::eInput)
         #//    brush.setColor(config.getColor(Config::Color::eSocketInput));
-        #//  else if (m_type == Type::eOutput)
+        #//  else if (tiotype == Type::eOutput)
         #//    brush.setColor(config.getColor(Config::Color::eSocketOutput));
-        if (self.m_type == NodeIoType.DYNAMIC):
+        if (tiotype == NodeIoType.DYNAMIC):
             brush.setStyle(qtc.Qt.Dense5Pattern)
         else:
             brush.setStyle(qtc.Qt.SolidPattern)
 
         painter.setPen(pen)
         painter.setBrush(brush)
-        if (self.m_type == NodeIoType.OUTPUT):
+        if (tiotype == NodeIoType.OUTPUT):
             painter.drawEllipse(rect)
             #painter.drawArc(rect.adjusted(-4, -4, +4, +4), startAngle, spanAngle)
             #painter.setPen(brush)
             if (self._used or self._links.itemCount()>0):
                 painter.setPen(pens)
             painter.drawArc(rect.adjusted(-2, -2, +2, +2), startAngle, spanAngle)
-        elif (self.m_type == NodeIoType.DYNAMIC):
+        elif (tiotype == NodeIoType.DYNAMIC):
             painter.drawEllipse(rect)
-            painter.drawArc(rect.adjusted(-2, -2, +2, +2), startAngle, spanAngle)
+            painter.drawArc(rect.adjusted(-2, -2, +2, +2), startAngleInside, spanAngle)
+            painter.drawArc(rect.adjusted(-2, -2, +2, +2), startAngleOutside, spanAngle)
         else:
             painter.drawEllipse(rect)
             #painter.drawArc(rect.adjusted(-4, -4, +4, +4), startAngle, spanAngle)
@@ -205,20 +222,6 @@ class IoNodeView(qtw.QGraphicsItem):
                 painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
                 #painter.restore()
             
-        '''
-        if (not self._used and ):
-            painter.save()
-            painter.setPen(qtc.Qt.NoPen)
-            painter.setBrush(pen.color())
-            if (self.m_type == NodeIoType.OUTPUT):
-                painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
-            elif (self.m_type == NodeIoType.DYNAMIC):
-                painter.drawRect(rect.adjusted(4, 4, -4, -4))
-                painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
-            else:
-                painter.drawRect(rect.adjusted(4, 4, -4, -4))
-            painter.restore()
-        '''
 
         if ( not self._nameHidden):
             pen.setColor(colors.C.FONTNAME.qColor())
@@ -236,6 +239,7 @@ class IoNodeView(qtw.QGraphicsItem):
         #Q_UNUSED(a_option);
         #Q_UNUSED(a_widget);
         rect = self.boundingRect()
+        tiotype = self.ioType()
 
         pen = qtg.QPen(colors.C.SOCKETBORDER.qColor())
         pen.setWidth(2)
@@ -248,20 +252,20 @@ class IoNodeView(qtw.QGraphicsItem):
             brush.setColor(self._colorSignalOn)
         elif (not self.isSignalOn()):
             brush.setColor(self._colorSignalOff)
-        #//  else if (m_type == Type::eInput)
+        #//  else if (tiotype == Type::eInput)
         #//    brush.setColor(config.getColor(Config::Color::eSocketInput));
-        #//  else if (m_type == Type::eOutput)
+        #//  else if (tiotype == Type::eOutput)
         #//    brush.setColor(config.getColor(Config::Color::eSocketOutput));
-        if (self.m_type == NodeIoType.DYNAMIC):
+        if (tiotype == NodeIoType.DYNAMIC):
             brush.setStyle(qtc.Qt.Dense5Pattern)
         else:
             brush.setStyle(qtc.Qt.SolidPattern)
 
         painter.setPen(pen)
         painter.setBrush(brush)
-        if (self.m_type == NodeIoType.OUTPUT):
+        if (tiotype == NodeIoType.OUTPUT):
             painter.drawEllipse(rect)
-        elif (self.m_type == NodeIoType.DYNAMIC):
+        elif (tiotype == NodeIoType.DYNAMIC):
             painter.drawRect(rect)
             painter.drawEllipse(rect)
         else:
@@ -271,9 +275,10 @@ class IoNodeView(qtw.QGraphicsItem):
             painter.save()
             painter.setPen(qtc.Qt.NoPen)
             painter.setBrush(pen.color())
-            if (self.m_type == NodeIoType.OUTPUT):
+            
+            if (tiotype == NodeIoType.OUTPUT):
                 painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
-            elif (self.m_type == NodeIoType.DYNAMIC):
+            elif (tiotype == NodeIoType.DYNAMIC):
                 painter.drawRect(rect.adjusted(4, 4, -4, -4))
                 painter.drawEllipse(rect.adjusted(4, 4, -4, -4))
             else:
@@ -365,7 +370,7 @@ class IoNodeView(qtw.QGraphicsItem):
 
     def mousePressEvent(self, event): #QGraphicsSceneMouseEvent
         #Q_UNUSED(event);
-        if (self.m_type == NodeIoType.INPUT):#input cannot be a start for link
+        if (self.ioType() == NodeIoType.INPUT):#input cannot be a start for link
             return
         self.setCursor(qtc.Qt.ClosedHandCursor)
         
@@ -394,7 +399,7 @@ class IoNodeView(qtw.QGraphicsItem):
 
     def mouseMoveEvent(self, event): #QGraphicsSceneMouseEvent
         #Q_UNUSED(event);
-        if (self.m_type == NodeIoType.INPUT): #inputs not involved
+        if (self.ioType() == NodeIoType.INPUT): #inputs not involved
             return
 
         if (qtc.QLineF(event.screenPos(), event.buttonDownScreenPos(qtc.Qt.LeftButton)).length() < qtw.QApplication.startDragDistance()):
@@ -433,7 +438,7 @@ class IoNodeView(qtw.QGraphicsItem):
 
     def mouseReleaseEvent(self, event): #QGraphicsSceneMouseEvent
         #Q_UNUSED(event);
-        if (self.m_type == NodeIoType.INPUT):
+        if (self.ioType() == NodeIoType.INPUT):
             return
         self.setCursor(qtc.Qt.OpenHandCursor)
 
@@ -465,17 +470,6 @@ class IoNodeView(qtw.QGraphicsItem):
     def setColors(self, signalOff, signalOn): #QColor const 
         self._colorSignalOff = signalOff
         self._colorSignalOn = signalOn
-
-    """
-    def setSignal(self, signal): #bool 
-        delta = signal != self._isSignalOn
-        delta = delta or (self._isSignalOn != self._isSignalOnPrev)
-        self._isSignalOnPrev = self._isSignalOn
-        self._isSignalOn = signal
-        if (self.m_type == NodeIoType.OUTPUT and delta): #// break recursion
-            for l in self._links.values():
-                l.setSignal(signal)
-    """
 
     def connect(self, other:IoNodeView): #SocketItem *const
         link = self.linkBetween(self, other)
@@ -558,7 +552,7 @@ class IoNodeView(qtw.QGraphicsItem):
 
 
     def disconnectAll(self):
-        if (self.m_type == NodeIoType.INPUT):
+        if (self.ioType() == NodeIoType.INPUT):
             self.disconnectAllInputs()
         else:
             self.disconnectAllOutputs()

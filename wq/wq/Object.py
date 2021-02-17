@@ -3,6 +3,9 @@ from .drivers.ui import pyqt5 as drvQt
 from .drivers.ui import wxWidgets as drvWx
 from .drivers import loader as wqLoader
 
+from .Log import Log
+log = Log(__name__)
+
 class Object():
     def __new__(cls, *args, **kwargs):
         result = object.__new__(cls)
@@ -44,7 +47,11 @@ class Object():
             if tMethod == None and isinstance(impl, str):
                 self.raiseNoImpl('Object',f'init - no driver implementation found for {tClName}')
             if tMethod!=None:
-                impl = tMethod()                    
+                impl = tMethod() 
+            else:
+                #dclass = self._wqD.__class__
+                #log.warn(f'[init] No implementation found for class:{tClName} driver class:{dclass}') 
+                pass                  
         self._object = impl
         self._impl = self._object
         #if  self._impl != None:
@@ -119,6 +126,9 @@ class Object():
     def prop(self,propName):
         result = self._props[propName] if propName in self._props else None
         return result
+    
+    def props(self,propName):
+        return self.prop(propName);
     
     def setProp(self, propName, propValue):
         self._props[propName] = propValue

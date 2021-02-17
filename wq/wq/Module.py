@@ -259,7 +259,7 @@ class Module(Object):
         self._info = None
         self._desc = None
         #self._signalsByName = {}
-        self._id = 0
+        self._id = None
         kwargs.pop('type', None) 
         kwargs.pop('impl', None)        
         super(Module, self).__init__(parent, impl, **kwargs)
@@ -273,14 +273,16 @@ class Module(Object):
         self._moduleType = self.impl().moduleType()
         
         if d1:
-            self._id = len(self.parent().modules())
+            self._id = self.parent().modules().nextId()
             self.parent().addModule(self)
+        else:
+            self._id = kwargs['id'] if 'id' in kwargs else 0
+
 
     def tabIndex(self):
-        return self._tabIndex
+        result = self.view().tabIndex() if self.view()!=None else None
+        return result
     
-    def setTabIndex(self, n:int):
-        self._tabIndex = n
 
     def acceptVisitor(self, visitor):
         visitor.visitModule(self)
@@ -317,6 +319,9 @@ class Module(Object):
 
     def view(self):
         return self._view
+
+    def events(self):
+        return self.impl().events()
 
     #@api
     def nodes(self):
@@ -406,7 +411,8 @@ class Module(Object):
             self.raiseExc('Name required')
         tsize = kwargs['size'] if 'size' in kwargs else 1
         tIoType = kwargs['ioType'] if 'ioType' in kwargs else None
-        sig = self.newSignal(name=tname,size=tsize)
+        tSigProps = kwargs['props'] if 'props' in kwargs else None
+        sig = self.newSignal(name=tname,size=tsize,props=tSigProps)
         kwargs.pop('ioType',None)
         result = self.newIoNode(signal=sig, sigInternal=True, ioType=tIoType,**kwargs)
         return result 
