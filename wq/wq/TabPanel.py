@@ -8,7 +8,7 @@ class TabPanel(Panel):
         super(TabPanel, self).__init__( *args, **kwargs)
 
     def addTab(self,obj,title):
-        return self.wqD().doTabPanel_AddTab(obj, title)
+        return self.q3D().doTabPanel_AddTab(obj, title)
     
     def currentIndex(self):
-        return self.wqD().doTabPanel_CurrentIndex()
+        return self.q3D().doTabPanel_CurrentIndex()

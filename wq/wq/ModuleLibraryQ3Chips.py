@@ -10,6 +10,8 @@ import wqc
 
 from .Signal import Signal
 
+from .Timer import Timer
+
 log = Log(__name__)
 
 from bitstring import BitStream, BitArray
@@ -83,14 +85,14 @@ class ModuleImpl6502(ModuleImplBase):
 
     def calc(self):
         self.updateFromNodes()
-        if self._prevPins != self._pins:
-            if (self._prevPins!=None):
-                print(f'a0:{bin(self._prevPins)[::-1]}')
-            print(f'a1:{bin(self._pins)[::-1]}')
+        #if self._prevPins != self._pins:
+            #if (self._prevPins!=None):
+            #    print(f'a0:{bin(self._prevPins)[::-1]}')
+            #print(f'a1:{bin(self._pins)[::-1]}')
         self._pins = wqc.c6502_calc(self._opened['iv'],self._pins)
         if self._prevPins != self._pins:
             self.updateSignals()
-            print(f'zd:{bin(self._pins)[::-1]}')
+            #print(f'zd:{bin(self._pins)[::-1]}')
         self._counter+=1
         if self._counter>1011: 
             self._counter=0
@@ -107,8 +109,8 @@ class ModuleImpl6502(ModuleImplBase):
                     if s!=ds:
                         ssize = s.size()
                         sfrom = s.prop('from')
-                        if (sfrom==None):
-                            print(f'None for singla:{s.name()}')
+                        #if (sfrom==None):
+                        #    print(f'None for singla:{s.name()}')
                         #ba[sfrom:sfrom+ssize].uint=s.valueAsUInt()
                         self.mutatePins(sfrom,ssize,s.valueAsUInt())
         #self._pins = ba.uint
@@ -127,20 +129,20 @@ class ModuleImpl6502(ModuleImplBase):
 
     def mutatePins(self,fr,sz,uint):
         pins = self._pins
-        b = bin(pins)[::-1]
-        b = bin(uint)[::-1]
+        #b = bin(pins)[::-1]
+        #b = bin(uint)[::-1]
         ones = pow(2, sz)-1
-        b = bin(ones)[::-1]
+        #b = bin(ones)[::-1]
         ones_sh = ones << fr
-        b = bin(ones_sh)[::-1]
+        #b = bin(ones_sh)[::-1]
         cuint = uint & ones
-        b=bin(cuint)[::-1]
+        #b=bin(cuint)[::-1]
         cuint = cuint << fr
-        b=bin(cuint)[::-1]
+        #b=bin(cuint)[::-1]
         pins = pins & ~ones_sh
-        b=bin(pins)[::-1]
+        #b=bin(pins)[::-1]
         pins = pins | cuint
-        b=bin(pins)[::-1]
+        #b=bin(pins)[::-1]
         self._pins = pins
 
 
@@ -151,16 +153,16 @@ class ModuleImpl6502(ModuleImplBase):
         for s in self.signals().values():
             ssize = s.size()
             sfrom = s.prop('from')
-            if sfrom == None:
-                print(f'Nonesssss for singla:{s.name()}')
+            #if sfrom == None:
+            #    print(f'Nonesssss for singla:{s.name()}')
             cv = self.readPins(sfrom,ssize)
             s.setValue(cv)    
             #vg = ba.cut(ssize,sfrom, None, 1)
             #for v in vg:
             #    cv = v.int if ssize>1 else v.bool
             #    s.setValue(cv)
-            if s.name()=='ADR':
-                print(f'ad:{bin(s.value())[::-1]}')
+            #if s.name()=='ADR':
+            #    print(f'ad:{bin(s.value())[::-1]}')
         self._prevPins = self._pins
 
 class ModuleImplCPC(ModuleImplBase):
@@ -168,6 +170,7 @@ class ModuleImplCPC(ModuleImplBase):
         self._opened = None
         self._prevPins = None
         self._winid = None
+        self._machineType = 'atom'
         super(ModuleImplCPC,self).__init__(**kwargs)
         self._moduleType = ModuleType.ATOMIC
 
@@ -181,6 +184,10 @@ class ModuleImplCPC(ModuleImplBase):
     def __setattr__(self, name:str, value):
         print("setting atrrr:"+str(name)+str(value))   
     '''   
+    def onMachineTypeChange(self, event=None):
+        print (f'[onMachineTypeChange]:{event}')
+        self._machineType = event
+        pass
 
     def echo(self):
         print("Hello World from CPC")
@@ -188,7 +195,22 @@ class ModuleImplCPC(ModuleImplBase):
     def init(self,**kwargs) -> dict:
         initParms = {}
         self._init = wqc.cpc_init(initParms)
+        cp = self._init['customProperties'] if 'customProperties' in self._init else {}
+        domainValues = {
+            'cpc6128':'Amstrad CPC',
+            'c64':'Commodore 64',
+            'atom':'Acorn ATOM'
+            }
+        cp['machineType']={
+            'desc':f'Type of machine to emulate, currently handled:{domainValues}',
+            'required':True,
+            'default':'atom',
+            'domainValues':domainValues,
+            'onChange':self.onMachineTypeChange
+        }
+        self._customProperties=cp
         return self._init
+
     
     def open(self):
         pass
@@ -196,18 +218,36 @@ class ModuleImplCPC(ModuleImplBase):
     def __afterViewCreated__(self):
         self.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked)
         self.events().detailWindowResized.connect(self.heDetailWindowResized)
+        self.events().callDetailWindowCloseReq.connect(self.syncDetailWindowCloseReq)
 
-    def heDetailWindowResized(self,event=None):
+    def syncDetailWindowCloseReq(self,*args,**kwargs):
+        if self._winid!=None:#TODO:check winId?
+            wqc.cpc_insp({
+                'winId':self._winid,
+                'command':'closeWindow'
+                })
+            self._winid = None  
+            self._opened = None 
+        return True 
+               
+
+    def _resizeDtWindowContent(self):
         if self._winid!=None:
-            ev = event.props('event')
-            twidth = ev.size().width()
-            theight = ev.size().height()
             wqc.cpc_insp({
                 'winId':self._winid,
                 'command':'resizeWindow',
-                'width':twidth,
-                'height':theight
+                'width':self._dtWidth,
+                'height':self._dtHeight
                 })
+
+    def heDetailWindowResized(self,event=None):
+        ev = event.props('event')
+        twidth = ev.size().width()
+        theight = ev.size().height()
+        #save h/w for initial resize
+        self._dtWidth = twidth
+        self._dtHeight = theight
+        self._resizeDtWindowContent()
 
     def heModuleDoubleClicked(self, event=None):
         self.mdlv().showDetailWindow(parent=self.mdlv().impl())
@@ -218,7 +258,13 @@ class ModuleImplCPC(ModuleImplBase):
         #th = threading.Thread(target=self.startInThread)
         #th.start()
         if self._opened == None:
-            self._opened = wqc.cpc_open({'winId':self._winid})
+            self._opened = wqc.cpc_open({
+                'winId':self._winid,
+                'machineType':self._machineType
+                })
+            Timer.sleepMs(200)
+            self._resizeDtWindowContent()
+
         return self._opened
 
 
@@ -243,8 +289,8 @@ class ModuleImplCPC(ModuleImplBase):
 
 
 
-@ModuleFactory.registerLibrary('wqc')
-class ModuleLibraryWqc(ModuleLibraryBase):
+@ModuleFactory.registerLibrary('Q3Chips')
+class ModuleLibraryQ3Chips(ModuleLibraryBase):
 
     _modules = {
         "c6502":ModuleImpl6502,
@@ -269,7 +315,7 @@ if __name__ == '__main__':
     #    filename = handler.baseFilename
     #    print(filename)
     # Creates a local library
-    print
+    #print
     wqcLib = ModuleFactory.loadLibrary('wqc')
     # ... then some modules ...
     test1 = wqcLib.createModule('test1')

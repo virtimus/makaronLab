@@ -5,7 +5,7 @@ import PyQt5.QtGui  as qtg
 from enum import Enum
 
 from ... import consts, prop, orientation, direction, colors, strutils
-from ...wqvector import WqVector
+from ...q3vector import Q3Vector
 
 from . import stypes
 
@@ -20,7 +20,7 @@ class GridDensity(Enum):
     SMALL = 2
 
 #using Nodes = QHash<size_t, Node *>;
-Nodes = WqVector(ModuleViewImpl)
+Nodes = Q3Vector(ModuleViewImpl)
 
 #package_view
 class GraphViewImpl(qtw.QGraphicsView):
@@ -47,7 +47,7 @@ class GraphViewImpl(qtw.QGraphicsView):
 
         self.m_scene = scene
         self.m_timer = qtc.QTimer()
-        self.m_nodes = WqVector(ModuleViewImpl)
+        self.m_nodes = Q3Vector(ModuleViewImpl)
 
         self.m_dragNode = None
         self.m_selectedNode = None
@@ -57,7 +57,7 @@ class GraphViewImpl(qtw.QGraphicsView):
         self.m_snapToGrid = None
         self.m_standalone = None
 
-    def __afterInit__(self, wqd):
+    def __afterInit__(self, q3d):
 
         self.m_standalone = self.m_package.package() == None
         if (self.m_standalone):
@@ -328,7 +328,7 @@ class GraphViewImpl(qtw.QGraphicsView):
 
     #@s:PackageView::wheelEvent(QWheelEvent *a_event)
     def wheelEvent(self, event):
-        #self.wqD().doModuleView_wheelEvent(event)
+        #self.q3D().doModuleView_wheelEvent(event)
     #def doModuleView_wheelEvent(self,event): 
         numDegrees = event.angleDelta().y()/8 #?pixelDelta
         numSteps = numDegrees/15

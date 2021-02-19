@@ -21,7 +21,7 @@ class FontPointSize(Object.Object):
 class Font(Object.Object):
     def __init__(self, parent=None, impl=None, wqImpl=None):
         if wqImpl == None:
-            wqImpl =  consts.WQ_IMPL if parent == None else parent._wqImpl
+            wqImpl =  consts.Q3_IMPL if parent == None else parent._wqImpl
         if impl == None:
             self._font = qtw.QFont() if self.isQt(wqImpl) else wx.Font()
         else:

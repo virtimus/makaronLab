@@ -7,8 +7,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-	#include <m6502.h>
-
+	//
+#include "api.h"
+//#include <m6502.h>
 	//extern uint8_t ROM[];
 #define Q3C_CLASSIC_6502
 		

@@ -7,7 +7,7 @@ from . import moduletype
 from . import consts
 from . import direction
 from .nodeiotype import NodeIoType
-from .wqvector import WqVector
+from .q3vector import Q3Vector
 from .moduletype import ModuleType
 
 from .EventSignal import EventProps
@@ -22,7 +22,7 @@ class Node(Object):
     def __init__(self, *args, **kwargs):
         #//self._deltaVector = DeltaVector.NONE 
         self._view = None
-        self._signals = WqVector()    
+        self._signals = Q3Vector()    
         args = self._loadInitArgs(args)
         if not isinstance(args[0],Module):
             self.raiseExc('[Node] Parent has to be descendant of wq.Module')
@@ -159,7 +159,7 @@ class IoNode(Node):
         self._ioType = kwargs['ioType'] if 'ioType' in kwargs else None #nodeiotype
         if self._ioType == None:
             self.raiseExc('ioType required')
-        self._extSignals = WqVector()
+        self._extSignals = Q3Vector()
         tsignal = kwargs['signal'] if 'signal' in kwargs else None
         if tsignal == None:
             self.raiseExc(f'Signal required fo ioNode')
@@ -216,7 +216,7 @@ Module contains:
 """
 class Module(Object):
     def __new__(cls, *args, **kwargs):
-        kwargs['wqImpl']=consts.WQ_IMPL_SIM 
+        kwargs['wqImpl']=consts.Q3_IMPL_SIM 
         return Object.__new__(cls,*args, **kwargs)
 
     def __init__(self, *args, **kwargs):
@@ -249,13 +249,13 @@ class Module(Object):
             self.raiseExc(f'[Module] ''moduleType'' required {self._name}')
 
 
-        self._modules = WqVector()
+        self._modules = Q3Vector()
         self._modules.append(0,self)
-        self._nodes = WqVector()
-        #self._nodesByName = {} handled by WqVector
+        self._nodes = Q3Vector()
+        #self._nodesByName = {} handled by Q3Vector
         self._tabIndex = None
-        self._signals = WqVector()
-        self._moduleViews = WqVector()
+        self._signals = Q3Vector()
+        self._moduleViews = Q3Vector()
         self._info = None
         self._desc = None
         #self._signalsByName = {}

@@ -12,20 +12,20 @@ from . import Element
 
 
 class MainWindow(Element.Element):
-    #def __init__(self, parent=None, object=None, title='MainWindow', wqImpl=consts.WQ_IMPL): 
+    #def __init__(self, parent=None, object=None, title='MainWindow', wqImpl=consts.Q3_IMPL): 
 
         #self._mainWindow = qtw.QMainWindow() if self.isQt(wqImpl) else wx.Frame(None,title=title)
         #super(MainWindow, self).__init__(parent, self._mainWindow, wqImpl=wqImpl)
     def __init__(self,*args, **kwargs):
         self._mainWindow=self._loadImpl(*args, **kwargs) 
         if (self._mainWindow==None):
-            self._mainWindow=self.wqD().doMainWindow_Init()
+            self._mainWindow=self.q3D().doMainWindow_Init()
             kwargs['impl']=self._mainWindow
         tParent = self._loadParent(*args, **kwargs)
         super(MainWindow, self).__init__(tParent, self._mainWindow) 
 
     def _show(self):        
-        return self.wqD().doMainWindow_Show()
+        return self.q3D().doMainWindow_Show()
 
     def Show(self):
         self._show()

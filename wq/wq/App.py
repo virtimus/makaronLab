@@ -6,12 +6,11 @@ from . import consts
 from . import Object
 
 class App(Object.Object):
-    #def __init__(self, wqImpl=consts.WQ_IMPL):
     def __init__(self, *args, **kwargs):
         #self._app = qtw.QApplication(sys.argv) if self.isQt(wqImpl) else wx.App()
         self._app=self._loadImpl(*args, **kwargs) 
         if (self._app==None):
-            self._app=self.wqD().doApp_Init()
+            self._app=self.q3D().doApp_Init()
             kwargs['impl']=self._app 
         super(App,self).__init__(None, self._app)
         #super(App,self).__init__( *args, **kwargs)

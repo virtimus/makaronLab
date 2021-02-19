@@ -7,4 +7,4 @@ sudo apt-get install libglfw3 libglfw3-dev
 sudo apt-get install python3-dev   
 
 #python3 setup.py build
-sudo python3 setup.py install
+sudo CC=gcc python3 setup.py install

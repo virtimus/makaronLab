@@ -1,10 +1,10 @@
 from enum import Enum
 
 
-#WqVector is a king of a list which can be consifered as sequence of elements with unchangable id
+#Q3Vector is a kind of a dict which can be consifered as sequence of elements with unchangable id
 #The list have some additional features like adding indexes and search by them
 
-class WqVector:
+class Q3Vector:
     def __init__(self, cls=None):
         self._cls = cls
         self._list = {}
@@ -45,7 +45,7 @@ class WqVector:
         if self._cls == None:
             return
         if not isinstance(element,self._cls):
-            self.raiseExc('[WqVector] element given of wrong class')
+            self.raiseExc('[Q3Vector] element given of wrong class')
 
     def _getattr(self, el, attr:str):
         tval = getattr(el,attr)
@@ -104,7 +104,7 @@ class WqVector:
 
 
     def filterBy(self, attr:str, value):
-        result = WqVector(self._cls)
+        result = Q3Vector(self._cls)
         for lid in self._list:
             el = self._list[lid]
             if el != None:
@@ -136,7 +136,7 @@ class WqVector:
     def append(self, lid:int, element):
         self._validateCls(element)
         if lid  in self._list and self._list[lid] != None:
-            self.raiseExc('[WqVector] append failed - element with id({id}) already in list')
+            self.raiseExc('[Q3Vector] append failed - element with id({id}) already in list')
         else:
             self._list[lid]=element
             #self._updateNextId(lid+1)

@@ -13,8 +13,8 @@ class Object():
         result._kwargs = kwargs
         tParent = result._loadParent(*args, **kwargs)
         tImpl = result._loadImpl(*args, **kwargs)
-        tWqImpl = kwargs['wqImpl'] if 'wqImpl' in kwargs else consts.WQ_IMPL
-        result._wqD = result.__loadWqDriver(tParent,tImpl,tWqImpl)        
+        tWqImpl = kwargs['wqImpl'] if 'wqImpl' in kwargs else consts.Q3_IMPL
+        result._q3D = result.__loadQ3Driver(tParent,tImpl,tWqImpl)        
         return result
 
     def __init__(self, parent, impl, **kwargs):
@@ -25,8 +25,8 @@ class Object():
             default = {},
             desc = 'Additional dynamic properties not defined in model'
             )
-        #kwargs['wqD'] if 'wqD' in kwargs else None
-        wqD = self._initHandleArg('wqD',
+        #kwargs['q3D'] if 'q3D' in kwargs else None
+        q3D = self._initHandleArg('q3D',
             kwargs = kwargs,
             desc = 'Indstance of implementation driver/factory for model elements'
         )
@@ -35,34 +35,34 @@ class Object():
             kwargs = kwargs,
             desc = 'Implementation driver/factory path/class'
         )
-        if wqD != None:
-            self._wqD = wqD
+        if q3D != None:
+            self._q3D = q3D
         else:
-            if wqImpl == None and self._wqD == None:
+            if wqImpl == None and self._q3D == None:
                 self.raiseNoImpl('Object','init -> wqImpl required')
             
-        if (self._wqD != None and (impl == None or isinstance(impl, str))):#load implementation from string if given
+        if (self._q3D != None and (impl == None or isinstance(impl, str))):#load implementation from string if given
             tClName = self.__class__.__name__ #if impl == None else impl
-            tMethod = getattr(self._wqD, "do"+tClName+"_Init",None)
+            tMethod = getattr(self._q3D, "do"+tClName+"_Init",None)
             if tMethod == None and isinstance(impl, str):
                 self.raiseNoImpl('Object',f'init - no driver implementation found for {tClName}')
             if tMethod!=None:
                 impl = tMethod() 
             else:
-                #dclass = self._wqD.__class__
+                #dclass = self._q3D.__class__
                 #log.warn(f'[init] No implementation found for class:{tClName} driver class:{dclass}') 
                 pass                  
         self._object = impl
         self._impl = self._object
         #if  self._impl != None:
         #    self._impl._wqob = self
-        if (self._wqD._impl==None):
-            self._wqD._impl=self._impl
+        if (self._q3D._impl==None):
+            self._q3D._impl=self._impl
         
-        if (self._wqD._parent==None):
-            self._wqD._parent=self._parent
+        if (self._q3D._parent==None):
+            self._q3D._parent=self._parent
         #if wqImpl==None:
-        #    wqImpl = self._wqD._wqImpl
+        #    wqImpl = self._q3D._wqImpl
         #self._wqImpl = wqImpl
 
     def _initHandleArg(self, name:str, **kwargs):
@@ -89,22 +89,22 @@ class Object():
             args = (args[0],None)  
         return args    
 
-    def __loadWqDriver(self,parent,impl,wqImpl):
+    def __loadQ3Driver(self,parent,impl,wqImpl):
         if wqImpl == None:
-            wqImpl = parent._wqImpl if parent != None and hasattr(parent,'_wqImpl') else consts.WQ_IMPL
+            wqImpl = parent._wqImpl if parent != None and hasattr(parent,'_wqImpl') else consts.Q3_IMPL
         self._wqImpl = wqImpl
-        WqDriver = wqLoader.loadWqDriver(self._wqImpl)
+        Q3Driver = wqLoader.loadQ3Driver(self._wqImpl)
         '''
         if self.isQt(wqImpl):
-            result = drvQt.WqDriver(self,parent,impl)
+            result = drvQt.Q3Driver(self,parent,impl)
         else:
-            result = drvWx.WqDriver(self,parent,impl)
+            result = drvWx.Q3Driver(self,parent,impl)
         '''
-        result = WqDriver(self,parent,impl)
+        result = Q3Driver(self,parent,impl)
         return result
 
-    def wqD(self):
-        return self._wqD
+    def q3D(self):
+        return self._q3D
 
     def implObject(self):
         return self.impl()
@@ -116,11 +116,11 @@ class Object():
         return self._parent  
 
     def isQt(self, wqImpl=None):
-        result = (consts.WQ_IMPL_QT == self._wqImpl) if (wqImpl == None) else (consts.WQ_IMPL_QT == wqImpl)
+        result = (consts.Q3_IMPL_QT == self._wqImpl) if (wqImpl == None) else (consts.Q3_IMPL_QT == wqImpl)
         return result
 
     def isWx(self, wqImpl=None):
-        result = (consts.WQ_IMPL_WX == self._wqImpl) if (wqImpl == None) else (consts.WQ_IMPL_WX == wqImpl)
+        result = (consts.Q3_IMPL_WX == self._wqImpl) if (wqImpl == None) else (consts.Q3_IMPL_WX == wqImpl)
         return result
 
     def prop(self,propName):
@@ -136,7 +136,7 @@ class Object():
 
     def setObjectName(self,name:str):
         result = self.impl().setObjectName(name) if self.isQt() else self.raiseNoImpl('Object','setObjectName')
-        #result = self.wqD().doObject_SetObjectName(name)
+        #result = self.q3D().doObject_SetObjectName(name)
 
     def raiseNoImpl(self, a0, a1):
         raise Exception(a0, a1 + ' -> noImpl')

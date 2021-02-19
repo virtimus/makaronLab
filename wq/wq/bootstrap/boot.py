@@ -55,8 +55,8 @@ class encImpl:
         
 
 
-app = wq.App(wqImpl=wq.consts.WQ_IMPL)
-frm = wq.EditorFrame(app, title='makaronLab') #,wqImpl=wq.consts.WQ_IMPL)
+app = wq.App(wqImpl=wq.consts.Q3_IMPL)
+frm = wq.EditorFrame(app, title='makaronLab') #,wqImpl=wq.consts.Q3_IMPL)
 frm.Show()
 tga = encImpl()
 tga._namespace = frm.consoleNamespace()

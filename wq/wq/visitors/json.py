@@ -8,19 +8,19 @@ from ..Signal import Signal
 from ..ModuleView import ModuleView
 from ..ModuleFactory import ModuleImplBase
 from ..EditorFrame import EditorFrame
-from ..wqvector import WqVector
+from ..q3vector import Q3Vector
 
 from ..dict import UnsortableOrderedDict as UODict
 
 class Visitor:
     def __init__(self):
         self._jsD = OrderedDict()
-        self._keyStack = WqVector()
-        self._visitedModules = WqVector()
-        self._visitedSignals = WqVector()
-        self._visitedNodes = WqVector()
-        self._visitedModViews = WqVector() 
-        self._visitedModImpls = WqVector() 
+        self._keyStack = Q3Vector()
+        self._visitedModules = Q3Vector()
+        self._visitedSignals = Q3Vector()
+        self._visitedNodes = Q3Vector()
+        self._visitedModViews = Q3Vector() 
+        self._visitedModImpls = Q3Vector() 
         self._cstack = self._jsD
         self._ckey = None
         pass

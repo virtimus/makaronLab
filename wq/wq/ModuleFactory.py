@@ -99,6 +99,7 @@ class EventIOTypeChanged:
         self._oldSize = osize
         self._newSize = tsize
 
+from .EventSignal import SyncHandler
 class ModuleImplBase(metaclass=ABCMeta):
     class Events(EventBase):
         elementNameChanged = EventSignal(EventNameChanged)
@@ -112,6 +113,7 @@ class ModuleImplBase(metaclass=ABCMeta):
         ioNodeRemoved = EventSignal(EventProps)
         moduleDoubleClicked = EventSignal(EventProps)
         detailWindowResized = EventSignal(EventProps)
+        callDetailWindowCloseReq = SyncHandler()
         pass    
     def __init__(self, **kwargs):
         """ Constructor """
@@ -122,9 +124,18 @@ class ModuleImplBase(metaclass=ABCMeta):
         self._events = ModuleImplBase.Events()  
         self._implStr = None #path in lib (if aplies) 
         self._defaultFlags = IoNodeFlags()
+        self._dtwProps = None
+        self._customProperties = None
         #self._defaultOutputFlags = IoNodeFlags(max=consts.MAX_OUTPUTS)
         #self._defaultDynamicFlags = IoNodeFlags(max=consts.MAX_DYNAMICS)    
         pass
+
+    def customProperties(self):
+        return self._customProperties
+
+    def showDetailWindow(self,**kwargs):
+        pass
+
 
     #@deprecated-start - replace with IoNodeFlags
     #uint8_t defaultNewInputFlags() const { return m_defaultNewInputFlags; }

@@ -3,7 +3,7 @@
 
 import wx
 
-class WqDriver:
+class Q3Driver:
     def __init__(self,_self,parent,impl):
         self._impl = impl
         self._parent = parent
@@ -53,10 +53,10 @@ class WqDriver:
         return result  
 
     def doTabPanel_Init(self):        
-        self._self.raiseNoImpl('pyqt5.WqDriver','doTabPanel_Init -> noImpl')
+        self._self.raiseNoImpl('pyqt5.Q3Driver','doTabPanel_Init -> noImpl')
 
     def doTab_Init(self):        
-        self._self.raiseNoImpl('pyqt5.WqDriver','doTab_Init -> noImpl')
+        self._self.raiseNoImpl('pyqt5.Q3Driver','doTab_Init -> noImpl')
 
     def doMenuBar_Init(self):        
         result = wx.MenuBar()

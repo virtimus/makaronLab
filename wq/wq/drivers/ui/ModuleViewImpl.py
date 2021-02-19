@@ -6,7 +6,7 @@ import sip
 
 from ...nodeiotype import NodeIoType
 
-from ...wqvector import WqVector
+from ...q3vector import Q3Vector
 
 from ... import consts, prop, orientation, direction, colors
 
@@ -16,6 +16,8 @@ from .IoNodeView import IoNodeView
 
 from ...valuetype import ValueType
 from ...ionodeflags import IoNodeFlags
+
+from ... import console
 
 from . import stypes
 
@@ -35,9 +37,26 @@ class PropertiesBuilder:
 
     def addProperty(self,**kwargs):
 
-        propName = kwargs['name']
-        cellWidget = kwargs['widget']
-        lWidget = kwargs['lWidget'] if 'lWidget' in kwargs else None
+        propName = console.handleArg(self, 'name',kwargs=kwargs,
+            desc = 'Name of property to add',
+            required = True
+            )
+
+        cellWidget = console.handleArg(self, 'widget',kwargs=kwargs,
+            desc = 'Property widget',
+            default = None 
+            )
+        if cellWidget == None:
+            propDesc = console.handleArg(self, 'propDesc',kwargs=kwargs,
+                desc = 'Property meta-definition or property widget',
+                required = True
+                )
+            cellWidget = self._buildWidgetFromPropertyDesc(propName, propDesc)
+        
+        #lWidget = kwargs['lWidget'] if 'lWidget' in kwargs else None
+        lWidget = console.handleArg(self, 'lWidget',kwargs=kwargs,
+            desc = 'Additional widget'
+            )
 
         row = self._table.rowCount()
         self._table.insertRow(row)
@@ -46,12 +65,67 @@ class PropertiesBuilder:
             itemL = qtw.QTableWidgetItem(propName) 
             itemL.setFlags(itemL.flags() & ~qtc.Qt.ItemIsEditable)
             self._table.setItem(row, 0, itemL)
+            if cellWidget.toolTip()!=None: #share toolTip with widget
+                itemL.setToolTip(cellWidget.toolTip())
         else:
             self._table.setItem(row, 0, lWidget)
         if isinstance(cellWidget,qtw.QTableWidgetItem):
             self._table.setItem(row, 0, cellWidget)
         else:
-            self._table.setCellWidget(row, 1, cellWidget)    
+            self._table.setCellWidget(row, 1, cellWidget)  
+
+    def _buildWidgetFromPropertyDesc(self,propName,propDesc):
+        class propType(Enum):
+            LineEdit = 1
+            ComboBox = 2
+
+        result=None
+        domainValues = console.handleArg(self,'domainValues',
+            kwargs = propDesc,
+            desc = 'A set of possible values (value domain)'
+            )
+        defaultValue = console.handleArg(self,'default',
+            kwargs = propDesc,
+            desc = 'Default/start value of property',
+            domainValues = domainValues
+            )
+        onChangedHandler = console.handleArg(self,'onChange',
+            kwargs = propDesc,
+            desc = 'onChanged handler method'
+            )
+        desc = console.handleArg(self,'desc',
+            kwargs = propDesc,
+            desc = 'Description of property'
+            )
+        pType = propType.LineEdit
+        if domainValues != None and len(domainValues)>0:
+            pType = propType.ComboBox
+        cProp = None
+        if pType == propType.ComboBox:    
+            cProp = qtw.QComboBox()
+            for k in domainValues:
+                label = domainValues[k]
+                cProp.addItem(label, k)
+            INDEX = cProp.findData(defaultValue)
+            cProp.setCurrentIndex(INDEX)
+            #self._properties.setCellWidget(row, 1, comboBox);
+            def onActivated(index):
+                currVal = cProp.itemData(index)
+                if onChangedHandler!=None:
+                    onChangedHandler(currVal)
+            cProp.activated.connect(onActivated)
+        else:
+            cProp = qtw.QLineEdit(defaultValue)
+            if desc != None:
+                cProp.setToolTip(desc)
+            #pathEdit.setPlaceholderText('<path>')
+            if onChangedHandler!=None:
+                cProp.textChanged.connect(onChangedHandler)
+        return cProp
+        #self.addProperty(
+        #    name=name,
+        #    widget = cProp        
+        #    )  
 
 SOCKET_SIZE = IoNodeView.SIZE
 ROUNDED_SOCKET_SIZE = round((SOCKET_SIZE) / 10.0) * 10.0
@@ -73,9 +147,9 @@ class ModuleViewImpl(qtw.QGraphicsItem):
         self._boundingRect = None
         self._rotate = False
         self._invertH = False
-        #self._inputs = WqVector()
-        #self._outputs = WqVector()
-        self._nodeViews = WqVector()
+        #self._inputs = Q3Vector()
+        #self._outputs = Q3Vector()
+        self._nodeViews = Q3Vector()
         self._color = colors.MODULE_COLOR
         self._properties = None
         self._propertiesBuilder = None
@@ -517,6 +591,7 @@ void Node::advance(int a_phase)
         #    #self.showIOProperties(direction.LEFT)
         #elif mType == ModuleType.OUTPUTS:
         #    self.showIOProperties(direction.RIGHT)
+        self.showCustomProperties()
 
     def _getInpDir(self):
         dir = direction.LEFT # for input default dir is LEFT but ...       
@@ -670,7 +745,21 @@ void Node::advance(int a_phase)
         self._propertiesBuilder.addProperty(
             name = 'Description',
             widget = descEdit
-        )        
+        ) 
+
+    def showCustomProperties(self):
+        tel = self._element
+        tcProps = tel.customProperties()
+        if tcProps!=None and len(tcProps)>0:
+            self.propertiesInsertTitle('Custom properties')
+            for propName in tcProps:
+                propDesc = tcProps[propName] 
+                self._propertiesBuilder.addProperty(
+                    name = propName,
+                    propDesc = propDesc
+                    )
+        pass
+
 
     def showIOProperties(self, dir:direction.Dir, modImpl=None):
         INPUTS = dir == direction.LEFT
@@ -1055,7 +1144,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         self._iconPath = ico
         self._icon.load(ico)
 
-    def findMaxNameWidth(self,coll:WqVector):
+    def findMaxNameWidth(self,coll:Q3Vector):
         result = None
         if (coll!=None and coll.size()>0):
             result = coll.by('nameWidth',coll.byModifier.MAX)

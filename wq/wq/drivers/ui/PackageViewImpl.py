@@ -53,6 +53,7 @@ class PackageViewImpl(ModuleViewImpl):
             name='Path',
             widget = pathEdit        
         )
+        
 
         def iconEditTextChanged(text):
             #(void)text;
@@ -71,6 +72,9 @@ class PackageViewImpl(ModuleViewImpl):
         )
         self.showIOProperties(direction.LEFT, self.m_inputsNode)
         self.showIOProperties(direction.RIGHT, self.m_outputsNode)
+
+        self.showCustomProperties()
+
 
 
     def open(self):

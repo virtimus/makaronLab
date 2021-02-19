@@ -11,11 +11,11 @@ class Element(Object.Object):
         super(Element, self).__init__(parent, impl, **kwargs)
 
     def resize(self, w:int, h:int):
-        return self.wqD().doElement_Resize(w,h)
+        return self.q3D().doElement_Resize(w,h)
 
     def sizePolicy(self):
-        return self.wqD().doElement_SizePolicy()
+        return self.q3D().doElement_SizePolicy()
 
     def setSizePolicy(self, sizePolicy):
-        return self.wqD().doElement_SetSizePolicy(sizePolicy)
+        return self.q3D().doElement_SetSizePolicy(sizePolicy)
                   

@@ -10,11 +10,11 @@ from .ModuleImplElement import ModuleImplElement
 
 from ...ionodeflags import IoNodeFlags
 
-from ...wqvector import WqVector
+from ...q3vector import Q3Vector
 #from ...Module import Module
 
 #using Elements = std::vector<Element *>;
-Elements = WqVector() #'Module' ModuleIMpl
+Elements = Q3Vector() #'Module' ModuleIMpl
 
 """
 struct Connection {
@@ -47,7 +47,7 @@ class Connection:
         return self._toId
 
     
-Connections = WqVector(Connection)
+Connections = Q3Vector(Connection)
 '''
 from ...Timer import Timer
 
@@ -91,8 +91,8 @@ class ModuleImplGraph(ModuleImplElement):
         self.m_elements = Elements
         #self.m_connections = Connections
         #std::vector<size_t> m_free{};
-        #self.m_dependencies = WqVector(WqVector)
-        self.m_free = WqVector(int)
+        #self.m_dependencies = Q3Vector(Q3Vector)
+        self.m_free = Q3Vector(int)
         self.m_dispatchThread = threading.Thread()
         self.m_dispatchThreadStarted = AtomicBool(False)
         self.m_quit = AtomicBool(False)

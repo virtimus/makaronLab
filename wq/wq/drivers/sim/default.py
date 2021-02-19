@@ -1,7 +1,7 @@
 from ... import direction, consts
 
 from ...ModuleFactory import IoType, ModuleFactory, ModuleImplBase, ModuleType
-from ..driverBase import WqDriverBase
+from ..driverBase import Q3DriverBase
 
 from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventSignal
 
@@ -15,7 +15,7 @@ from .ModuleImplElement import ModuleImplElement
 from .ModuleImplGraph import ModuleImplGraph
 from .ModuleImplIO import ModuleImplIO
 
-class WqDriver(WqDriverBase):
+class Q3Driver(Q3DriverBase):
 
     def doModule_Init(self):
         result = None

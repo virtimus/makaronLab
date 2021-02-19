@@ -6,7 +6,7 @@ class Tab(Panel):
         '''
         self._tab=self._loadImpl(*args, **kwargs) 
         if (self._tab==None):
-            self._tab=self.wqD().doTab_Init()
+            self._tab=self.q3D().doTab_Init()
             kwargs['impl']=self._tab
         '''    
         super(Tab, self).__init__( *args, **kwargs)

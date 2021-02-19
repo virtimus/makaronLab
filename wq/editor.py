@@ -10,16 +10,16 @@ Hello World, but with more meat.
 #from PyQt5.QtWidgets import QProgressBar, QLabel
 
 
-#wqc.WQ_IMPL = "qt"
+#wqc.Q3_IMPL = "qt"
 
 import wq
 
 #import wq.consts as wqc
 #import wx
 
-#WQ_IMPL=wq.consts.WQ_IMPL_WX
+#Q3_IMPL=wq.consts.Q3_IMPL_WX
 
-#wq.c.setWqImpl(WQ_IMPL)
+#wq.c.setWqImpl(Q3_IMPL)
 
 
 
@@ -28,8 +28,8 @@ import wq
 if __name__ == '__main__':
     # When this module is run (not imported) then create the app, the
     # frame, show it, and start the event loop.
-    app = wq.App(wqImpl=wq.consts.WQ_IMPL)
-    frm = wq.EditorFrame(app, title='makaronLab') #,wqImpl=wq.consts.WQ_IMPL)
+    app = wq.App(wqImpl=wq.consts.Q3_IMPL)
+    frm = wq.EditorFrame(app, title='makaronLab') #,wqImpl=wq.consts.Q3_IMPL)
     frm.Show()
     app.MainLoop()
     

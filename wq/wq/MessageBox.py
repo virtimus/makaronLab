@@ -12,7 +12,7 @@ from . import Element
 
 
 class MessageBox(Element.Element):
-    def __init__(self, text, object=None, wqImpl=consts.WQ_IMPL):
+    def __init__(self, text, object=None, wqImpl=consts.Q3_IMPL):
         super(MessageBox, self).__init__(None, object, wqImpl=wqImpl)
         if self.isQt(wqImpl):
             reply = QMessageBox.information(None,'Info',text, QMessageBox.Ok | QMessageBox.Close, QMessageBox.Close)

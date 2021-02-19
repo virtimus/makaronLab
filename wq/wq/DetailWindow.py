@@ -14,6 +14,6 @@ class DetailWindow(Element):
         self._event = event
 
     def show(self):
-        self.wqD().doDetailWindow_Show()
+        self.q3D().doDetailWindow_Show()
 
     

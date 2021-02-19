@@ -191,7 +191,7 @@ static const char display_fs_source_glsl330[161] = {
 #if !defined(SOKOL_GFX_INCLUDED)
   #error "Please include sokol_gfx.h before shaders.glsl.h"
 #endif
-static inline const sg_shader_desc* display_shader_desc(void) {
+static inline const sg_shader_desc* display_shader_desc(sg_backend be) {
   if (sg_query_backend() == SG_BACKEND_GLCORE33) {
     static sg_shader_desc desc;
     static bool valid;
@@ -204,7 +204,7 @@ static inline const sg_shader_desc* display_shader_desc(void) {
       desc.fs.source = display_fs_source_glsl330;
       desc.fs.entry = "main";
       desc.fs.images[0].name = "tex";
-      desc.fs.images[0].type = SG_IMAGETYPE_2D;
+      desc.fs.images[0].image_type = SG_IMAGETYPE_2D;
       desc.fs.images[0].sampler_type = SG_SAMPLERTYPE_FLOAT;
       desc.label = "display_shader";
     };
@@ -212,7 +212,7 @@ static inline const sg_shader_desc* display_shader_desc(void) {
   }
   return 0;
 }
-static inline const sg_shader_desc* upscale_shader_desc(void) {
+static inline const sg_shader_desc* upscale_shader_desc(sg_backend be) {
   if (sg_query_backend() == SG_BACKEND_GLCORE33) {
     static sg_shader_desc desc;
     static bool valid;
@@ -225,7 +225,7 @@ static inline const sg_shader_desc* upscale_shader_desc(void) {
       desc.fs.source = upscale_fs_source_glsl330;
       desc.fs.entry = "main";
       desc.fs.images[0].name = "tex";
-      desc.fs.images[0].type = SG_IMAGETYPE_2D;
+      desc.fs.images[0].image_type = SG_IMAGETYPE_2D;
       desc.fs.images[0].sampler_type = SG_SAMPLERTYPE_FLOAT;
       desc.label = "upscale_shader";
     };

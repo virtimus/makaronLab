@@ -15,7 +15,7 @@ class Layout(Object.Object):
 
 
     def Add(self, label:Label, sizerFlags):
-        return self.wqD().doLayout_Add(label, sizerFlags)
+        return self.q3D().doLayout_Add(label, sizerFlags)
 
     def addElement(self,element):
-        return self.wqD().doLayout_AddElement(element)
+        return self.q3D().doLayout_AddElement(element)

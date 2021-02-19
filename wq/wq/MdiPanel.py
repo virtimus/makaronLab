@@ -9,7 +9,7 @@ class MdiPanel(Panel):
         ''' 
         tImpl = self._loadImpl(*args, **kwargs)
         if (tImpl==None):
-            self._mdiPanel = self.wqD().doMdiPanel_Init() 
+            self._mdiPanel = self.q3D().doMdiPanel_Init() 
             kwargs['impl']=self._mdiPanel
             tParent = self._loadParent(*args, **kwargs)
             if (tParent!=None):

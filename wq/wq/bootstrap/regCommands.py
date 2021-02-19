@@ -18,7 +18,7 @@ rm = rootModule = ed.rootModule
 rc('rootModule',ed.rootModule, True)
 rc('rm',ed.rootModule, True)
 
-#rootModule - wqvector
+#rootModule - q3vector
 rms = rootModules = ed.rootModules
 rc('rootModules',ed.rootModules, True)
 rc('rms',ed.rootModules, True)

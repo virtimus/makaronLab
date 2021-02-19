@@ -13,7 +13,7 @@ class MenuBar(Object):
         pass 
 
     def addMenu(self, menuTitle):
-        return Menu(self._parent, self.wqD().doMenuBar_AddMenu(menuTitle))
+        return Menu(self._parent, self.q3D().doMenuBar_AddMenu(menuTitle))
   
 
  

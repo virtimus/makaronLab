@@ -4,7 +4,7 @@ from .Object import Object
 from .Module import Module
 from .Module import Node
 
-from .wqvector import WqVector
+from .q3vector import Q3Vector
 
 
 from .valuetype import ValueType
@@ -22,7 +22,7 @@ class Signal(Object):
 #        self._driveNode = None
 #        if 'driveNode' in kwargs:
 #            self.addNode(kwargs['driveNode'])       
-#        self._nodes = WqVector(Node) 
+#        self._nodes = Q3Vector(Node) 
 #        if self._driveNode != None and self._driveNode.size() != None:
 #            self._size = self._driveNode.size()
 #        else: 

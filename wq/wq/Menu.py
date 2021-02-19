@@ -15,7 +15,7 @@ class Menu(Object.Object):
         super(Menu, self).__init__(parent, impl, **kwargs) 
 
     def _addSeparator(self):
-        return  self.wqD().doMenu_AddSeparator()
+        return  self.q3D().doMenu_AddSeparator()
 
     def AppendSeparator(self):
         return self._addSeparator()
@@ -24,6 +24,6 @@ class Menu(Object.Object):
         return self._addSeparator()
 
     def addAction(self,label:str, id=None, helpStr=None, onClick=None):
-        return self.wqD().doMenu_addAction(label,id,helpStr,onClick)
+        return self.q3D().doMenu_addAction(label,id,helpStr,onClick)
 
         

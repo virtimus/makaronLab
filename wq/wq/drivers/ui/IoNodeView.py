@@ -5,7 +5,7 @@ import PyQt5.QtGui  as qtg
 import sip
 
 from ...nodeiotype import NodeIoType
-from ...wqvector import WqVector
+from ...q3vector import Q3Vector
 
 from ... import consts, prop, orientation, direction, colors
 
@@ -65,7 +65,7 @@ class IoNodeView(qtw.QGraphicsItem):
         #self._isSignalOn = False
         #self._isSignalOnPrev = None
 
-        self._links = WqVector(IoLinkView)
+        self._links = Q3Vector(IoLinkView)
         self.setValueType(ionode.valueType())
 
     #@api

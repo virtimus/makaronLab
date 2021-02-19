@@ -24,9 +24,9 @@ from .ModuleFactory import ModuleFactory
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
 import PyQt5.QtGui as qtg
-from .ModuleLibraryWqc import ModuleLibraryWqc
+#from .ModuleLibraryQ3Chips import ModuleLibraryQ3Chips
 
-from .wqvector import WqVector
+from .q3vector import Q3Vector
 
 class EditorFrame(MainWindow):
     """
@@ -41,7 +41,7 @@ class EditorFrame(MainWindow):
 
         #@deprecated
         #self._openModules = dict({})
-        self._rootModules = WqVector(Module)
+        self._rootModules = Q3Vector(Module)
         #self._rootModuleSelected = None
         self._moduleViewIndex = None
 
@@ -104,12 +104,12 @@ class EditorFrame(MainWindow):
 
     def buildLibraries(self):
         #load libraries
-        wqcLib = ModuleFactory.loadLibrary('wqc')
+        #wqcLib = ModuleFactory.loadLibrary('wqc')
         #wqlLib = ModuleFactory.loadLibrary('local')
 
-        moduleList = wqcLib.listModules()
-        for k in moduleList:
-            print(k)
+        #moduleList = wqcLib.listModules()
+        #for k in moduleList:
+        #    print(k)
 
         #    self._libModules['wqc.'+k] = { "moduleDef":moduleList[k]
 
@@ -118,6 +118,7 @@ class EditorFrame(MainWindow):
         #print(res)
         #resp = c6502.open()
         #'''
+        pass
 
     def newSidePanel(self, **kwargs):
         tparent = console.handleArg(self,'parent',kwargs = kwargs,
@@ -398,7 +399,7 @@ class EditorFrame(MainWindow):
         return self.rootModuleByInd(self.rootModuleSelectedIndex())
 
     #@api
-    def rootModules(self) -> WqVector(Module):
+    def rootModules(self) -> Q3Vector(Module):
         return self._rootModules
 
     #@api
@@ -472,17 +473,17 @@ class EditorFrame(MainWindow):
             moduleType = ModuleType.GRAPH
             )
         
-        from .ModuleLibraryWqc import ModuleLibraryWqc
-        '''
+        from .ModuleLibraryQ3Chips import ModuleLibraryQ3Chips
+        
         m6502Module = rootModule.newModule('m6502Module',
             #type=ModuleType.ATOMIC,
-            impl='wqc:/c6502'
+            impl='Q3Chips:/c6502'
             )
-        '''
+        
         #'''
         cpcModule = rootModule.newModule('cpcModule',
             #type=ModuleType.ATOMIC,
-            impl='wqc:/CPC'
+            impl='Q3Chips:/CPC'
             )
         #'''
         

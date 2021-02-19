@@ -1,9 +1,9 @@
 
 
 
-	#define CHIPS_IMPL
+//#define CHIPS_IMPL
 	//##include <vendor/chips/chips/m6502.h>
-	#include <m6502.h>
+	//#include <m6502.h>
 
 #include "wq6502.h"
 //#include <vector>

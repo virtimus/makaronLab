@@ -46,7 +46,7 @@ class ModuleView(Object):
         #args = (args[0], None) 
         #self._moduleViews = {0:self}
         #self._id = 0
-        self._moduleView = self.wqD().doModuleView_Init()
+        self._moduleView = self.q3D().doModuleView_Init()
         args = (args[0],self._moduleView) #impl
         kwargs.pop('module', None)      
         super(ModuleView, self).__init__(*args, **kwargs)
@@ -91,7 +91,7 @@ class ModuleView(Object):
                
 
 
-        self.wqD().doModuleView_AfterInit()
+        self.q3D().doModuleView_AfterInit()
         if d1: #register in parent
             self.module().graphModule().addModuleView(self)
             #self._id = len(self.parent().moduleViews())
@@ -171,7 +171,7 @@ class ModuleView(Object):
         return self._isRoot
 
     def open(self):
-        result = self.wqD().impl().open()
+        result = self.q3D().impl().open()
         return result
     
     #@s:PackageView::setSelectedNode
@@ -207,7 +207,7 @@ class ModuleView(Object):
 
 #    #@s:PackageView::wheelEvent(QWheelEvent *a_event)
 #    def wheelEvent(self, event):
-#        self.wqD().doModuleView_wheelEvent(event)
+#        self.q3D().doModuleView_wheelEvent(event)
 
     def detailWindow(self):
         return self._detailWindow

@@ -1,9 +1,11 @@
 #include <Python.h>
 #include <pthread.h>
 #include "wqc.h"
+#ifndef C6502OFF
 #include "wq6502.h"
-
-
+#endif 
+//#define AY38910_DATA(p) ((uint8_t)(p>>16))
+ 
 void* sum(void *argp){
     unsigned long *stepsFrom = (unsigned long *) argp;
     unsigned long *stepsTo = (unsigned long *) (argp + sizeof(unsigned long));
@@ -47,8 +49,11 @@ static PyObject* method_c6502_initold(PyObject* self, PyObject* args) {
 
     //int n = (int)countOfNumbers;
     uint64_t result = 0;
+#ifndef C6502OFF
     wq6502Info_t info;
+
     wq6502_init(&info);
+#endif
 
     return PyLong_FromLong((unsigned long)result);
 }
@@ -91,6 +96,7 @@ static PyObject* method_c6502_init(PyObject* self, PyObject* args) {
      * http://archive.6502.org/datasheets/mos_6500_mpu_nov_1985.pdf
      * 
      * */
+#ifndef C6502OFF
 #ifndef Q3C_CLASSIC_6502
     PyObject* vpbDict = pyDictNew();
     pyDictSetSizet(vpbDict,"from",0);
@@ -188,7 +194,7 @@ static PyObject* method_c6502_init(PyObject* self, PyObject* args) {
     pyDictSetString(rwbDict,"info","Data  Bus  Enable(DBE)");
     pyDictSetString(rwbDict,"doc","This TTL compatible input allows external control of the tri-state data output buffers and will enabel the microprocessor bus driver when  in the high state. In normal operation  DBE would be driven by the phase two (02) clock, thus allowing data  output from microprocessor only during 0;. During the  read cycle, the data bus drivers are internally disabled, becoming  essentially an open circuit. To disable data bus drivers externally, DBE should be held low");
     pyDictSetObject(signalMap,"RWB",rwbDict);
-
+      
     PyObject* dtaDict = pyDictNew();
     pyDictSetSizet(dtaDict,"from",CPINS_D0);
     pyDictSetSizet(dtaDict,"size",8);
@@ -196,7 +202,7 @@ static PyObject* method_c6502_init(PyObject* self, PyObject* args) {
     pyDictSetString(dtaDict,"info","Data  Bus (D0-D7)");
     pyDictSetString(dtaDict,"doc","Eight pins are used for the data bus. This is a bi-directional  bus. transferring data to and from the device and  peripherals. The outputs are tri-state buffers capable of driving one standard  TTL load and  130  pf.");
     pyDictSetObject(signalMap,"DTA",dtaDict);
-#ifndef Q3C_CLASSIC_6502
+#ifndef Q3C_CLASSIC_6502 
     PyObject* npDict = pyDictNew();
     pyDictSetSizet(npDict,"from",55);
     pyDictSetObject(signalMap,"NP",npDict);
@@ -212,7 +218,7 @@ static PyObject* method_c6502_init(PyObject* self, PyObject* args) {
     //PyDict_SetItemString(dict, "signalMap", signalMap);
     pyDictSetObject(dict,"signalMap",signalMap);
     pyDictSetObject(dict,"dictIn",dictIn);
-
+#endif// C6502OFF
     return dict;
     assert(! PyErr_Occurred());
     assert(dict);
@@ -226,16 +232,29 @@ finally:
     return dict;
 }
 
-extern  int cpc_run(int argc, unsigned int wid);
+extern  int cpc_run(int argc, unsigned int wid,const char * machineType);
 extern  void setRootWid(unsigned int wid);
 extern  void triggerWidResize(unsigned int wid,unsigned int w,unsigned int h);
+extern  void triggerWindowClose(unsigned int wid);
 extern  unsigned int getRootWid();
+
+static char  __machineType[200];
+
+static void setMachineType(const char* s){
+        
+    strcpy(__machineType,s);
+    //__machineType = s;
+}
+
+static const char* getMachineType(){
+    return (const char*)&__machineType;
+}
 
 #include <pthread.h> 
 
 void *myThreadFun(void *vargp) 
 { 
-    cpc_run(1,getRootWid());
+    cpc_run(1,getRootWid(),getMachineType());
     sleep(1); 
     printf("Printing GeeksQuiz from Thread \n"); 
     return NULL; 
@@ -256,13 +275,25 @@ static PyObject* method_cpc_insp(PyObject* self, PyObject* args) {
 
     PyObject * pOb = pyDictGetItem(dictIn,"winId");
     long hwnd = PyLong_AsLong(pOb);
-    PyObject * pObW = pyDictGetItem(dictIn,"width");
-    PyObject * pObH = pyDictGetItem(dictIn,"height");
-    long w = PyLong_AsLong(pObW);
-    long h = PyLong_AsLong(pObH);
-    //HWND hwnd = (HWND)PyCObject_AsVoidPtr(pOb)
-    //PyObject * pOb2 = pyDictGetItem(dictIn,"command");
-    triggerWidResize(hwnd,w,h);
+
+    PyObject * pObCmd = pyDictGetItem(dictIn,"command");
+    const char *sCmd = pyObjectAsString(pObCmd);
+    printf("commandReceived:%s:",sCmd);
+    const char* resWin = "resizeWindow";
+    if (strcmp(sCmd,resWin)==0){
+        PyObject * pObW = pyDictGetItem(dictIn,"width");
+        PyObject * pObH = pyDictGetItem(dictIn,"height");
+        long w = PyLong_AsLong(pObW);
+        long h = PyLong_AsLong(pObH);
+        //HWND hwnd = (HWND)PyCObject_AsVoidPtr(pOb)
+        //PyObject * pOb2 = pyDictGetItem(dictIn,"command");
+        triggerWidResize(hwnd,w,h);
+    }
+
+    if (strcmp(sCmd,"closeWindow")==0){
+        printf("closeWindow:%s:",sCmd);
+        triggerWindowClose(hwnd);
+    }
 
     //pthread_t thread_id; 
     //printf("Before Thread\n"); 
@@ -304,6 +335,13 @@ static PyObject* method_cpc_open(PyObject* self, PyObject* args) {
     //HWND hwnd = (HWND)PyCObject_AsVoidPtr(pOb)
     setRootWid(hwnd);
 
+    PyObject * pOb2 = pyDictGetItem(dictIn,"machineType");
+    const char *s = pyObjectAsString(pOb2);
+
+    printf("setting machineType %s",s);
+    setMachineType(s);
+    printf("getting machineType %s",getMachineType());
+
     pthread_t thread_id; 
     //printf("Before Thread\n"); 
     pthread_create(&thread_id, NULL, myThreadFun, NULL); 
@@ -340,14 +378,16 @@ static PyObject* method_c6502_open(PyObject* self, PyObject* args) {
     }
 
     PyObject* dict = pyDictNew();
-
+#ifndef C6502OFF
     wq6502Info_t info;
+
     wq6502_init(&info);
+
 
     pyDictSetSizet(dict,"iv",info.iv);
 
     pyDictSetUint64(dict,"pins",info.pins);
-
+#endif
     goto finally;
 except:
     PyErr_Print();
@@ -385,7 +425,11 @@ static PyObject* method_c6502_calc(PyObject* self, PyObject* args) {
     }
 
     //int n = (int)countOfNumbers;
+#ifndef C6502OFF
     uint64_t result = wq6502_calc(iv,pinValues);
+#else
+    uint64_t result = 0;
+#endif
 
     return PyLong_FromLong((unsigned long)result);
 }

@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "files.associations": {
+        ".vuerc": "json"
+      },
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            //"program": "${file}",
+            //"program": "/src/makaronLab/mHDUI/editor.py",
+            //"program": "/src/wqWidgetsTest/helloWorld2test.py",
+            //"program": "/src/makaronLab/wq/editor.py",
+            //"program":"/src/makaronLab/wq/wq/sidePanel/sidePanelTest.py"
+            //"program":"/src/makaronLab/wq/wqc/wqctest2.py"
+            //"program":"/src/makaronLab/wq/wq/ModuleFactory.py"
+            //"program": "/src/makaronLab/wq/wq/ModuleLibraryWqc.py"
+            //"program":"/src/makaronLab/wq/cpx/test.py",
+            "program":"/src/makaronLab/wq/wq/bootstrap/boot.py"
+            "console": "integratedTerminal"
+        }
+
+
+
+
+    ]
+}

@@ -1,6 +1,6 @@
 
 
-class WqDriverBase:
+class Q3DriverBase:
     def __init__(self,_self,parent,impl):
         #self._wqImpl = wqImpl
         self._object = impl

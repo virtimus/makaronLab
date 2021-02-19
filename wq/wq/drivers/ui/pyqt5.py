@@ -20,10 +20,10 @@ from PyQt5.QtWidgets import (QAction, QApplication, QGraphicsItem,
 from ... import consts, prop, orientation, direction, colors
 from ...moduletype import ModuleType
 from ...nodeiotype import NodeIoType
-from ...wqvector import WqVector
+from ...q3vector import Q3Vector
 from ...EventSignal import EventProps
 
-from ..driverBase import WqDriverBase
+from ..driverBase import Q3DriverBase
 
 
 from enum import Enum
@@ -69,8 +69,15 @@ class DetailWindowBaseImpl(qtw.QWidget):
         self._parent.parent().events().detailWindowResized.emit(EventProps({'event':event}))
         #print(f'WinResizeEV{dir(event)}')
 
+    def closeEvent(self, event):
+        evs = self._parent.parent().events()
+        if evs.callDetailWindowCloseReq.hasHandlers():
+            evs.callDetailWindowCloseReq.sync()
+        event.accept()
+    #    .checkSyncHandler()
+
     #windowDidResize
-class WqDriver(WqDriverBase):
+class Q3Driver(Q3DriverBase):
 
     def doModuleView_Init(self):
         if self.s().isRoot():#@s:PackageView::PackageView
