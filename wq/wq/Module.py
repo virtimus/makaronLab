@@ -68,11 +68,14 @@ class Node(Object):
 
     def module(self):
         return self._parent
+
+    def view(self):
+        return self._view
     
     def size(self):
         result = self.driveSignal().size() if self.driveSignal() != None else None
-        if result == None and len(self.signals())>0:
-            result = next(iter(self.signals())).size()
+        if result == None and self.signals().size()>0:
+            result = self.signals().first().size()
         return result
         '''
         if result == None and len(self._signals)>0:
@@ -420,11 +423,16 @@ class Module(Object):
     def removeIO(self,id):
         ioNode = self.nodes().byLid(id)
         dsignal = ioNode.driveSignal()
+        ioType = ioNode.ioType()
         if dsignal != None:
             self.signals().removeByLid(dsignal.id())
-            del dsignal
+            ioNode.removeSignal(dsignal)
+            #del dsignal !TODO! maybe by type ?
         if ioNode != None:
             self.nodes().removeByLid(ioNode.id())
+            v = ioNode.view()
+            v.onNodeRemoval()
+            del v
             del ioNode
 
 

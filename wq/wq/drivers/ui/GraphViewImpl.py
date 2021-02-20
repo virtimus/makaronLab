@@ -56,6 +56,7 @@ class GraphViewImpl(qtw.QGraphicsView):
 
         self.m_snapToGrid = None
         self.m_standalone = None
+        self._selectedNode = None
 
     def __afterInit__(self, q3d):
 
@@ -430,8 +431,10 @@ class GraphViewImpl(qtw.QGraphicsView):
     def showProperties(self):
         self._properties.clear()
         self._properties.setColumnCount(2)
-        self._properties.setHorizontalHeaderLabels("Name;Value".split(";"))
-        self._selectedNode.showProperties()
+        #self._properties.setSpan(0, 0, 1, 2)
+        self._properties.setHorizontalHeaderLabels("Property;Value".split(";"))
+        if self._selectedNode != None:
+            self._selectedNode.showProperties()
         self._properties.horizontalHeader().setStretchLastSection(True)
 
     def deleteElement(self): #@todo should be changed to ed->model command and->event->remove->view/impl/model roundtrip
@@ -452,11 +455,7 @@ class GraphViewImpl(qtw.QGraphicsView):
                 del node
             elif item.type() == stypes.LINK_TYPE:
                 link = item #reinterpret_cast<LinkItem *>(item);
-                tfrom = link.fr()
-                tto = link.to()
-                tfrom.disconnect(tto)
-                sig = tfrom.mdl().driveSignal()
-                tto.mdl().removeSignal(sig)
+                link.disconnect()
                 del link
                 #model
 
@@ -488,7 +487,8 @@ class GraphViewImpl(qtw.QGraphicsView):
             self._selectedNode = self.m_packageNode #._self.impl() #m_packageNode
         else:
             self._selectedNode = node
-        self._selectedNode.setPropertiesTable(self._properties)
+        if self._selectedNode != None:
+            self._selectedNode.setPropertiesTable(self._properties)
         #self._selectedNode._properties = self._properties
         #self._selectedNode._propertiesBuilder = self._propertiesBuilder
 

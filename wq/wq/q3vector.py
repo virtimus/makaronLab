@@ -202,6 +202,11 @@ class Q3Vector:
         result = list(filter(None, self._list.values()))
         return result
 
+    def removeAll(self):
+        while self.size()>0:
+            self.remove(self.last(),noIndexUpdate = True)
+        self._rebuildIndexes()
+
 
 
 

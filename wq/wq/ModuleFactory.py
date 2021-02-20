@@ -114,6 +114,7 @@ class ModuleImplBase(metaclass=ABCMeta):
         moduleDoubleClicked = EventSignal(EventProps)
         detailWindowResized = EventSignal(EventProps)
         callDetailWindowCloseReq = SyncHandler()
+        consoleWrite = EventSignal(EventProps)
         pass    
     def __init__(self, **kwargs):
         """ Constructor """
@@ -135,6 +136,12 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     def showDetailWindow(self,**kwargs):
         pass
+
+    def consoleWrite(self, text:str):
+        self.events().consoleWrite.emit(EventProps({'text':text}))
+
+    def cw(self, text:str):
+        return self.consoleWrite(text)
 
 
     #@deprecated-start - replace with IoNodeFlags
@@ -221,6 +228,9 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     def mdlv(self):
         return self._self.view()
+
+    def console(self):
+        return self.mdlv().impl().console()
 
     def events(self):
         return self._events

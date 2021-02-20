@@ -23,6 +23,8 @@ class ModuleImpl6502(ModuleImplBase):
         self._pins = 0
         self._prevPins = None
         self._winid = None
+        self._prevClock = None
+        self._prevReset = None
         super(ModuleImpl6502,self).__init__(**kwargs)
         self._moduleType = ModuleType.ATOMIC
 
@@ -49,6 +51,7 @@ class ModuleImpl6502(ModuleImplBase):
         self._counter=0
         if self._opened == None:
             self._opened = wqc.c6502_open()
+            self._pins = self._opened['pins']
         io = {}
         pname = None
         ci=0
@@ -84,20 +87,33 @@ class ModuleImpl6502(ModuleImplBase):
         return self._io
 
     def calc(self):
-        self.updateFromNodes()
-        #if self._prevPins != self._pins:
-            #if (self._prevPins!=None):
-            #    print(f'a0:{bin(self._prevPins)[::-1]}')
-            #print(f'a1:{bin(self._pins)[::-1]}')
-        self._pins = wqc.c6502_calc(self._opened['iv'],self._pins)
-        if self._prevPins != self._pins:
-            self.updateSignals()
-            #print(f'zd:{bin(self._pins)[::-1]}')
-        self._counter+=1
-        if self._counter>1011: 
-            self._counter=0
-            pins = self._opened['pins']
-            #print(f'6502DebugPins:{pins}')
+        #self.updateFromNodes()
+        #self.sig('RESB').setValue(True)
+        resb = self.sig('RESB').value()
+        resbDelta = self._prevReset != resb
+        clk = self.sig('PHI0I').value()
+        clkDelta = self._prevClock != clk
+        rdy = self.sig('RDY').value()
+        clkRise = clkDelta and clk
+        #rstDown = resbDelta and not resb
+        self._prevClock = clk 
+        self._prevReset = resb
+        if (rdy and clkRise):
+
+            #if self._prevPins != self._pins:
+                #if (self._prevPins!=None):
+                #    print(f'a0:{bin(self._prevPins)[::-1]}')
+                #print(f'a1:{bin(self._pins)[::-1]}')
+            self._pins = wqc.c6502_calc(self._opened['iv'],self._pins)
+            #self.consoleWrite('calc\n')
+            if self._prevPins != self._pins:
+                self.updateSignals()
+                #print(f'zd:{bin(self._pins)[::-1]}')
+            #self._counter+=1
+            #if self._counter>1011: 
+            #    self._counter=0
+            #    pins = self._opened['pins']
+            #    #print(f'6502DebugPins:{pins}')
         return self._opened['pins']
 
     def updateFromNodes(self):
@@ -164,6 +180,9 @@ class ModuleImpl6502(ModuleImplBase):
             #if s.name()=='ADR':
             #    print(f'ad:{bin(s.value())[::-1]}')
         self._prevPins = self._pins
+        c = self.console()
+        s = bin(self._pins)[::-1]+'\n'
+        c.write(s)
 
 class ModuleImplCPC(ModuleImplBase):
     def __init__(self, **kwargs):
@@ -219,6 +238,7 @@ class ModuleImplCPC(ModuleImplBase):
         self.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked)
         self.events().detailWindowResized.connect(self.heDetailWindowResized)
         self.events().callDetailWindowCloseReq.connect(self.syncDetailWindowCloseReq)
+        #super().__afterViewCreated__()
 
     def syncDetailWindowCloseReq(self,*args,**kwargs):
         if self._winid!=None:#TODO:check winId?
@@ -257,6 +277,7 @@ class ModuleImplCPC(ModuleImplBase):
         #import threading
         #th = threading.Thread(target=self.startInThread)
         #th.start()
+        self.consoleWrite(f'Openning Window:{self._winid}')
         if self._opened == None:
             self._opened = wqc.cpc_open({
                 'winId':self._winid,

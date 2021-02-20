@@ -50,6 +50,7 @@ class PackageViewImpl(ModuleViewImpl):
         pathEdit.setPlaceholderText('<path>')
         pathEdit.textChanged.connect(pathEditTextChanged)
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name='Path',
             widget = pathEdit        
         )
@@ -67,6 +68,7 @@ class PackageViewImpl(ModuleViewImpl):
         iconEdit.setPlaceholderText('<icon>')
         iconEdit.textChanged.connect(iconEditTextChanged)
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name='Icon',
             widget = iconEdit        
         )

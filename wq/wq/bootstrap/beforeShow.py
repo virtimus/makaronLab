@@ -10,7 +10,8 @@ print('Hello3')
 
 pr('Ciao')
 
-print('Dupa')
+for i in range(0,100,1):
+    print('Dupa')
 
 #ui select module inputs
 #mods().by('name','moduleInputs').view().impl().addIoNode(direction.LEFT) 

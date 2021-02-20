@@ -29,11 +29,71 @@ class WqiShowMode(Enum):
     COLLAPSED = 1
     EXPANDED = 2
 
+class PropertiesBuilder:
+    pass
+
+class Property:
+    def __init__(self, name, parent:PropertiesBuilder, propObj, lWidget, rWidget):
+        self._parent = parent
+        self._obj = None
+        #self._obj._propRef = self
+        self._name = name
+        self._lWidget = None
+        self._rWidget = None
+        self.update(propObj, lWidget, rWidget)
+    
+    def name(self):
+        return self._name
+
+    def update(self, propObj, lWidget, rWidget):
+        tPropRef = self if propObj !=None else None
+        if propObj != None:
+            self._obj = propObj
+        self._obj._uiPropRef = tPropRef
+        objView = getattr(self._obj,'view',None)
+        if objView != None:
+            if callable(objView):
+                objView = objView()
+            objView._uiPropRef = tPropRef
+        self._lWidget = lWidget
+        self._rWidget = rWidget
+        
+    '''
+    def lWidget(self):
+        return self._lWidget
+    
+    def rWidget(self):
+        return self._rWidget
+    '''
+
+    def select(self):
+        table = self._parent.table()
+        if table != None and not sip.isdeleted(self._lWidget):
+            ind = table.indexFromItem(self._lWidget)
+            #itemL.setSelected(True)
+            #self._lWidget.setText('selected')
+            table.selectionModel().setCurrentIndex( ind, qtc.QItemSelectionModel.ClearAndSelect )
+
+    def clear(self):
+        self.update(None,None,None)
+
+
 
 class PropertiesBuilder:
-    def __init__(self, table):
+    def __init__(self, parent, table):
         self._table = table
+        self._props = Q3Vector(Property)
+
+    def props(self) -> Q3Vector(Property):
+        return self._props
+
+    def table(self):
+        return self._table
     
+    def clear(self):
+        for p in self.props().values():
+            p.clear()
+        self.props().removeAll()
 
     def addProperty(self,**kwargs):
 
@@ -41,6 +101,13 @@ class PropertiesBuilder:
             desc = 'Name of property to add',
             required = True
             )
+
+        propObj = console.handleArg(self, 'obj',kwargs=kwargs,
+            desc = 'Owner of property to add',
+            required = True
+            )
+
+        #propId = type(propObj).__name__+'.'+str(propObj.id())+'.'+propName
 
         cellWidget = console.handleArg(self, 'widget',kwargs=kwargs,
             desc = 'Property widget',
@@ -52,27 +119,47 @@ class PropertiesBuilder:
                 required = True
                 )
             cellWidget = self._buildWidgetFromPropertyDesc(propName, propDesc)
+
+        assert cellWidget != None, f'CellWidget for property {propName} is None' 
         
         #lWidget = kwargs['lWidget'] if 'lWidget' in kwargs else None
         lWidget = console.handleArg(self, 'lWidget',kwargs=kwargs,
             desc = 'Additional widget'
             )
 
+        isSelected = console.handleArg(self, 'selected',kwargs=kwargs,
+            desc = 'Should be selected'
+            )
+
         row = self._table.rowCount()
         self._table.insertRow(row)
 
+
+            
+
         if (lWidget == None):
-            itemL = qtw.QTableWidgetItem(propName) 
-            itemL.setFlags(itemL.flags() & ~qtc.Qt.ItemIsEditable)
-            self._table.setItem(row, 0, itemL)
+            lWidget = qtw.QTableWidgetItem(propName) 
+            lWidget.setFlags(lWidget.flags() & ~qtc.Qt.ItemIsEditable)
+            self._table.setItem(row, 0, lWidget)
             if cellWidget.toolTip()!=None: #share toolTip with widget
-                itemL.setToolTip(cellWidget.toolTip())
+                lWidget.setToolTip(cellWidget.toolTip())
+            if (isSelected or True):
+                ind = self._table.indexFromItem(lWidget)
+                #itemL.setSelected(True)
+                self._table.selectionModel().setCurrentIndex( ind, qtc.QItemSelectionModel.ClearAndSelect )
         else:
             self._table.setItem(row, 0, lWidget)
         if isinstance(cellWidget,qtw.QTableWidgetItem):
             self._table.setItem(row, 0, cellWidget)
         else:
-            self._table.setCellWidget(row, 1, cellWidget)  
+            self._table.setCellWidget(row, 1, cellWidget) 
+        #if (isSelected or True):
+        #    self._table.selectionModel().setCurrentIndex( row, qtc.QItemSelectionModel.ClearAndSelect )
+        #prop = self.props().byLid(propId)
+        #if prop == None:
+        self.props().append(self.props().nextId(),Property(propName,self,propObj, lWidget,cellWidget))
+        #else:
+        #    prop.update(propObj, lWidget,cellWidget)
 
     def _buildWidgetFromPropertyDesc(self,propName,propDesc):
         class propType(Enum):
@@ -197,6 +284,14 @@ class ModuleViewImpl(qtw.QGraphicsItem):
 
     def module(self):
         return self.moduleView().module()
+
+    def ed(self):
+        m = self.module()
+        gm = m.graphModule()
+        return gm.parent()
+    
+    def console(self):
+        return self.ed().console()
 
     def type(self):
         return NODE_TYPE
@@ -332,6 +427,7 @@ void Node::advance(int a_phase)
         self._element.events().ioNodeAdded.connect(self.heIoNodeAdded)
         self._element.events().ioNodeRemoved.connect(self.heIoNodeRemoved)
         self._element.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked)
+        self._element.events().consoleWrite.connect(self.heConsoleWrite)
         #self._element.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked2)
 
 
@@ -457,7 +553,7 @@ void Node::advance(int a_phase)
 
     def setPropertiesTable(self, properties): #QTableWidget *const a_properties
         self._properties = properties
-        self._propertiesBuilder = PropertiesBuilder(self._properties)
+        self._propertiesBuilder = PropertiesBuilder(self, self._properties)
 
     #void Node::paintBorder(QPainter *const a_painter)
     def paintBorder(self, painter):
@@ -563,6 +659,7 @@ void Node::advance(int a_phase)
         valueRot.stateChanged.connect(self.onPropCurrentRotChanged)
 
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name='Rotate',
             widget = valueRot        
         )
@@ -573,6 +670,7 @@ void Node::advance(int a_phase)
         valueInv.stateChanged.connect(self.onPropCurrentInvChanged)
 
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name='InvertH',
             widget = valueInv        
         )
@@ -634,6 +732,11 @@ void Node::advance(int a_phase)
         else:
             self.switchView()
 
+    def heConsoleWrite(self,event):
+        text = event.props('text')
+        self.console().write(text)
+
+
     #def heModuleDoubleClicked2(self,event):
     #    print('dupa')
 
@@ -694,7 +797,9 @@ void Node::advance(int a_phase)
  
 
     def showCommonProperties(self):
+        #self._properties.setSelectionMode(qtw.QAbstractItemView.SingleSelection)
         self._properties.setRowCount(0)
+        self._propertiesBuilder.clear()
         self.propertiesInsertTitle("Element")
 
 
@@ -708,6 +813,7 @@ void Node::advance(int a_phase)
         item.setFlags(item.flags() & ~qtc.Qt.ItemIsEditable)
         item.setData(qtc.Qt.DisplayRole, ID)
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name = 'ID',
             widget = item        
 
@@ -717,6 +823,7 @@ void Node::advance(int a_phase)
         item.setFlags(item.flags() & ~qtc.Qt.ItemIsEditable)
         #item.setData(qtc.Qt.DisplayRole, ID)
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name = 'TYPE',
             widget = item        
         )
@@ -730,8 +837,10 @@ void Node::advance(int a_phase)
         #item.setData(qtc.Qt.DisplayRole, ID)
         nameEdit.textChanged.connect(onNameChanged)
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name = 'Name',
-            widget = nameEdit        
+            widget = nameEdit
+                   
         )
 
         def onDescChanged(text):
@@ -743,6 +852,7 @@ void Node::advance(int a_phase)
         #item.setData(qtc.Qt.DisplayRole, ID)
         descEdit.textChanged.connect(onDescChanged)
         self._propertiesBuilder.addProperty(
+            obj = self._element,
             name = 'Description',
             widget = descEdit
         ) 
@@ -755,6 +865,7 @@ void Node::advance(int a_phase)
             for propName in tcProps:
                 propDesc = tcProps[propName] 
                 self._propertiesBuilder.addProperty(
+                    obj = self._element,
                     name = propName,
                     propDesc = propDesc
                     )
@@ -802,7 +913,8 @@ void Node::advance(int a_phase)
         count.setValue(ios.size())
         count.valueChanged.connect(countValueChanged)
         self._propertiesBuilder.addProperty(
-            name = 'Count',
+            obj = self._element,
+            name = ' Count',#dir.label()+
             widget = count
         )   
         count.setDisabled(ADDING_DISABLED)
@@ -810,15 +922,20 @@ void Node::advance(int a_phase)
         #for (int i = 0; i < IOS_SIZE; ++i) {
         for io in ios.values():
             #auto const &IO = ios[static_cast<size_t>(i)];
+            ioView = io.view()
+            isAnyHover = ioView.isAnyHover()# or ioView.isInHover
+            if (isAnyHover):
+                self.console().write(f'isAnyHoverOn for {io.name()}\n')
             i = io.id()
             ioName = None
+            ioNameStr = io.name()+'('+str(io.size())+')'
             if (io.flags().canChangeName()):
-                ioName =  qtw.QLineEdit(io.name()) #QString::fromStdString(IO.name) } };
+                ioName =  qtw.QLineEdit(ioNameStr) #QString::fromStdString(IO.name) } };
                 def editingFinished(self):
                     tel.setIOName(io,ioName.text())
                 ioName.editingFinished.connect(editingFinished)
             else:
-                ioName = qtw.QTableWidgetItem(io.name())
+                ioName = qtw.QTableWidgetItem(ioNameStr)
                 ioName.setFlags(ioName.flags() & ~qtc.Qt.ItemIsEditable)
                 #self._properties->setItem(row, 0, item);
     
@@ -859,9 +976,11 @@ void Node::advance(int a_phase)
             tw.setCellWidget(0,0,comboBox)
             tw.setCellWidget(0,1,comboBox2)
             self._propertiesBuilder.addProperty(
+                obj = io,
                 name = 'Name',
                 lWidget = ioName,
-                widget = tw        
+                widget = tw,
+                selected = isAnyHover        
                 )          
 
 

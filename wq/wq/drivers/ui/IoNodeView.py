@@ -38,6 +38,8 @@ class IoNodeView(qtw.QGraphicsItem):
         #self.m_type = self._ioType #deprecated, redundant
         self._ionode = ionode
         self._self = ionode
+        ionode._view = self
+        self._uiPropRef = None #set externally
         self._dir = dir
         self._font = qtg.QFont()
         self._font.setFamily("Consolas")
@@ -71,6 +73,15 @@ class IoNodeView(qtw.QGraphicsItem):
     #@api
     def mdl(self) -> 'IoNode':
         return self._ionode
+
+    def onNodeRemoval(self):
+        for l in self._links.values():
+            l.disconnect()
+            del l
+        self._links.removeAll()
+
+    def onLinkRemoval(self,link):
+        self._links.remove(link)
 
     #@api
     def ioType(self):
@@ -128,13 +139,29 @@ class IoNodeView(qtw.QGraphicsItem):
 
     def setHover(self, hover):
         self._isHover = hover
+        self.onHoverUpdated()
 
     def setOutHover(self, hover):
-        self._outHover = hover 
+        self._outHover = hover
+        self.onHoverUpdated() 
 
     def setInHover(self, hover):
-        self._inHover = hover 
+        self._inHover = hover
+        self.onHoverUpdated()
 
+    def onHoverUpdated(self):
+        if self._uiPropRef != None and (self._isHover or self._outHover or self._inHover):
+           self._uiPropRef.select() 
+
+    def isAnyHover(self):
+        return self._isHover or self._inHover or self._outHover
+    '''
+    def inHover(self):
+        return self._inHover()
+
+    def outHover(self):
+        return self._outHover 
+    '''
     def type(self):
         return IONODE_TYPE
     
@@ -176,6 +203,7 @@ class IoNodeView(qtw.QGraphicsItem):
         pen.setWidth(2)
         brush =  qtg.QBrush()
         if (self._isHover or self._inHover):
+            #self.module().impl().consoleWrite(f'hoverOn:{self.name()}\n')
             brush.setColor(colors.C.SOCKETHOVER.qColor())
         elif (self._isDrop):
             brush.setColor(colors.C.SOCKETDROP.qColor())
@@ -299,14 +327,14 @@ class IoNodeView(qtw.QGraphicsItem):
 
     def hoverEnterEvent(self, event): #QGraphicsSceneHoverEvent 
         #Q_UNUSED(event);
-        self._isHover = True
+        self.setHover(True)
         for l in self._links.values():
             if l.to() == self:
                 l.setHover(self._isHover)
 
     def hoverLeaveEvent(self, event): #QGraphicsSceneHoverEvent
         #Q_UNUSED(event)
-        self._isHover = False
+        self.setHover(False)
         for l in self._links.values():
             if l.to() == self:
                 l.setHover(self._isHover)

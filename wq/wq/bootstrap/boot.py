@@ -1,5 +1,5 @@
 #standard simulator bootstrap
-from wx.core import Sleep
+#from wx.core import Sleep
 import wq
 
 from wq.Timer import Timer
@@ -12,12 +12,12 @@ import threading
 keys = globals().keys()
 runApp = False
 
-if False and not 'g' in keys:
-    g = None
+if False and not 'c' in keys:
+    c = None
     
     class encImpl(qtc.QThread):
         def __init__(self):
-            self._g = None
+            self._c = None
             self._initialized = False
             super(encImpl, self).__init__()
         def run(self):
@@ -34,10 +34,11 @@ if False and not 'g' in keys:
     #tg.finished.connect(app.exit)
     tg.start()
 
-    g = tg._g
+    c = tg._c
     runApp = True
 
-#g.registerCommand('rc',g.registerCommand)
+#c.registerCommand('rc',c.registerCommand)
+cPath='/src/makaronLab/wq/wq/'
 
 class encImpl:
     def __init__(self):
@@ -49,15 +50,12 @@ class encImpl:
 
     def process(self, _namespace):
         print('Hello world')        
-        exec(open("/src/makaronLab/wq/wq/bootstrap/regCommands.py").read())
+        exec(open(cPath+"bootstrap/regCommands.py").read())
         self._initialized = True
-        #exec(open("/src/makaronLab/wq/wq/bootstrap/startup.py").read())
-        
-
+        #exec(open("/src/makaronLab/wq/wq/bootstrap/startup.py").read())        
 
 app = wq.App(wqImpl=wq.consts.Q3_IMPL)
 frm = wq.EditorFrame(app, title='makaronLab') #,wqImpl=wq.consts.Q3_IMPL)
-frm.Show()
 tga = encImpl()
 tga._namespace = frm.consoleNamespace()
 #self._initialized = True
@@ -79,10 +77,28 @@ def stdoutIO(stdout=None):
     sys.stdout = old
 
 cw = frm.consoleWidget()
-with stdoutIO() as s:
-    exec(open("/src/makaronLab/wq/wq/bootstrap/startup.py").read(),cw.globals(),cw.locals()) 
+
+def execF(fileName:str):
+    with stdoutIO() as s:
+        exec(open(fileName).read(),cw.globals(),cw.locals())
+    result = s if isinstance(s,str) else s.getvalue()
+    return result
+
+frm.console().registerCommand('execF',execF,True) 
+
+fileName = cPath+"bootstrap/beforeShow.py"
+s=execF(fileName)
 #cw.write(repr(s.getvalue()) + '\n')   
-cw.write('\nstartup.py:\n'+s.getvalue() + '\n') 
+cw.write('\n===bootstrap/beforeShow.py:\n'+s + '\n') 
+#why not register execF as Function ?
+
+frm.Show()
+
+fileName = cPath+"bootstrap/afterShow.py"
+s=execF(fileName)
+#cw.write(repr(s.getvalue()) + '\n')   
+cw.write('\n===bootstrap/afterShow.py:\n'+s + '\n')
+
 app.MainLoop()
 
 

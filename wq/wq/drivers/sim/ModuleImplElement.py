@@ -202,8 +202,8 @@ class ModuleImplElement(ModuleImplBase):
         #handleEvent(Event{ EventType::eInputRemoved, EventEmpty{} });
         inpId = tinp.id()
         self.removeIO(inpId)
-        del tinp
         self.events().inputRemoved.emit(EventProps({'inputId':inpId}))
+        del tinp
 
     def clearInputs(self):
         #m_inputs.clear();
@@ -277,9 +277,12 @@ class ModuleImplElement(ModuleImplBase):
         #m_outputs.pop_back();
         #handleEvent(Event{ EventType::eOutputRemoved, EventEmpty{} });
         tout = self.outputs().last()
-        self.nodes().remove(tout)
+        #//self.nodes().remove(tout)
+        outId = tout.id()
+        self.removeIO(outId)
         #handleEvent(Event{ EventType::eInputRemoved, EventEmpty{} });
-        self.events().outputRemoved.emit(EventProps({'outputId':tout.id()}))
+        self.events().outputRemoved.emit(EventProps({'outputId':outId}))
+        del tout
 
     def clearOutputs(self):
         #m_inputs.clear();

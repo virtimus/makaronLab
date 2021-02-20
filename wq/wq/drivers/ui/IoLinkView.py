@@ -164,6 +164,16 @@ class IoLinkView(qtw.QGraphicsPathItem):
         if (self._to != None):
             self._to.setSignal(signal)
     """
+
+    def disconnect(self):
+        link = self
+        tfrom = link.fr()
+        tto = link.to()
+        tfrom.disconnect(tto)
+        sig = tfrom.mdl().driveSignal()
+        if sig != None:
+            tto.mdl().removeSignal(sig)
+
     def trackNodes(self):
         self.prepareGeometryChange()
         #QPointF const linkItemPos{ m_from->scenePos() };

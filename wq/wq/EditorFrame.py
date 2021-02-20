@@ -28,6 +28,8 @@ import PyQt5.QtGui as qtg
 
 from .q3vector import Q3Vector
 
+from .console import ConsoleCtrl
+
 class EditorFrame(MainWindow):
     """
     A main frame of wqEditor
@@ -37,8 +39,10 @@ class EditorFrame(MainWindow):
         # ensure the parent's __init__ is called
         super(EditorFrame, self).__init__(parent)
         self._app = parent
-        self._consoleWidget = None
-
+        #self._consoleWidget = None
+        self._consoleWidget = console.newConsoleWidget(self)
+        ss=2
+        self.cw().write(f'testWritefrom editorFrame constructor:{ss}')
         #@deprecated
         #self._openModules = dict({})
         self._rootModules = Q3Vector(Module)
@@ -91,6 +95,7 @@ class EditorFrame(MainWindow):
 
     def onTabChanged(self, event=None):
         self._moduleViewIndex = event
+        self.c().write(f'\nonTabChanged:{self._moduleViewIndex}\n')
 
     def onTabCloseRequested(self, event=None):
         index = event
@@ -176,7 +181,7 @@ class EditorFrame(MainWindow):
             self._panelRight = tpanel
         rightPanel()
 
-        self._consoleWidget = console.newConsoleWidget(self)
+        
         self._panelBottom = self.newSidePanel(
             parent = parent.impl(),
             side = direction.DOWN,
@@ -243,9 +248,24 @@ class EditorFrame(MainWindow):
         #//s//elf.Bind(wq.EVT_MENU, self.OnHello, helloItem)
         #//self.Bind(wq.EVT_MENU, self.OnExit,  exitItem)
         #//self.Bind(wq.EVT_MENU, self.OnAbout, aboutItem)
+
     #@api
     def consoleWidget(self):
         return self._consoleWidget
+
+    #@api
+    def cw(self):
+        return self.consoleWidget()
+
+    
+    #@api
+    def console(self) -> ConsoleCtrl:
+        result = self._consoleWidget._namespace['c'] if self._consoleWidget!=None else None
+        return result
+
+    #@api
+    def c(self):
+        return self.console()
         
     #@api
     def consoleNamespace(self):
@@ -366,6 +386,7 @@ class EditorFrame(MainWindow):
             moduleViewImpl = tab.impl().widget(index)
             moduleViewImpl.centerOn(0.0, 0.0)
             '''
+            self.cw().write(f'afterShowEd:{index}')
 
 
         #super(EditorFrame, self).showEvent(event)

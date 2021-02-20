@@ -17,7 +17,7 @@ def handleArg(obj, name, **kwargs):
         result = kwargs[name] if name in kwargs else tdefault
         tclname = obj.__class__.__name__
         assert tdesc != None, f'[console.handleArg] Required description argument (desc) missing for {tclname}'
-        assert result != None or not trequired, f'[console.handleArg] Required keyword argument {name} missing for {tclname}'
+        assert result != None or not trequired, f'[console.handleArg] Required keyword argument "{name}" missing for {tclname}'
         assert tdomainValues == None or result == None or result in tdomainValues, f'Keyword argument {name} not in given domainValues:{tdomainValues}'
         return result
 
@@ -25,27 +25,43 @@ def isArgHelp(**kwargs):
     return 'help' in kwargs and kwargs['help']==True
 
 
-from .EventSignal import EventBase, EventSignal, EventProps
+from .EventSignal import EventBase, EventSignal, EventProps, SyncHandler
 
 
 class ConsoleCtrl:
     class Events(EventBase):
+        callConsoleWrite = SyncHandler()
         pass
 
     def __init__(self, parent, **kwargs):
         self._parent = parent
-        self._registeredCommands = {'registerCommand':self.registerCommand}
+        self._registeredCommands = {'registerCommand':self.registerCommand,'registerProp':self.registerProp}
+        self._registeredProps = {}
         self._globalNamespace = None
+        self._events = ConsoleCtrl.Events()
+
+        #self.events().callConsoleWrite.connect(self.consoleWrite)
     
     def parent(self):
         return self._parent
 
+    def events(self):
+        return self._events
+
     def __getattr__(self, name):
         result =  self._registeredCommands[name] if name in self._registeredCommands else None
+        if name in self._registeredProps:
+            result = result() # get the prop
         return result
 
     def setGlobalNamespace(self,ns):
         self._globalNamespace = ns
+
+    def registerProp(self,name:str,handler):
+        assert name not in self._registeredProps, f'Property with name {name} already registered'
+        self._registeredProps[name]=handler
+        result = self.registerCommand(name,handler,False)
+        return result
 
     def registerCommand(self, name:str, handler, asGlobal=False):
         assert name not in self._registeredCommands, f'Method with name {name} already registered'
@@ -64,9 +80,10 @@ globNS = globals()
 
 def newConsoleWidget(parent,**kwargs):
     tconsctrl = ConsoleCtrl(parent,**kwargs)
-    namespace['g']=tconsctrl
+    namespace['c']=tconsctrl
     namespace['gc']=globNS
     tconsctrl.setGlobalNamespace(namespace)
-    c = pyqtgraph.console.ConsoleWidget(namespace=namespace, text=text)
-    c._namespace = namespace
-    return c
+    cw = pyqtgraph.console.ConsoleWidget(namespace=namespace, text=text)
+    namespace['cw']=cw
+    cw._namespace = namespace
+    return cw

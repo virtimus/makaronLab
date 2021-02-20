@@ -35,11 +35,20 @@ class SyncHandler:
             if thandled == True:
                 return 
 
-
-
 EventSignal = EventSignalBase
 
-EventBase = qtw.QGraphicsObject
+class EventBase(qtw.QGraphicsObject):
+    def __init__(self,*args,**kwargs):
+        self._dynEvents = {}
+        super(EventBase, self).__init__(*args,**kwargs)
+
+    def dyn(self,name:str):
+        #assert not name in self._dynEvents, f'DynEvent with name {name} already registered'
+        if name not in self._dynEvents:
+            self._dynEvents[name]=EventSignal(EventProps)
+        return self._dynEvents[name]
+
+
 
 class EventProps:
     def __init__(self, props={}):
