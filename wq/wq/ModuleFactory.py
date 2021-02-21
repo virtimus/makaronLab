@@ -115,7 +115,18 @@ class ModuleImplBase(metaclass=ABCMeta):
         detailWindowResized = EventSignal(EventProps)
         callDetailWindowCloseReq = SyncHandler()
         consoleWrite = EventSignal(EventProps)
-        pass    
+        nodeConnectionRequest = EventSignal(EventProps)
+        itemPositionHasChanged = EventSignal(EventProps)
+        def emitItemPositionHasChanged(self, d:dict):
+            d['eventName']='itemPositionHasChanged' 
+            self.itemPositionHasChanged.emit(EventProps(d))
+
+        def emitNodeConnectionRequest(self, d:dict):
+            #!TODO! validation, waiting for response?
+            d['eventName']='nodeConnectionRequest' 
+            self.nodeConnectionRequest.emit(EventProps(d))
+
+   
     def __init__(self, **kwargs):
         """ Constructor """
         #self._isCollapsed = False todel 

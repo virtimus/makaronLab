@@ -422,6 +422,13 @@ class IoNodeView(qtw.QGraphicsItem):
             self.node().setDriveSignal(linkItem.fr().node().driveSignal())
         self._used = True
         self._isDrop = False
+        if self.module().isScriptRecordingOn():
+           self.module().recordScript({
+               'recordType':'methodCall',
+               'methodName':'IoNodeView.finishIoLinkView',
+               'sourceNodeId':linkItem.fr().node().id(),
+               'targetNodeId':self.id()
+           }) 
         pass
         
 

@@ -39,7 +39,7 @@ class PackageViewImpl(ModuleViewImpl):
         package = self._element
         PATH = package.packagePath()
         ICON = package.packageIcon()
-        self.propertiesInsertTitle("Package")
+        self.propertiesInsertTitle("Graph")
         #QTableWidgetItem *item{};
 
         def pathEditTextChanged(text):
@@ -54,8 +54,8 @@ class PackageViewImpl(ModuleViewImpl):
             name='Path',
             widget = pathEdit        
         )
-        
 
+        
         def iconEditTextChanged(text):
             #(void)text;
             #qDebug() << "ICON:" << a_text;
@@ -72,11 +72,27 @@ class PackageViewImpl(ModuleViewImpl):
             name='Icon',
             widget = iconEdit        
         )
+
+        valueSR =  qtw.QCheckBox()
+        valueSR.setChecked(self.isScriptRecordingOn())
+        valueSR.stateChanged.connect(self.onPropScriptRecordingChanged)
+
+        self._propertiesBuilder.addProperty(
+            obj = self._element,
+            name='scriptRecording',
+            widget = valueSR        
+        )
+
+
         self.showIOProperties(direction.LEFT, self.m_inputsNode)
         self.showIOProperties(direction.RIGHT, self.m_outputsNode)
 
         self.showCustomProperties()
 
+    def onPropScriptRecordingChanged(self, event):
+        state = event
+        self.module().graphModule().setScriptRecording(state == 2)
+        #self.updateScriptRecording()
 
 
     def open(self):

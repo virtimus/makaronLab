@@ -13,6 +13,7 @@ from ..q3vector import Q3Vector
 from ..dict import UnsortableOrderedDict as UODict
 
 class Visitor:
+    apiMethods = 'apiMethods'
     def __init__(self):
         self._jsD = OrderedDict()
         self._keyStack = Q3Vector()
@@ -160,6 +161,12 @@ class Visitor:
 
         
         #c['value'] = sig.value()
+        #apiMetods
+        c[self.apiMethods] = {}
+        am = c[self.apiMethods]
+        am['connect']={
+            'desc':'s.connect(t) - connect from s to t node'
+        }
         
         self.popState()
         return c

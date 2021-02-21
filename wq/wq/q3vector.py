@@ -207,6 +207,14 @@ class Q3Vector:
             self.remove(self.last(),noIndexUpdate = True)
         self._rebuildIndexes()
 
+    def defaultGetter(self, strKey, by=None):
+        if by!=None:
+            if isinstance(by,int): #find by id
+                return self.byLid(by)
+            else:
+                return self.by(strKey,by)
+        else:
+            return self
 
 
 

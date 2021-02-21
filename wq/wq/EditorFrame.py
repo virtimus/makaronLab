@@ -420,12 +420,12 @@ class EditorFrame(MainWindow):
         return self.rootModuleByInd(self.rootModuleSelectedIndex())
 
     #@api
-    def rootModules(self) -> Q3Vector(Module):
-        return self._rootModules
+    def rootModules(self,by=None) -> Q3Vector(Module):
+        return self._rootModules.defaultGetter('name',by)
 
     #@api
-    def rms(self):
-        return self.rootModules()
+    def rms(self,by=None):
+        return self.rootModules(by)
 
     #@api
     def rootModuleSelect(self, index:int):
@@ -448,16 +448,16 @@ class EditorFrame(MainWindow):
         return self.rootModule()
 
     #@api
-    def rootModuleSignals(self):
-        return self.rootModule().signals()
+    def rootModuleSignals(self,by=None):
+        return self.rootModule().signals().defaultGetter('name',by)
 
     #@api
-    def rootModuleNodes(self):
-        return self.rootModule().nodes() 
+    def rootModuleNodes(self,by=None):
+        return self.rootModule().nodes().defaultGetter('name',by) 
 
     #@api
-    def rootModuleModules(self):
-        return self.rootModule().modules()
+    def rootModuleModules(self,by=None):
+        return self.rootModule().modules().defaultGetter('name',by)
 
     def buildSampleRoot(self):
         rootModule = Module(self,'rootModule',

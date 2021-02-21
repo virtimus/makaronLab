@@ -66,8 +66,11 @@ class Node(Object):
     def no(self):
         return self._no
 
-    def module(self):
+    def module(self) -> 'Module':
         return self._parent
+
+    def events(self):
+        return self.module().events()
 
     def view(self):
         return self._view
@@ -113,37 +116,38 @@ class Node(Object):
         return self._signals
 
     def setDriveSignal(self, signal:'Signal'):
-        if self._driveSignal == None:
+        if self._driveSignal == None: #not set yet - just set it
             self._driveSignal = signal
-        else:
-            if signal == None:
+        else: #ds alrady set - check variant
+            if signal == None: #ds clear try - allow always ?
                 tid = self._driveSignal.id()
                 self.signals().removeByLid(tid)
                 self._driveSignal = signal
-            else:
-                if self._driveSignal.size()!=signal.size():
+            else: #setting new ds
+                if self._driveSignal.size()!=signal.size():  #size differs - problem
                     self.raiseExc('Signal size differs')
-                msg = signal.canDrive()
-                if msg == None:
-                    self._driveSignal = signal
-                else: 
-                    self.raiseExc(f'[signal.canDrive]: {msg}')
+                #msg = signal.canDrive() #don't think this logic is needed now
+                #if msg == None:
+                self._driveSignal = signal
+                #else: 
+                #    self.raiseExc(f'[signal.canDrive]: {msg}')
         self.addSignal(signal)
 
     def isSignalOn(self):
         return self.driveSignal().isOn() if self.driveSignal() != None else False
 
     def addSignal(self, signal:'Signal'):
-        if signal == None:
+        if signal == None: #none cannot be added
             return 
-        if self._driveSignal == None:
+        if self._driveSignal != None:
+            if self._driveSignal.size()!=signal.size(): # size differs - problem
+                self.raiseExc('Signal size differs')  
+        else: #first added signal as Drive
             self.setDriveSignal(signal)
         lid = signal.id()
-        if lid in self._signals:
+        if lid in self._signals: #silently ignore
             #self.raiseExc(f'Signal with id {lid} already added')
-            return
-        if self._driveSignal.size()!=signal.size():
-            self.raiseExc('Signal size differs')            
+            return          
         self._signals.append(lid,signal)
 
     def removeSignal(self, sig:'Signal'):
@@ -153,8 +157,19 @@ class Node(Object):
         if self.driveSignal()!=None and self.driveSignal().id() == sig.id():
             self.setDriveSignal(None)
 
-
-    def connect(self, targetNodeId, **kwargs):
+    #@api
+    def connect(self, targetNode:'Node', **kwargs):
+        assert self.driveSignal()!=None, '[node.connect] Drive signal is none'
+        assert targetNode!=None, '[node.connect] targetNode is none'
+        if (isinstance(targetNode,IoNode)):
+            assert targetNode.ioType() in [NodeIoType.INPUT,NodeIoType.DYNAMIC], '[node.connect] targetNode.ioType has to be in [INPUT,DYNAMIC]'
+        if self.view() == None: # standalone mode
+            targetNode.setDriveSignal(self.driveSignal())
+        #emit connection request
+        self.events().emitNodeConnectionRequest({
+            'sourceNode':self,
+            'targetNode':targetNode
+            })
         pass
 
 class IoNode(Node):
@@ -251,14 +266,22 @@ class Module(Object):
         elif not self._isImplStr  and self._moduleType == None:
             self.raiseExc(f'[Module] ''moduleType'' required {self._name}')
 
-
+        self._scriptRecording = False
         self._modules = Q3Vector()
+        self.modulesBy = self._modules.by #@api
+        self.modsBy = self.modulesBy #@api
         self._modules.append(0,self)
         self._nodes = Q3Vector()
+        self.nodesBy = self._nodes.by #@api
+        self.nodsBy = self.nodesBy #@api
         #self._nodesByName = {} handled by Q3Vector
         self._tabIndex = None
         self._signals = Q3Vector()
+        self.signalsBy = self._signals.by #@api
+        self.sigsBy = self.signalsBy #@api
         self._moduleViews = Q3Vector()
+        self.moduleViewsBy = self._moduleViews.by
+        self.mViewsBy = self.moduleViewsBy 
         self._info = None
         self._desc = None
         #self._signalsByName = {}
@@ -280,6 +303,53 @@ class Module(Object):
             self.parent().addModule(self)
         else:
             self._id = kwargs['id'] if 'id' in kwargs else 0
+
+    def consoleWrite(self, dta):
+        self.impl().consoleWrite(dta)
+
+    def isScriptRecordingOn(self):
+        return self._scriptRecording
+
+    def setScriptRecording(self, n:bool):
+        self._scriptRecording = n
+
+    #@api
+    def connect(self, sourceNodeId:int,targetNodeId:int):
+        sourceNode = self.nodes(sourceNodeId)
+        targetNode = self.nodes(targetNodeId)
+        assert sourceNode != None, f'[Module.connect] sourceNodeId:{sourceNodeId} not found'
+        assert targetNode != None, f'[Module.connect] targetNodeId:{targetNodeId} not found'
+        return sourceNode.connect(targetNode)
+
+    def setPos(self, x, y):
+        if self.view()!=None:
+            self.view().impl().setPos(x,y)
+
+    def recordScript(self, recData:dict):
+        self.consoleWrite(f'[recordScript] {recData}\n')
+        recordType = recData['recordType']
+        if recordType == 'event':
+            eventName = recData['eventName']
+            event = recData['event']
+            if eventName == 'itemPositionHasChanged':
+                x = event.props('x')
+                y = event.props('y')
+                id = event.props('elementId')
+                self.consoleWrite(f'[recordScript] c.rm.modulesBy(\'id\',{id}).setPos({x},{y})')
+            elif eventName == 'nodeConnectionRequest':
+                self.consoleWrite(f'[recordScript] Unhandled eventName:{eventName} {event.props()}')
+            else:
+                self.consoleWrite(f'[recordScript] Unhandled eventName:{eventName}')
+        elif recordType == 'methodCall':
+            methodName = recData['methodName']
+            if methodName == 'IoNodeView.finishIoLinkView':
+                sourceNodeId = recData['sourceNodeId']
+                targetNodeId = recData['targetNodeId']
+                self.consoleWrite(f'[recordScript] c.rm.connect({sourceNodeId},{targetNodeId})\n')
+            else:
+                self.consoleWrite(f'[recordScript] Unhandled methodName:{methodName}')
+        else:
+            self.consoleWrite(f'[recordScript] Unhandled recordType:{recordType}')
 
 
     def tabIndex(self):
@@ -327,19 +397,20 @@ class Module(Object):
         return self.impl().events()
 
     #@api
-    def nodes(self):
-        return self._nodes
-    #@api
-    def nods(self):
-        return self.nodes()
+    def nodes(self, by=None):
+        return self._nodes.defaultGetter('name',by)
     
     #@api
-    def signals(self):
-        return self._signals
+    def nods(self, by=None):
+        return self.nodes(by)
+    
+    #@api
+    def signals(self, by=None):
+        return self._signals.defaultGetter('name',by)
 
     #@api
-    def sigs(self):
-        return self.signals()
+    def sigs(self,by=None):
+        return self.signals(by)
 
     def mType(self):
         return self.moduleType()
@@ -358,12 +429,12 @@ class Module(Object):
         return result
 
     #@api
-    def modules(self):#submodules
-        return self._modules
+    def modules(self,by=None):#submodules
+        return self._modules.defaultGetter('name',by)
         
     #@api
-    def mods(self):
-        return self.modules()
+    def mods(self,by=None):
+        return self.modules(by)
 
     def modById(self, id):
         return self._modules.byLid(id)

@@ -367,6 +367,13 @@ class ModuleViewImpl(qtw.QGraphicsItem):
                 else: #if moduleType == ModuleType.ATOMIC:#case Type::eElement:
                 '''
                 #self._element.setPosition(POSITION.x(), POSITION.y())
+                self.events().emitItemPositionHasChanged({
+                    'position':POSITION,
+                    'x':POSITION.x(),
+                    'y':POSITION.y(),
+                    'elemClassName':type(self._element).__name__,
+                    'elementId':self._element.id()
+                })
         elif change == qtw.QGraphicsItem.GraphicsItemChange.ItemRotationHasChanged:
             for ioNodeView in self._nodeViews.values():
                 ioNodeView.itemChange(qtw.QGraphicsItem.ItemScenePositionHasChanged, None)
@@ -428,7 +435,8 @@ void Node::advance(int a_phase)
         self._element.events().ioNodeRemoved.connect(self.heIoNodeRemoved)
         self._element.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked)
         self._element.events().consoleWrite.connect(self.heConsoleWrite)
-        #self._element.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked2)
+        self._element.events().nodeConnectionRequest.connect(self.heNodeConnectionRequest)
+        self._element.events().itemPositionHasChanged.connect(self.heItemPositionHasChanged)
 
 
         INPUTS = self._element.inputs()
@@ -735,6 +743,33 @@ void Node::advance(int a_phase)
     def heConsoleWrite(self,event):
         text = event.props('text')
         self.console().write(text)
+
+    def isScriptRecordingOn(self):
+        return self.module().graphModule().isScriptRecordingOn()
+
+    def recordScript(self, d:dict):
+        return self.module().graphModule().recordScript(d)
+
+
+    def heNodeConnectionRequest(self, event):
+        sourceNode = event.props('sourceNode')
+        targetNode = event.props('targetNode')
+        sourceNode.view().connect(targetNode.view())
+        if self.isScriptRecordingOn():
+            self.recordScript({
+                'recordType':'event',
+                'eventName':'nodeConnectionRequest',
+                'event':event
+            })
+
+    def heItemPositionHasChanged(self, event):
+        if self.isScriptRecordingOn():
+            self.recordScript({
+                'recordType':'event',
+                'eventName':'itemPositionHasChanged',
+                'event':event
+            })
+
 
 
     #def heModuleDoubleClicked2(self,event):
