@@ -1,2 +1,6 @@
-/dist/
 /q3.egg-info/
+*.pyc
+*.pyo
+**/**.pyc
+**/**.pyo
+**/**/**/__pycache__/

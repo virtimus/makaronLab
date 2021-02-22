@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='q3',
@@ -8,6 +8,7 @@ setup(
     url='https://github.com/virtimus/makaronLab/q3/q3',
     author='virtimus',
     author_email='virtimus@gmail.com',
-    packages=[],
+    python_requires="~=3.6",
+    packages=find_packages(),
     classifiers=['Development Status :: 1 - Planning'],
 )
