@@ -510,26 +510,25 @@ class IoNodeView(qtw.QGraphicsItem):
         link = self.linkBetween(self, other)
         if (link != None): #already connected
             return
-        '''
-        linkItem = IoLinkView() #/LinkItem;
-        linkItem.setColors(self._colorSignalOff, self._colorSignalOn)
-        linkItem.setValueType(self._valueType)
-        linkItem.setFr(self)
-        self._links.push_back(linkItem)
-        self.scene().addItem(linkItem)
-        '''
-        linkItem = self.newIoLinkView()
 
         self._used = True
-
-        
-        '''
-        linkItem.setTo(other)
-        other._links.push_back(linkItem)
-        other._used = True
-        other._isDrop = False
-        '''
-        other.finishIoLinkView(linkItem)
+        if (other != None ): #3dlevel
+            '''
+            linkItem = IoLinkView() #/LinkItem;
+            linkItem.setColors(self._colorSignalOff, self._colorSignalOn)
+            linkItem.setValueType(self._valueType)
+            linkItem.setFr(self)
+            self._links.push_back(linkItem)
+            self.scene().addItem(linkItem)
+            '''
+            linkItem = self.newIoLinkView()
+            '''
+            linkItem.setTo(other)
+            other._links.push_back(linkItem)
+            other._used = True
+            other._isDrop = False
+            '''
+            other.finishIoLinkView(linkItem)
         
 
     def linkBetween(self, fr, to): #SocketItem *const

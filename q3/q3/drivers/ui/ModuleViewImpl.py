@@ -1197,8 +1197,10 @@ auto max_element(Container &a_container, Comparator a_comparator)
         #dirp = dir
         if self.mType() == ModuleType.IO:
             tnt = NodeIoType.INPUT                 
-        self._element.addOutput(TYPE, NAME, self._element.defaultFlags(dir), tnt)
+        result = self._element.addOutput(TYPE, NAME, self._element.defaultFlags(dir), tnt)
         self.m_packageView.showProperties()
+        result = self._element.nodes().byLid(result) if result >-1 else None
+        return result
 
     def removeOutput(self):
         self._element.removeOutput()

@@ -3,6 +3,8 @@
 
 import q3
 
+import q3.config
+
 import q3.Timer as Timer
 
 import PyQt5.QtCore as qtc
@@ -57,6 +59,8 @@ class encImpl:
 
 app = q3.App(q3Impl=q3.consts.Q3_IMPL)
 frm = q3.EditorFrame(app, title='makaronLab')
+q3.config.consoleInstance = frm.console()
+q3.config.consoleWidgetInstance = frm.consoleWidget()
 tga = encImpl()
 tga._namespace = frm.consoleNamespace()
 #self._initialized = True
@@ -79,11 +83,23 @@ def stdoutIO(stdout=None):
 
 cw = frm.consoleWidget()
 
-def execF(fileName:str):
+#oldversion
+def execF0(fileName:str):
     with stdoutIO() as s:
         exec(open(fileName).read(),cw.globals(),cw.locals())
     result = s if isinstance(s,str) else s.getvalue()
     return result
+
+def execF(fileName:str):
+    with stdoutIO() as s:
+        f = open(fileName).read()
+        #exec(f,cw.globals(),cw.locals())
+        code_block = compile(f, fileName, 'exec')
+        exec(code_block,cw.globals(),cw.locals())
+
+    result = s if isinstance(s,str) else s.getvalue()
+    return result
+
 
 frm.console().registerCommand('execF',execF,True) 
 

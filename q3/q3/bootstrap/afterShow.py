@@ -1,10 +1,18 @@
 
-if c == None:
-    c = _namespace['c']
-mods = mods
+from q3.api import *
+
+
+#if c == None:
+#    c = _namespace['c']
+#mods = mods
+#modvAdd = modvAdd
+#mod = mod
+
+#pr = pr
 
 from ssl import SSLSocket
 import types
+#from .regCommands import *
 
 
 pr('After show editoFrame')
@@ -68,6 +76,7 @@ c.debug =c.write
 
 #c.rm.setSelected(c.rm.mods().by('name','moduleInputs'))
 
+
 inputs = c.rm.mods().by('name','moduleInputs')
 outputs = c.rm.mods().by('name','moduleOutputs')
 inp = inputs
@@ -124,3 +133,86 @@ c.rm.connect(27,2) #inp #4 to and
 c.rm.connect(27,5) #inp #4 to and
 
 c.rm.connect(11,9) #nor2nor # and the second feedback
+
+mainRootModule = c.rm
+
+
+#new module
+moduleView = modvAdd()
+
+m = moduleView.module()
+
+mod(3).setPos(0.0,-400.0)
+mod(4).setPos(0.0,400.0)
+
+#from ..moduletype import ModuleType as ModuleType
+
+import q3.moduletype
+
+minputs = m.mods('moduleInputs')
+moutputs = m.mods('moduleOutputs')
+minputsViewImpl = minputs.view().impl()
+mi0 = minputsViewImpl.addInput()
+mi1 = minputsViewImpl.addInput()
+mi2 = minputsViewImpl.addInput()
+mi3 = minputsViewImpl.addInput()
+
+moutputsViewImpl = moutputs.view().impl()
+mo0 = moutputsViewImpl.addOutput()
+mo1 = moutputsViewImpl.addOutput()
+
+def norGraph(parent, name:str, A,B,Y):
+    graphModule1 = parent.modAdd(name,
+        moduleType = q3.moduletype.ModuleType.GRAPH
+        )
+    i0 = graphModule1.view().impl().addInput()
+    i1 = graphModule1.view().impl().addInput()
+    o0 = graphModule1.view().impl().addOutput()
+    #o1 = graphModule1.view().impl().addOutput()
+
+
+    #mi0 = minputs.nods('#0')
+    #mi0 = minputs.nods('#0')
+    A.connect(i0)
+    B.connect(i1)
+
+    #i0.connect(o0) #wrong
+
+    #this is just connecting input/output signals across graph module
+    #i0.addSignal(o1.driveSignal())
+    #i1.addSignal(o0.driveSignal())
+
+    #let's try create a 3rd level module (not visible) inside the 2nd level graph module ...
+    nor1 = graphModule1.modAdd('nor1',
+        impl = 'local:/NOR'
+        ) 
+    #local/nor gate has A/B input and Y output - connect it...
+
+    i0.connect(nor1.nod('A'))
+    i1.connect(nor1.nod('B'))
+    #nor1.nod('Y').connect(o0) #currently invalid 
+    nor1.nod('Y').addSignal(o0.driveSignal())
+
+    o0.connect(Y)
+    return graphModule1
+
+#rmsel('rootModule')
+#rmsel(mainRootModule)
+
+gr1 = norGraph(moduleView,'gr1',mi0,mi1,mo0)
+
+graphParent = moduleView.modAdd('graphParent',
+    moduleType = q3.moduletype.ModuleType.GRAPH
+    )
+igp0 = graphParent.view().impl().addInput()
+igp1 = graphParent.view().impl().addInput()
+ogp0 = graphParent.view().impl().addOutput()
+mi2.connect(graphParent.nodl('#0'))
+mi3.connect(graphParent.nodl('#1'))
+graphParent.nodr('#0').connect(mo1)
+    
+igp0.addSignal(ogp0.driveSignal())
+    #i1.addSignal(o0.driveSignal())
+graphParent.setPos(0.0,110.0)
+
+#gr2 = norGraph(graphParent,'gr2',mi2,mi3,mo1)

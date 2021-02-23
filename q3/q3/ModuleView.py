@@ -128,6 +128,7 @@ class ModuleView(Object):
     def setParentTab(self, tab):
         self._parentTab = tab
 
+    #@api
     def tabIndex(self):       
         result = self._parentTab.parent().indexOf(self._parentTab) if self._parentTab != None and self._parentTab.parent()!=None else None
         return result
@@ -145,6 +146,17 @@ class ModuleView(Object):
 
     def moduleViews(self):
         return self._moduleViews
+
+    #@api
+    def modAdd(self, name, **kwargs):
+        return self.newModule(name,**kwargs)
+
+    def newModule(self,moduleName, **kwargs):
+        nmodule = self.module().newModule(moduleName,**kwargs)
+        if self.module().isRoot():
+            tModuleView = ModuleView(self,module=nmodule)
+        return nmodule
+
 
 
     #def addModuleView(self, moduleView:'ModuleView'): #commented no reg from outside ?

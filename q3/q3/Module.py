@@ -163,14 +163,17 @@ class Node(Object):
         assert targetNode!=None, '[node.connect] targetNode is none'
         if (isinstance(targetNode,IoNode)):
             assert targetNode.ioType() in [NodeIoType.INPUT,NodeIoType.DYNAMIC], '[node.connect] targetNode.ioType has to be in [INPUT,DYNAMIC]'
-        if self.view() == None: # standalone mode
+        if self.view() == None or targetNode.view()==None: # standalone mode
             targetNode.setDriveSignal(self.driveSignal())
         #emit connection request
         self.events().emitNodeConnectionRequest({
             'sourceNode':self,
             'targetNode':targetNode
             })
-        pass
+
+    #@api - alias for connect 
+    def con(self, targetNode:'Node', **kwargs):
+        return self.connect(targetNode,**kwargs)
 
 class IoNode(Node):
     def __init__(self, *args, **kwargs): 
@@ -303,6 +306,7 @@ class Module(Object):
             self.parent().addModule(self)
         else:
             self._id = kwargs['id'] if 'id' in kwargs else 0
+        
 
     def consoleWrite(self, dta):
         self.impl().consoleWrite(dta)
@@ -403,6 +407,21 @@ class Module(Object):
     #@api
     def nods(self, by=None):
         return self.nodes(by)
+
+    #@api
+    def nod(self, by):
+        assert by!=None, '[nod] "by" arg required not None'
+        return self.nodes(by)
+
+    #@api
+    def nodl(self,by):
+        assert by!=None, '[nodl] "by" arg required not None'
+        return self.nodes().filterBy('dir',direction.LEFT).defaultGetter('name',by)
+
+    #@api
+    def nodr(self,by):
+        assert by!=None, '[nodr] "by" arg required not None'
+        return self.nodes().filterBy('dir',direction.RIGHT).defaultGetter('name',by)
     
     #@api
     def signals(self, by=None):
@@ -410,6 +429,11 @@ class Module(Object):
 
     #@api
     def sigs(self,by=None):
+        return self.signals(by)
+
+    #@api
+    def sig(self,by):
+        assert by!=None, '[sig] "by" arg required not None'
         return self.signals(by)
 
     def mType(self):
@@ -434,6 +458,11 @@ class Module(Object):
         
     #@api
     def mods(self,by=None):
+        return self.modules(by)
+
+    #@api
+    def mod(self,by):
+        assert by!=None, '[mod] "by" arg required not None'
         return self.modules(by)
 
     def modById(self, id):
@@ -506,7 +535,9 @@ class Module(Object):
             del v
             del ioNode
 
-
+    #@api
+    def modAdd(self, moduleName,**kwargs):
+        return self.newModule(moduleName,**kwargs)
 
     def newModule(self, moduleName, **kwargs):
         result = Module(self,moduleName,**kwargs)

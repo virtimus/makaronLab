@@ -126,6 +126,10 @@ class Q3Vector:
     def byLid(self, lid:int):
         result = self._list[lid] if lid in self._list else None
         return result #self.by('id',lid)
+    
+    def byObj(self, obj):
+        result = obj if obj in self._list.values() else None
+        return result
 
     def byId(self,id:int):
         result = self.by('id',id)
@@ -136,7 +140,7 @@ class Q3Vector:
     def append(self, lid:int, element):
         self._validateCls(element)
         if lid  in self._list and self._list[lid] != None:
-            self.raiseExc('[Q3Vector] append failed - element with id({id}) already in list')
+            self.raiseExc(f'[Q3Vector] append failed - element with id({lid}) already in list')
         else:
             self._list[lid]=element
             #self._updateNextId(lid+1)

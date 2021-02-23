@@ -33,6 +33,8 @@ from .MenuBar import MenuBar
 from .ModuleFactory import ModuleFactory
 from .Timer import Timer
 
+from .moduletype import ModuleType
+
 
 from . import orientation
 from . import direction

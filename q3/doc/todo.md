@@ -1,0 +1,2 @@
+- deleting a link from ui there is a signal conn left 
+- nodAdd module level with eventual view(IoNodeView)

@@ -101,14 +101,16 @@ class ModuleImplElement(ModuleImplBase):
 
     #bool Element::addInput(ValueType const a_type, std::string const &a_name, uint8_t const a_flags){
 	#return addInput(a_type,a_name,a_flags,SocketItemType::eInput);
-    def addInput(self, valueType:ValueType, name:str, flags:IoNodeFlags) -> bool:
-        return self.addInput(valueType,name,flags,IoType.INPUT)
+    #def addInput(self, valueType:ValueType, name:str, flags:IoNodeFlags) -> bool:
+    #    return self.addInput(valueType,name,flags,IoType.INPUT)
 
 
     #bool Element::addInput(ValueType const a_type, std::string const &a_name, uint8_t const a_flags,SocketItemType sItemType)
     #return (addInputS(a_type,a_name,a_flags,sItemType)>=0);
-    def addInput(self, valueType:ValueType, name:str, flags:IoNodeFlags,ioType:IoType) -> bool:
-        return (self.addInputS(valueType, name, flags, ioType)>0)
+    def addInput(self, valueType:ValueType, name:str, flags:IoNodeFlags,ioType:IoType=None) -> int:
+        if ioType == None:
+            ioType = IoType.INPUT
+        return self.addInputS(valueType, name, flags, ioType)
 
     def _tsizeFromValueType(self, valueType:ValueType) -> int:
         return valueType.toSize()
@@ -211,12 +213,14 @@ class ModuleImplElement(ModuleImplBase):
   
     #bool Element::addOutput(ValueType const a_type, std::string const &a_name, uint8_t const a_flags){
 	#return addOutput(a_type,a_name,a_flags,SocketItemType::eOutput);
-    def addOutput(self, valueType:ValueType, name:str, flags:IoNodeFlags):
-        return self.addOutput(valueType, name, flags, IoType.OUTPUT)
+    #def addOutput(self, valueType:ValueType, name:str, flags:IoNodeFlags):
+    #    return self.addOutput(valueType, name, flags, IoType.OUTPUT)
 
     #bool Element::addOutput(ValueType const a_type, std::string const &a_name, uint8_t const a_flags, SocketItemType sItemType)
     #return (addOutputS(a_type, a_name, a_flags, sItemType)>=0);
-    def addOutput(self, valueType:ValueType, name:str, flags:IoNodeFlags, ioType:IoType):
+    def addOutput(self, valueType:ValueType, name:str, flags:IoNodeFlags, ioType:IoType=None) -> int:
+        if ioType == None:
+            ioType = IoType.OUTPUT
         return self.addOutputS(valueType, name, flags, ioType) 
 
     #size_t Element::addOutputS(ValueType const a_type, std::string const &a_name, uint8_t const a_flags, SocketItemType sItemType){

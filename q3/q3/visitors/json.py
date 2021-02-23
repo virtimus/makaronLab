@@ -74,6 +74,12 @@ class Visitor:
             module.acceptVisitor(self) 
             self.popState()
 
+        c[self.apiMethods] = {}
+        am = c[self.apiMethods]
+        am['newModuleView']={
+            'desc':'create new ModuleView/rootModule'
+        }
+
         #ed._rootModule.acceptVisitor(self)
         self.popState()
 
@@ -191,6 +197,12 @@ class Visitor:
 
         c['class'] = str(mv.__class__)
         #c['value'] = sig.value()
+
+        c[self.apiMethods] = {}
+        am = c[self.apiMethods]
+        am['tabIndex']={
+            'desc':'current TabIndex if view is open as rootModule'
+        }
 
         self.popState()
 

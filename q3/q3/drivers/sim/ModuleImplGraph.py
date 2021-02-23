@@ -14,7 +14,7 @@ from ...q3vector import Q3Vector
 #from ...Module import Module
 
 #using Elements = std::vector<Element *>;
-Elements = Q3Vector() #'Module' ModuleIMpl
+#Elements = Q3Vector() #'Module' ModuleIMpl
 
 """
 struct Connection {
@@ -88,7 +88,7 @@ class ModuleImplGraph(ModuleImplElement):
         self.m_outputsPosition = qtc.QPointF(400.0, 0.0)
         self.m_packagePath = ''
         self.m_packageIcon = ':/unknown.png'
-        self.m_elements = Elements
+        self.m_elements = Q3Vector()
         #self.m_connections = Connections
         #std::vector<size_t> m_free{};
         #self.m_dependencies = Q3Vector(Q3Vector)
@@ -192,6 +192,14 @@ class ModuleImplGraph(ModuleImplElement):
                 continue
             element.updateTiming(self.m_delta)
             element.calculate()
+
+    def calc(self):
+        els = self.m_elements.values()
+        if self.m_elements.size()>0:
+            el = self.m_elements.first()
+            if el.view() == None: #3d level and down - calculate recursive
+                self.calculate()
+        #print(f'{els}')
 
     def add(self, el:'Module'):
         self.pauseDispatchThread()

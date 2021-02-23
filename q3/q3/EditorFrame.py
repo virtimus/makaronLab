@@ -39,6 +39,7 @@ class EditorFrame(MainWindow):
         # ensure the parent's __init__ is called
         super(EditorFrame, self).__init__(parent)
         self._app = parent
+        self._rootModule = None
         #self._consoleWidget = None
         self._consoleWidget = console.newConsoleWidget(self)
         ss=2
@@ -339,13 +340,20 @@ class EditorFrame(MainWindow):
             self.rootModules().append(self.rootModules().nextId(),module)
         self._tabPanel.impl().setCurrentIndex(self._moduleViewIndex)
         self._moduleView = module.view()
-        return self._moduleViewIndex
+        return self._moduleView
                       
+    #@api
+    def moduleViewAdd(self):
+        return self.newModuleView()
 
+    #@api
+    def modvAdd(self):
+        return self.newModuleView()
+        
     def newModuleView(self):
         tnextId = self.rootModules().nextId()
         module = Module(self, f"New-{tnextId}", moduleType=ModuleType.GRAPH, id=tnextId)
-        self.openModuleView(module)
+        return self.openModuleView(module)
 
     _firstTime = True 
     #: QShowEvent #@s:editor::showEvent
@@ -361,31 +369,32 @@ class EditorFrame(MainWindow):
             moduleViewImpl = tab.impl().widget(index)
             moduleViewImpl.centerOn(0.0, 0.0)
             '''
-            self.openModuleView(self._rootModule)
-            index = tab.currentIndex()
-            graphViewImpl = tab.impl().widget(index)
-            graphViewImpl.centerOn(0.0, 0.0)
+            if self._rootModule != None:
+                self.openModuleView(self._rootModule)
+                index = tab.currentIndex()
+                graphViewImpl = tab.impl().widget(index)
+                graphViewImpl.centerOn(0.0, 0.0)
 
-            from .visitors.json import Visitor as JsonVisitor
-            v = JsonVisitor()
-            self._rootModule.acceptVisitor(v)
+                from .visitors.json import Visitor as JsonVisitor
+                v = JsonVisitor()
+                self._rootModule.acceptVisitor(v)
 
-            #print(v._jsD)
+                #print(v._jsD)
 
-            from . import yaml
+                from . import yaml
 
-            with open('/tmp/bootDump.yaml', 'w+') as handle:
-                yaml.dump(v._jsD, handle,default_flow_style=False)
+                with open('/tmp/bootDump.yaml', 'w+') as handle:
+                    yaml.dump(v._jsD, handle,default_flow_style=False)
 
-            '''
-            self._nestedModule._nestedView = self._nestedModule._view 
-            self._nestedModule._view = None
-            #!TMP!
-            self.openModuleView(self._nestedModule)
-            index = tab.currentIndex()
-            moduleViewImpl = tab.impl().widget(index)
-            moduleViewImpl.centerOn(0.0, 0.0)
-            '''
+                '''
+                self._nestedModule._nestedView = self._nestedModule._view 
+                self._nestedModule._view = None
+                #!TMP!
+                self.openModuleView(self._nestedModule)
+                index = tab.currentIndex()
+                moduleViewImpl = tab.impl().widget(index)
+                moduleViewImpl.centerOn(0.0, 0.0)
+                '''
             self.cw().write(f'afterShowEd:{index}')
 
 
@@ -428,10 +437,20 @@ class EditorFrame(MainWindow):
         return self.rootModules(by)
 
     #@api
-    def rootModuleSelect(self, index:int):
-        rm = self.rootModules().byLid(index)
-        assert rm != None, f'Module with tabIndex:{index} not found'
-        self.openModuleView(rm)
+    def rootModuleSelect(self, by):
+        assert by != None, '[rootModuleSelect] "by" not None required'
+        result = None
+        if isinstance(by,int):
+            result = self.rootModules().byLid(by)
+            assert result != None, f'Module with tabIndex:{by} not found'
+        elif isinstance(by,str):
+            result = self.rootModules().by('name',by)
+            assert result != None, f'Module with name:{by} not found'
+        else:
+            assert(isinstance(by,Module)), f'[rootModuleSelect] Can only find by index, name or object ref'
+            result = self.rootModules().byObj(by) 
+            assert result != None, f'Module with objRef:{by} not found'
+        return self.openModuleView(result)
     
     #@api
     def rmsel(self, index:int):
@@ -449,15 +468,28 @@ class EditorFrame(MainWindow):
 
     #@api
     def rootModuleSignals(self,by=None):
-        return self.rootModule().signals().defaultGetter('name',by)
+        return self.rootModule().signals(by)
+
+    #@api
+    def rootModuleSig(self,by):
+        return self.rootModule().sig(by)
 
     #@api
     def rootModuleNodes(self,by=None):
-        return self.rootModule().nodes().defaultGetter('name',by) 
+        return self.rootModule().nodes(by)
+
+    #@api
+    def rootModuleNod(self):
+        return self.rootModule().nod(by)
 
     #@api
     def rootModuleModules(self,by=None):
-        return self.rootModule().modules().defaultGetter('name',by)
+        return self.rootModule().modules(by)
+
+    #@api
+    def rootModuleMod(self,by):
+        return self.rootModule().mod(by)
+
 
     def buildSampleRoot(self):
         rootModule = Module(self,'rootModule',

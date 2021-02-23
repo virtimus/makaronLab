@@ -239,29 +239,35 @@ class ModuleImplBase(metaclass=ABCMeta):
     def removeIO(self, id): #todo event emmiter
         return self.s().removeIO(id)    
 
-    def sig(self, name:str):
-        ts = self.s()
-        return ts.sigByName(name) 
-
-    def signals(self):
-        return self.mdl().signals()
+    def signals(self,by=None):
+        return self.mdl().signals(by)
     
-    def sigs(self):
-        return self.signals()
+    def sigs(self,by=None):
+        return self.mdl().sigs(by)
 
-    #def collapse(self, n):
-    #    self._isCollapsed = n
-
-    #def isCollapsed(self):
-    #    return self._isCollapsed
-
-
+    def sig(self,by):
+        return self.mdl().sig(by)
     
-    def nodes(self):
-        return self.s().nodes()
+    def nodes(self,by=None):
+        return self.mdl().nodes(by)
+
+    def nods(self,by=None):
+        return self.mdl().nods(by)
+
+    def nod(self,by):
+        return self.mdl().nod(by)
 
     def nodesByDir(self, dir:direction.Dir):
         return self.nodes().filterBy('dir',dir)
+
+    def modules(self,by=None):
+        return self.mdl().modules(by)
+
+    def mods(self,by=None):
+        return self.mdl().mods(by)
+
+    def mod(self,by):
+        return self.mdl().mod(by)
 
     #'inputs' is historical name deprecated in fact it is ionode on left !TODO! remimplement using nodes() vector
     #@deprecated
