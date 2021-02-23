@@ -13,13 +13,14 @@ Direction - top/left/righr/down
 #from wx import DOWN
 
 class Dir(Enum):
-    LEFT = (1, "LEFT")
-    TOP = (2, "TOP")
-    RIGHT = (3, "RIGHT")
-    DOWN = (4,"DOWN")
-    def __init__(self, num, label):
+    LEFT = (1, "LEFT","moduleInputs")
+    TOP = (2, "TOP","moduleTops")
+    RIGHT = (3, "RIGHT","moduleOutputs")
+    DOWN = (4,"DOWN","moduleDowns")
+    def __init__(self, num, label,graphModName):
         self._num = num
         self._label = label
+        self._graphModName = graphModName
     
     def label(self):
         return self._label
@@ -34,6 +35,9 @@ class Dir(Enum):
         elif DOWN == self:
             return TOP
         return None
+
+    def graphModName(self):
+        return self._graphModName
         
 
 

@@ -1138,11 +1138,11 @@ auto max_element(Container &a_container, Comparator a_comparator)
         self.changeIOName(direction.RIGHT, vid, name)
 
     #@deprecated
-    def addInput(self):
+    def addInput(self, name:str=None):
         dir = direction.LEFT
         ioNodes = self._element.nodesByDir(dir)
         SIZE = ioNodes.size() #self._element.inputs().size()
-        INPUT_NAME = f'#{SIZE}'
+        INPUT_NAME = f'#{SIZE}' if name==None else name
         last = ioNodes.last() #self._element.inputs().last()
         #first_available_type_for_flags(self._element.defaultNewInputFlags())
         TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType()        
@@ -1154,14 +1154,14 @@ auto max_element(Container &a_container, Comparator a_comparator)
         result = self._element.nodes().byLid(result) if result >-1 else None
         return result
 
-    def addIoNode(self, dir:direction.Dir):
+    def addIoNode(self, dir:direction.Dir, name:str=None):
         tnt = NodeIoType.INPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.OUTPUT
         if self.mType() == ModuleType.IO:
             tnt = NodeIoType.OUTPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.INPUT
             #dir = dir.oposite()
         ioNodes = self._element.nodesByDir(dir)
         SIZE = ioNodes.size() #self._element.inputs().size()
-        NAME = f'#{SIZE}'
+        NAME = f'#{SIZE}' if name==None else name
         last = ioNodes.last() #self._element.inputs().last()
         #first_available_type_for_flags(self._element.defaultNewInputFlags())
         TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType()        
@@ -1185,11 +1185,11 @@ auto max_element(Container &a_container, Comparator a_comparator)
         self.m_packageView.showProperties()
 
 
-    def addOutput(self):
+    def addOutput(self, name:str=None):
         dir = direction.RIGHT        
         ioNodes = self._element.nodesByDir(dir)
         SIZE = ioNodes.size() #self._element.outputs().size()
-        NAME = f'#{SIZE}'
+        NAME = f'#{SIZE}' if name==None else name
         last= ioNodes.last() #self._element.outputs().last()
         #{ first_available_type_for_flags(m_element->defaultNewOutputFlags()) };
         TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType() 

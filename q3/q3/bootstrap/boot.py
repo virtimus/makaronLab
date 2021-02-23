@@ -95,6 +95,7 @@ def execF(fileName:str):
         f = open(fileName).read()
         #exec(f,cw.globals(),cw.locals())
         code_block = compile(f, fileName, 'exec')
+        cw.globals()['__file__']=fileName
         exec(code_block,cw.globals(),cw.locals())
 
     result = s if isinstance(s,str) else s.getvalue()

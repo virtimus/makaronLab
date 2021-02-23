@@ -5,6 +5,10 @@ from time import sleep
 
 class Timer:
     def __init__(self):
+        self._startTime = None
+        self.reset()
+
+    def reset(self):
         self._startTime = datetime.now()
 
     def toMilis(self, t):

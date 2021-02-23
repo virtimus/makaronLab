@@ -347,12 +347,13 @@ class EditorFrame(MainWindow):
         return self.newModuleView()
 
     #@api
-    def modvAdd(self):
-        return self.newModuleView()
+    def modvAdd(self,name:str =None):
+        return self.newModuleView(name)
         
-    def newModuleView(self):
+    def newModuleView(self,name:str=None):
         tnextId = self.rootModules().nextId()
-        module = Module(self, f"New-{tnextId}", moduleType=ModuleType.GRAPH, id=tnextId)
+        mname = name if name !=None else f"New-{tnextId}"
+        module = Module(self, mname, moduleType=ModuleType.GRAPH, id=tnextId)
         return self.openModuleView(module)
 
     _firstTime = True 

@@ -38,7 +38,8 @@ class Signal(Object):
         self._no = len(self.parent().signals())
         #self.parent()._signals[self.id()]=self
         self.parent().graphModule().addSignal(self)
-        self.parent().addSignal(self)
+        if not self.parent().graphModule() is self.parent():
+            self.parent().addSignal(self)
 
     def acceptVisitor(self, v):
         v.visitSignal(self)

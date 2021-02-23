@@ -73,6 +73,17 @@ modvAdd = ed.modvAdd
 rc('moduleViewAdd',ed.moduleViewAdd,True)
 rc('modvAdd',ed.modvAdd,True)
 
+import types
+
+def mountMonitor(obj, mname, handler):
+    omethod = getattr(obj,mname)
+    def mhandler(self):
+        handler(self)
+        return omethod()
+    nm = types.MethodType(mhandler,obj)
+    setattr(obj,mname,nm)
 
 
+from q3.nodeiotype import NodeIoType as IoType
+from q3 import direction
 #imports 

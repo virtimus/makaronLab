@@ -134,14 +134,19 @@ class ModuleImpl6502(ModuleImplBase):
         #    print(f'6502INPins:{self._pins} ba:{ba.bin}')
         #0b10101010101
 
-    def readPins(self,fr,sz):
-        pins = self._pins
+    def readBits(self,pins,fr,sz):
         b = bin(pins)
         ones = pow(2, sz)-1
         ones_sh = ones << fr
         pins = pins & ones_sh
         pins = pins >> fr
         return pins
+
+
+    def readPins(self,fr,sz):
+        pins = self._pins
+        return self.readBits(pins,fr,sz)
+
 
     def mutatePins(self,fr,sz,uint):
         pins = self._pins
@@ -184,6 +189,59 @@ class ModuleImpl6502(ModuleImplBase):
         s = bin(self._pins)[::-1]+'\n'
         c.write(s)
 
+from q3 import Timer
+class ModuleImplClock(ModuleImplBase):
+    def __init__(self,**kwargs):
+        self._intervalType = 'Stop'
+        self._interval = 0
+        super(ModuleImplClock,self).__init__(**kwargs)
+        self._moduleType = ModuleType.ATOMIC 
+
+    def init(self,**kwargs) -> dict: 
+        self._init = {} #q3c.cpc_init(initParms)
+        cp = self._init['customProperties'] if 'customProperties' in self._init else {}
+        domainValues = {
+            '1000':'1000',
+            '10000':'10000',
+            'Stop':'Stop'
+            }
+        cp['intervalType']={
+            'desc':f'Type of interval to emulate, currently handled:{domainValues}',
+            'required':True,
+            'default':'Stop',
+            'domainValues':domainValues,
+            'onChange':self.onIntervalTypeChange
+        }
+        self._customProperties=cp
+        return self._init
+
+    def onIntervalTypeChange(self, event=None):
+        print (f'[onIntervalTypeChange]:{event}')
+        self._intervalType = event
+        if self._intervalType == '1000':
+            self._interval = 1000
+        elif self._intervalType == '10000':
+            self._interval = 10000
+        else:
+            self._interval = 0
+        pass
+
+    def open(self):
+        self._timer = Timer()
+        self._nod = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        pass 
+
+    def calc(self):
+        if self._interval>0 and self._timer.millisDelta()>self._interval:
+            y = self.sig('Y')
+            y.setValue(not y.value())
+            self._timer.reset()
+
+        pass      
+
 class ModuleImplCPC(ModuleImplBase):
     def __init__(self, **kwargs):
         self._opened = None
@@ -195,7 +253,7 @@ class ModuleImplCPC(ModuleImplBase):
 
     def __del__(self):
         log.warn("Hello from del/CPC")
-        super(ModuleImplCPC,self).__init__()
+        super(ModuleImplCPC,self).__del__()
     '''
     def __getattr__(self, name):
         return name
@@ -315,7 +373,8 @@ class ModuleLibraryQ3Chips(ModuleLibraryBase):
 
     _modules = {
         "c6502":ModuleImpl6502,
-        "CPC":ModuleImplCPC
+        "CPC":ModuleImplCPC,
+        "Clock":ModuleImplClock
     }
 
     @classmethod

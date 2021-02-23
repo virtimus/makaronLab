@@ -191,6 +191,7 @@ static PyObject* method_c6502_init(PyObject* self, PyObject* args) {
     PyObject* rwbDict = pyDictNew();
     pyDictSetSizet(rwbDict,"from",CPINS_RWB);
     pyDictSetSizet(rwbDict,"size",1);
+    pyDictSetString(rwbDict,"ioType","O");
     pyDictSetString(rwbDict,"info","Data  Bus  Enable(DBE)");
     pyDictSetString(rwbDict,"doc","This TTL compatible input allows external control of the tri-state data output buffers and will enabel the microprocessor bus driver when  in the high state. In normal operation  DBE would be driven by the phase two (02) clock, thus allowing data  output from microprocessor only during 0;. During the  read cycle, the data bus drivers are internally disabled, becoming  essentially an open circuit. To disable data bus drivers externally, DBE should be held low");
     pyDictSetObject(signalMap,"RWB",rwbDict);

@@ -55,7 +55,8 @@ class Node(Object):
         self._no = len(self.parent().nodes())
         #self.parent()._nodes[self.id()]=self
         self.parent().graphModule().addNode(self)
-        self.parent().addNode(self)
+        if not self.parent().graphModule() is self.parent():
+            self.parent().addNode(self)
 
     def acceptVisitor(self, v):
         v.visitNode(self)
@@ -422,6 +423,29 @@ class Module(Object):
     def nodr(self,by):
         assert by!=None, '[nodr] "by" arg required not None'
         return self.nodes().filterBy('dir',direction.RIGHT).defaultGetter('name',by)
+
+    #@api
+    def ioAdd(self, name=None, **kwargs):
+        if name !=None:
+            kwargs['name'] = name
+        if self.isRoot(): # add to inp/out dep on dir          
+            dir = kwargs['dir'] if 'dir' in kwargs else None
+            if dir == None:
+                ioType = self._initHandleArg('ioType',kwargs=kwargs,
+                required = True,
+                desc = 'ioType'
+                )
+                dir = direction.LEFT if ioType == NodeIoType.INPUT else direction.RIGHT
+            mod = self.modules().by('name',dir.graphModName())
+            #return mod.impl().newIO(**kwargs)
+            nme = kwargs['name'] if 'name' in kwargs else None
+
+            if ioType == NodeIoType.INPUT:
+                return mod.view().impl().addInput(nme)
+            else:
+                return mod.view().impl().addOutput(nme)
+        else:
+            return self.impl().newIO(**kwargs)
     
     #@api
     def signals(self, by=None):

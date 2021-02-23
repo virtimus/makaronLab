@@ -53,7 +53,7 @@ class ModuleView(Object):
         if d2: #rootView - create additional inputs/outputs module
             self._inputsView = ModuleView(self,
                 module=Module(self.module(),
-                    'moduleInputs',
+                    direction.LEFT.graphModName(),
                     moduleType=ModuleType.IO,
                     props = {
                         'dir': direction.LEFT
@@ -63,7 +63,7 @@ class ModuleView(Object):
                 )
             self._outputsView = ModuleView(self,
                 module=Module(self.module(),
-                    'moduleOutputs',
+                    direction.RIGHT.graphModName(),
                     moduleType=ModuleType.IO,
                     props = {
                         'dir':direction.RIGHT
@@ -72,7 +72,7 @@ class ModuleView(Object):
                 )
             self._topsView = ModuleView(self,
                 module=Module(self.module(),
-                    'moduleTops',
+                    direction.TOP.graphModName(),
                     moduleType=ModuleType.IO,
                     props = {
                         'dir':direction.TOP
@@ -81,7 +81,7 @@ class ModuleView(Object):
                 ) 
             self._downsView = ModuleView(self,
                 module=Module(self.module(),
-                    'moduleDowns',
+                    direction.DOWN.graphModName(),
                     moduleType=ModuleType.IO,
                     props = {
                         'dir':direction.DOWN
@@ -132,6 +132,14 @@ class ModuleView(Object):
     def tabIndex(self):       
         result = self._parentTab.parent().indexOf(self._parentTab) if self._parentTab != None and self._parentTab.parent()!=None else None
         return result
+
+    #@api
+    def expand(self):
+        return self.impl().expand()
+
+    #@api
+    def collapse(self):
+        return self.impl().collapse()
 
     def acceptVisitor(self, v):
         v.visitModuleView(self)  
