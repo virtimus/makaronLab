@@ -153,11 +153,21 @@ class ModuleView(Object):
         return self.module().id()
 
     def name(self):
-        return self.module().name();
+        return self.module().name()
 
 
     def moduleViews(self):
         return self._moduleViews
+
+    #@api
+    def setRotate(self, rot:bool):
+        self.impl().setRotate(rot)
+        self.impl().updateRotation()
+
+    #@api
+    def setInvert(self,inv:bool):
+        self.impl().setInvertH(inv)
+        self.impl().updateInversion()
 
     #@api
     def modAdd(self, name, **kwargs):

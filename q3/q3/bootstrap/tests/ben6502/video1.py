@@ -55,27 +55,27 @@ def monFun(self):
     # read RW signal also directly from pins (I've had some problems with reading it from signals as signal type was wrongly set)
     rw = self.readBits(self._pins,24,1)
     s = '' # read binary string bit by bit as in Ben's aproach
-    for i in range(0,15,1):
+    for i in range(15,-1,-1):
         bit = self.readBits(adr,i,1)
         s+= '0' if bit == 0 else '1'
     d = '' # same here for data byte
-    for i in range(0,7,1):
+    for i in range(7,-1,-1):
         bit = self.readBits(dta,i,1)
         d+= '0' if bit == 0 else '1'
     # some formatting 4/2 hex
     ah = ''.join('%04x'%adr)
     dh = ''.join('%02x'%dta)
     rwc = 'r' if rw>0 else 'W' 
-    self.consoleWrite(f'{s} {d} {ah} {rwc} {dh} rwb:{v} rw:{rw}\n')
+    self.consoleWrite(f'{s} {d} {ah} {rwc} {dh} rwb:{v} rw:{rw} {bin(adr)} {bin(dta)}\n')
     #set data pins
     #self.consoleWrite(f'wbFun:{hex(self._pins)}\n')
-    self._pins = self.writeBits(self._pins,16,8,0xeaea) #write hex eaea directly to data pins
+    self._pins = self.writeBits(self._pins,16,8,0xeaea) #write hex eaea directly to data pins (corresponding to set of resistors pined to 6502)
     #self.consoleWrite(f'abFun:{hex(self._pins)}\n')
 
 # ... and connect it to m6502 module
 if (m6502!=None):
     m6502impl = m6502.impl() # we are connecting to impl nested object representing module implementation
-    mountMonitor(m6502impl,'updateSignals',monFun) # put our monitoring staff in place of call updateSignals method 
+    mountMonitor(m6502impl,'updateSignals',monFun) # put our monitoring staff in place of call 'updateSignals' method 
 
 #this is no longer needed i think
 #def mountMonitorM(self,obj, mname, handler):

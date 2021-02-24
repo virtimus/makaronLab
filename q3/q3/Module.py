@@ -116,7 +116,13 @@ class Node(Object):
     def signals(self):
         return self._signals
 
+    def _checkSignalSize(self,signal):
+        if self.size()!=None and signal!=None and self.size()!=signal.size():
+            self.raiseExc('Signal size differs')  
+
     def setDriveSignal(self, signal:'Signal'):
+        if signal !=None:
+            self._checkSignalSize(signal)
         if self._driveSignal == None: #not set yet - just set it
             self._driveSignal = signal
         else: #ds alrady set - check variant
@@ -140,6 +146,7 @@ class Node(Object):
     def addSignal(self, signal:'Signal'):
         if signal == None: #none cannot be added
             return 
+        self._checkSignalSize(signal)
         if self._driveSignal != None:
             if self._driveSignal.size()!=signal.size(): # size differs - problem
                 self.raiseExc('Signal size differs')  
