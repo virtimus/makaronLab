@@ -75,6 +75,9 @@ rc('modvAdd',ed.modvAdd,True)
 
 import types
 
+# takes and object 'obj' and replaces a 'name' method in the object with a "monitor" function 'handler'
+# default behaviour - it calls old method in it's body so method shouldn't tak any addidtional args
+# maybe to be extended by *args, **kwargs
 def mountMonitor(obj, mname, handler):
     omethod = getattr(obj,mname)
     def mhandler(self):

@@ -916,6 +916,13 @@ void Node::advance(int a_phase)
             self.propertiesInsertTitle('Custom properties')
             for propName in tcProps:
                 propDesc = tcProps[propName] 
+                # try to get property value from the object and set it as default
+                propVal = getattr(self._element,propName,None)
+                if propVal!=None:
+                    if callable(propVal):
+                        propVal = propVal()
+                    propDesc['default']=propVal
+                # add the property    
                 self._propertiesBuilder.addProperty(
                     obj = self._element,
                     name = propName,

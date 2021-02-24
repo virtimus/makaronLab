@@ -147,9 +147,7 @@ class ModuleImpl6502(ModuleImplBase):
         pins = self._pins
         return self.readBits(pins,fr,sz)
 
-
-    def mutatePins(self,fr,sz,uint):
-        pins = self._pins
+    def writeBits(self,pins,fr,sz,uint):
         #b = bin(pins)[::-1]
         #b = bin(uint)[::-1]
         ones = pow(2, sz)-1
@@ -164,7 +162,12 @@ class ModuleImpl6502(ModuleImplBase):
         #b=bin(pins)[::-1]
         pins = pins | cuint
         #b=bin(pins)[::-1]
-        self._pins = pins
+        return pins
+
+
+    def mutatePins(self,fr,sz,uint):
+        #pins = self._pins
+        self._pins = self.writeBits(self._pins,fr,sz,uint)
 
 
 
@@ -234,6 +237,10 @@ class ModuleImplClock(ModuleImplBase):
             )
         pass 
 
+    # used by custom property builder to set default/current value of corresponding property    
+    def intervalType(self):
+        return self._intervalType    
+
     def calc(self):
         if self._interval>0 and self._timer.millisDelta()>self._interval:
             y = self.sig('Y')
@@ -271,6 +278,10 @@ class ModuleImplCPC(ModuleImplBase):
         print (f'[onMachineTypeChange]:{event}')
         self._machineType = event
         pass
+
+    # used by custom property builder to set default/current value of corresponding property 
+    def machineType(self):
+        return self._machineType
 
     def echo(self):
         print("Hello World from CPC")
