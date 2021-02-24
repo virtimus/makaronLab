@@ -129,6 +129,10 @@ class ModuleView(Object):
         self._parentTab = tab
 
     #@api
+    def prp(self,by):
+        return self.impl().prp(by)
+
+    #@api
     def tabIndex(self):       
         result = self._parentTab.parent().indexOf(self._parentTab) if self._parentTab != None and self._parentTab.parent()!=None else None
         return result

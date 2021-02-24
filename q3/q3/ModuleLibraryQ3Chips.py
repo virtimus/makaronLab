@@ -240,7 +240,13 @@ class ModuleImplClock(ModuleImplBase):
             y.setValue(not y.value())
             self._timer.reset()
 
-        pass      
+        pass 
+
+    def interval(self):
+        return self._interval
+
+    def setInterval(self, interval:int):
+        self._interval = interval
 
 class ModuleImplCPC(ModuleImplBase):
     def __init__(self, **kwargs):

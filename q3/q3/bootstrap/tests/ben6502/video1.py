@@ -82,4 +82,8 @@ clock.nod('Y').con(pPHI)
 
 clock.setPos(-40.0,-290.0)
 
+mod('Clock').impl().setInterval(1000) 
+
+ti1.driveSignal().setValue(1) 
+sig('t2').setValue(1) 
 

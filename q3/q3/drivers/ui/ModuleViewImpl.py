@@ -33,8 +33,9 @@ class PropertiesBuilder:
     pass
 
 class Property:
-    def __init__(self, name, parent:PropertiesBuilder, propObj, lWidget, rWidget):
+    def __init__(self,id:int, name, parent:PropertiesBuilder, propObj, lWidget, rWidget):
         self._parent = parent
+        self._id = id
         self._obj = None
         #self._obj._propRef = self
         self._name = name
@@ -42,6 +43,9 @@ class Property:
         self._rWidget = None
         self.update(propObj, lWidget, rWidget)
     
+    def id(self):
+        return self._id
+
     def name(self):
         return self._name
 
@@ -76,6 +80,14 @@ class Property:
 
     def clear(self):
         self.update(None,None,None)
+
+    #@api
+    def lWidget(self):
+        return self._lWidget
+    
+    #@api
+    def rWidget(self):
+        return self._rWidget
 
 
 
@@ -157,7 +169,8 @@ class PropertiesBuilder:
         #    self._table.selectionModel().setCurrentIndex( row, qtc.QItemSelectionModel.ClearAndSelect )
         #prop = self.props().byLid(propId)
         #if prop == None:
-        self.props().append(self.props().nextId(),Property(propName,self,propObj, lWidget,cellWidget))
+        tid = self.props().nextId()
+        self.props().append(tid,Property(tid,propName,self,propObj, lWidget,cellWidget))
         #else:
         #    prop.update(propObj, lWidget,cellWidget)
 
@@ -251,6 +264,10 @@ class ModuleViewImpl(qtw.QGraphicsItem):
 
     def moduleView(self): #for use by view elements
         return self._self
+
+    #@api
+    def prp(self,by):
+        return self._propertiesBuilder.props().defaultGetter('name',by)
 
     #@api
     def mdlv(self) -> 'ModuleView':

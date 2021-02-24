@@ -480,7 +480,7 @@ class EditorFrame(MainWindow):
         return self.rootModule().nodes(by)
 
     #@api
-    def rootModuleNod(self):
+    def rootModuleNod(self,by):
         return self.rootModule().nod(by)
 
     #@api

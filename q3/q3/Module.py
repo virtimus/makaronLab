@@ -402,6 +402,11 @@ class Module(Object):
         return self.impl().events()
 
     #@api
+    def prp(self,by):
+        result = self.view().prp(by) if self.view()!=None else None
+        return result
+
+    #@api
     def nodes(self, by=None):
         return self._nodes.defaultGetter('name',by)
     
