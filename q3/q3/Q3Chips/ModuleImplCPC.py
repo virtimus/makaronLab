@@ -60,7 +60,7 @@ class ModuleImplCPC(ModuleImplBase):
     def open(self):
         pass
 
-    def __afterViewCreated__(self):
+    def __afterViewCreated__(self, viewImpl=None):
         self.events().moduleDoubleClicked.connect(self.heModuleDoubleClicked)
         self.events().detailWindowResized.connect(self.heDetailWindowResized)
         self.events().callDetailWindowCloseReq.connect(self.syncDetailWindowCloseReq)

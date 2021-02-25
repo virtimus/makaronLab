@@ -46,7 +46,7 @@
 	#define CPINS_NMIB M6502_PIN_NMI
 	#define CPINS_RDY M6502_PIN_RDY
 	#define CPINS_RESB M6502_PIN_RES
-	#define CPINS_PHI2 62 //PHI2 
+	//#define CPINS_PHI2 62 //PHI2 
 #endif//Q3C_CLASSIC_6502
 
 /*	struct wq6502_CPins {

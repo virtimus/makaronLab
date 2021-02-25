@@ -1044,9 +1044,9 @@ void Node::advance(int a_phase)
         if (self._centralWidget != None):
             sip.delete(self._centralWidget)
             self._centralWidget = None
-            self._centralWidget = w
-            self._centralWidget.setParentItem(self)
-            self._centralWidget.setPos(self._centralWidgetPosition)
+        self._centralWidget = w
+        self._centralWidget.setParentItem(self)
+        self._centralWidget.setPos(self._centralWidgetPosition)
 
     def propertiesInsertTitle(self, title):
         ROW = self._properties.rowCount()

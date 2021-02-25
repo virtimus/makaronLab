@@ -172,13 +172,13 @@ static PyObject* method_c6502_init(PyObject* self, PyObject* args) {
     pyDictSetString(sobDict,"info","Set  Overflow  Flag  (S.O.)");
     pyDictSetString(sobDict,"doc","A  NEGATIVE going edge on this input sets the overflow bit in the Status Code  Register. This signal  is sampled on  the trailing edgeo f0");
     pyDictSetObject(signalMap,"SOB",sobDict);
-#endif    
+   
     //Clocks - input
     PyObject* phioiDict = pyDictNew();
     pyDictSetSizet(phioiDict,"from",CPINS_PHI2);
     pyDictSetSizet(phioiDict,"size",1);
     pyDictSetObject(signalMap,"PHI0I",phioiDict);
-#ifndef Q3C_CLASSIC_6502
+
     //NC
     PyObject* nc1Dict = pyDictNew();
     pyDictSetSizet(nc1Dict,"from",36);

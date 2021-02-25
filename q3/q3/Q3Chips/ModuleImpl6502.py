@@ -70,6 +70,12 @@ class ModuleImpl6502(ModuleImplBase):
                     )
                     ci+=1
                 pname = name
+        io['PHI0I'] = self.newIO(
+            name = 'PHI0I',
+            size = 1,
+            ioType = IoType.INPUT,
+            direction = direction.RIGHT
+        )
         self._io = io
         #//self._intSignal = Signal(name='internalCom6502',size=64)
         #self._intSignal.setValue(self._opened['pins']) 
@@ -80,6 +86,8 @@ class ModuleImpl6502(ModuleImplBase):
         #self.sig('RESB').setValue(True)
         resb = self.sig('RESB').value()
         resbDelta = self._prevReset != resb
+        if (resbDelta and not resb): #low active rise
+            self._pins = bu.writeBits(self._pins,30,1,1)
         clk = self.sig('PHI0I').value()
         clkDelta = self._prevClock != clk
         rdy = self.sig('RDY').value()
@@ -88,11 +96,12 @@ class ModuleImpl6502(ModuleImplBase):
         self._prevClock = clk 
         self._prevReset = resb
         if (rdy and clkRise):
-
+            #print('clkrise\n')
             #if self._prevPins != self._pins:
                 #if (self._prevPins!=None):
                 #    print(f'a0:{bin(self._prevPins)[::-1]}')
                 #print(f'a1:{bin(self._pins)[::-1]}')
+            print(f'calc:{bu.binlend(self._pins)}\n')
             self._pins = q3c.c6502_calc(self._opened['iv'],self._pins)
             #self.consoleWrite('calc\n')
             if self._prevPins != self._pins:
@@ -108,16 +117,18 @@ class ModuleImpl6502(ModuleImplBase):
     def updateFromNodes(self):
         #ba = BitArray(uint=self._pins,length=64)
         for n in self.nodes().values():
-            ds = n.driveSignal()
-            if ds!=None and n.signals().size()>1:
-                for s in n.signals().values():
-                    if s!=ds:
-                        ssize = s.size()
-                        sfrom = s.prop('from')
-                        #if (sfrom==None):
-                        #    print(f'None for singla:{s.name()}')
-                        #ba[sfrom:sfrom+ssize].uint=s.valueAsUInt()
-                        self.mutatePins(sfrom,ssize,s.valueAsUInt())
+            if n.ioType() in [IoType.INPUT,IoType.DYNAMIC]:
+                ds = n.driveSignal()
+                if ds!=None and n.signals().size()>1:
+                    for s in n.signals().values():
+                        if s!=ds:
+                            ssize = s.size() if s.prop('size')==None else s.prop('size')
+                            sfrom = s.prop('from')
+                            #if (sfrom==None):
+                            #    print(f'None for singla:{s.name()}')
+                            #ba[sfrom:sfrom+ssize].uint=s.valueAsUInt()
+                            if sfrom !=None:
+                                self.mutatePins(sfrom,ssize,s.valueAsUInt())
         #self._pins = ba.uint
         #if (self._pins!=self._prevPins):
         #    print(f'6502INPins:{self._pins} ba:{ba.bin}')
@@ -162,7 +173,12 @@ class ModuleImpl6502(ModuleImplBase):
 
     def mutatePins(self,fr,sz,uint):
         #pins = self._pins
+        pinsb = self._pins
         self._pins = self.writeBits(self._pins,fr,sz,uint)
+        if pinsb != self._pins:
+            print(f'mutatePins:{fr} {sz} {uint}\n')
+            print(f'pinsbefore:{bu.binlend(pinsb)}')
+            print(f' pinsafter:{bu.binlend(self._pins)}')
 
 
 
@@ -174,8 +190,9 @@ class ModuleImpl6502(ModuleImplBase):
             sfrom = s.prop('from')
             #if sfrom == None:
             #    print(f'Nonesssss for singla:{s.name()}')
-            cv = self.readPins(sfrom,ssize)
-            s.setValue(cv)    
+            if sfrom!=None:
+                cv = self.readPins(sfrom,ssize)
+                s.setValue(cv)    
             #vg = ba.cut(ssize,sfrom, None, 1)
             #for v in vg:
             #    cv = v.int if ssize>1 else v.bool

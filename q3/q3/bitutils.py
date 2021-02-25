@@ -25,3 +25,6 @@ def writeBits(pins,fr,sz,uint):
     pins = pins | cuint
     #b=bin(pins)[::-1]
     return pins
+
+def binlend(s):
+    return bin(s)[::-1]

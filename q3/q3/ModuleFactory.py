@@ -9,6 +9,7 @@ from .moduletype import ModuleType
 from . import direction, consts
 
 
+
 log = logging.getLogger(__name__)
 
 class ModuleFactory:
@@ -137,13 +138,17 @@ class ModuleImplBase(metaclass=ABCMeta):
         self._implStr = None #path in lib (if aplies) 
         self._defaultFlags = IoNodeFlags()
         self._dtwProps = None
-        self._customProperties = None
+        self._customProperties = {}
+        self._centralWidget = None
         #self._defaultOutputFlags = IoNodeFlags(max=consts.MAX_OUTPUTS)
         #self._defaultDynamicFlags = IoNodeFlags(max=consts.MAX_DYNAMICS)    
         pass
 
     def customProperties(self):
         return self._customProperties
+
+    def centralWidget(self):
+        return self._centralWidget
 
     def showDetailWindow(self,**kwargs):
         pass

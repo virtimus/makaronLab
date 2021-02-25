@@ -9,6 +9,7 @@ from . import direction
 from .nodeiotype import NodeIoType
 from .q3vector import Q3Vector
 from .moduletype import ModuleType
+from .valuetype import ValueType
 
 from .EventSignal import EventProps
 
@@ -117,7 +118,7 @@ class Node(Object):
         return self._signals
 
     def _checkSignalSize(self,signal):
-        if self.size()!=None and signal!=None and self.size()!=signal.size():
+        if self.size()!=None and signal!=None and ValueType.fromSize(self.size())!=signal.valueType():
             self.raiseExc('Signal size differs')  
 
     def setDriveSignal(self, signal:'Signal'):
@@ -550,7 +551,7 @@ class Module(Object):
             self.raiseExc('Name required')
         tsize = kwargs['size'] if 'size' in kwargs else 1
         tIoType = kwargs['ioType'] if 'ioType' in kwargs else None
-        tSigProps = kwargs['props'] if 'props' in kwargs else None
+        tSigProps = kwargs['props'] if 'props' in kwargs else {}
         sig = self.newSignal(name=tname,size=tsize,props=tSigProps)
         kwargs.pop('ioType',None)
         result = self.newIoNode(signal=sig, sigInternal=True, ioType=tIoType,**kwargs)

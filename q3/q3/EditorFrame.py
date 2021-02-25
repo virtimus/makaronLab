@@ -30,6 +30,7 @@ from .q3vector import Q3Vector
 
 from .console import ConsoleCtrl
 
+from .ModuleLibraryQ3Chips import ModuleLibraryQ3Chips
 class EditorFrame(MainWindow):
     """
     A main frame of q3Editor
@@ -63,7 +64,7 @@ class EditorFrame(MainWindow):
 
         self.buildLibraries()
 
-        self.buildSampleRoot()
+        #self.buildSampleRoot()
 
         #network ready (init/open phase) - now simulation (calculate/inspect)...
 
@@ -527,7 +528,7 @@ class EditorFrame(MainWindow):
             moduleType = ModuleType.GRAPH
             )
         
-        from .ModuleLibraryQ3Chips import ModuleLibraryQ3Chips
+
         
         m6502Module = rootModule.newModule('m6502Module',
             #type=ModuleType.ATOMIC,

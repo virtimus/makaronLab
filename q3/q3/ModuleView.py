@@ -112,7 +112,7 @@ class ModuleView(Object):
         if self.module().impl()!=None and hasattr(self.module().impl(),'__afterViewCreated__'):
             ac = getattr(self.module().impl(),'__afterViewCreated__')
             if (callable(ac)):
-                ac()
+                ac(self.impl())
                 #self.startInThread(ac)
 
     #def startInThread(self, tocall):
