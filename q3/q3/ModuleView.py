@@ -26,6 +26,7 @@ class ModuleView(Object):
         self._parentTab = None 
         self._detailWindow = None
         self._avcThread = None
+        self._hasTopsDowns = False
         #self._scheduledScalings = None;  
         args = self._loadInitArgs(args)
         d1 = isinstance(args[0],ModuleView)
@@ -70,25 +71,25 @@ class ModuleView(Object):
                     }
                     )
                 )
-            self._topsView = ModuleView(self,
-                module=Module(self.module(),
-                    direction.TOP.graphModName(),
-                    moduleType=ModuleType.IO,
-                    props = {
-                        'dir':direction.TOP
-                    }
+            if self._hasTopsDowns:
+                self._topsView = ModuleView(self,
+                    module=Module(self.module(),
+                        direction.TOP.graphModName(),
+                        moduleType=ModuleType.IO,
+                        props = {
+                            'dir':direction.TOP
+                        }
+                        )
+                    ) 
+                self._downsView = ModuleView(self,
+                    module=Module(self.module(),
+                        direction.DOWN.graphModName(),
+                        moduleType=ModuleType.IO,
+                        props = {
+                            'dir':direction.DOWN
+                        }
+                        )
                     )
-                ) 
-            self._downsView = ModuleView(self,
-                module=Module(self.module(),
-                    direction.DOWN.graphModName(),
-                    moduleType=ModuleType.IO,
-                    props = {
-                        'dir':direction.DOWN
-                    }
-                    )
-                )
-               
 
 
         self.q3D().doModuleView_AfterInit()
@@ -127,6 +128,9 @@ class ModuleView(Object):
 
     def setParentTab(self, tab):
         self._parentTab = tab
+
+    def hasTopsDowns(self):
+        return self._hasTopsDowns
 
     #@api
     def prp(self,by):

@@ -9,6 +9,7 @@ class Q3Vector:
         self._cls = cls
         self._list = {}
         self._indexes = {}
+        self._unique = {}
         #self._nextId = 0
         pass
 
@@ -135,6 +136,10 @@ class Q3Vector:
         result = self.by('id',id)
         return result
 
+    def addUnique(self,attrName:str):
+        self._unique[attrName]=True
+        self._buildIndex(attrName)
+
     # append element to the list if there is no element with given id
     # else - raise exception
     def append(self, lid:int, element):
@@ -142,18 +147,21 @@ class Q3Vector:
         if lid  in self._list and self._list[lid] != None:
             self.raiseExc(f'[Q3Vector] append failed - element with id({lid}) already in list')
         else:
+            #chec uniqueIndexes if exists
+            if len(self._unique)>0:
+                for attr in self._unique:
+                    attrVal = self._getattr(element,attr)
+                    aIndex = self._indexes[attr]
+                    if attrVal in aIndex:
+                        self.raiseExc(f'Value {attrVal} is not unique by index {attr}')
             self._list[lid]=element
             #self._updateNextId(lid+1)
             self._updateIndexes(element) 
 
     def push_back(self, element):
-        self._validateCls(element)
-        result = self.nextId()
-        self._list[result] = element
-        #result = self._nextId
-        #self._updateNextId(self._nextId+1)
-        self._updateIndexes(element)
-        return result
+        lid = self.nextId()
+        self.append(lid,element)
+        return lid
 
     def push(self, el):
         return self.push_back(el)

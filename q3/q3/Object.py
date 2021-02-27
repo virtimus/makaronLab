@@ -122,8 +122,11 @@ class Object():
         result = self._props[propName] if propName in self._props else None
         return result
     
-    def props(self,propName):
-        return self.prop(propName);
+    def props(self,propName=None):
+        if propName == None:
+            return self._props
+        else:
+            return self.prop(propName)
     
     def setProp(self, propName, propValue):
         self._props[propName] = propValue

@@ -9,6 +9,8 @@ from .q3vector import Q3Vector
 
 from .valuetype import ValueType
 
+from . import bitutils as bu
+
 class Signal(Object):
     def __init__(self, *args, **kwargs):
         args = self._loadInitArgs(args)
@@ -26,12 +28,15 @@ class Signal(Object):
 #        if self._driveNode != None and self._driveNode.size() != None:
 #            self._size = self._driveNode.size()
 #        else: 
-        self._size = kwargs['size'] if 'size' in kwargs else None
-        if self._size == None:
+        tsize = kwargs['size'] if 'size' in kwargs else None
+        if tsize == None:
             self.raiseExc('Size for signal not specified')
-        assert self._size<=consts.MAX_SIGNAL_SIZE, f'Max signal size overflow({self._size})'
-        self._valueType = ValueType.fromSize(self._size)
-        self._value = False if self._size == 1 else 0
+        assert tsize<=consts.MAX_SIGNAL_SIZE, f'Max signal size overflow({tsize})'
+        svlType = ValueType.fromSize(tsize) 
+        self._valueType = ValueType(0,tsize,svlType.colorSigOff,svlType.colorSigOn)
+        self._valueType.setParentSignal(self)
+        #self._size = self._valueType.size()
+        #self._value = False if tsize == 1 else 0 moved to valueType
         super(Signal, self).__init__(*args, **kwargs)
         #self._id = len(self.parent().graphModule().signals())
         self._id = self.parent().graphModule().signals().nextId()
@@ -54,8 +59,9 @@ class Signal(Object):
         return self._name
 
     def size(self):
-        return self._size
-
+        #return self._size
+        return self._valueType.size()
+    '''
     def setSize(self, nsize:int):
         if self._size == nsize:
             return
@@ -64,36 +70,53 @@ class Signal(Object):
         self._valueType = ValueType.fromSize(self._size)
         #for node in self._nodes.values():!TODO! disconnect?
         #    node.setSize()
+    '''
 
     def valueType(self):
         return self._valueType 
         
     def value(self):
-        return self._value
+        #return self._value
+        return self._valueType.value()
 
     def valueAsUInt(self):
-        result = self._value 
-        if self.size()<2:
-            result = 1 if self._value else 0
-        return result
+        return self._valueType.asUInt()
 
     def setValue(self, newVal):
-        if newVal != self._value:
-            if newVal != None and self._valueType.fits(newVal):
-                self._value = newVal
-            else:
-                assert False, f'Value:{newVal} overflows signal size:{self._size}'
+        return self._valueType.setValue(newVal)
+
+    #@api func to setup onValueChanged
+    def setupValueChanged(self, onValueFunc):
+        self.onValueChanged = onValueFunc
+        #first call to set value in monitor
+        onValueFunc(None,self.value())
+
+
+    #@apiInternal - function to replace to monitor signal changes - called from valueType delta
+    def onValueChanged(self, prevVal, newVal):
+        pass
 
     def isOn(self):
-        result = self._value if self.size()==1 else self._value>0
+        result = self.value() if self.size()==1 else self.value()>0
         return result
     
     def resetValue(self):
-        prevValue = self._value
-        if isinstance(self._value, bool):
-            self._value = False
-        else:
-            self._value = 0
+        return self._valueType.resetValue()
+
+    #some methods for slice calculation
+    def __getitem__(self,i):
+        ind = i
+        size = 1
+        if isinstance(i,slice):
+            ind = i.start
+            size = i.stop - i.start
+        result = bu.readBits(self.valueAsUInt(),ind,size)
+        return result
+
+    def __len__(self):
+        return self.size()
+
+
 #        if self._value != prevValue and self._driveNode != None: #delta propagation ?
 #            self._driveNode.resetValue()
 

@@ -1,7 +1,9 @@
+from . import console
 
+bing = bin
 # returns a set of bits from 'pins' defined by start index(0-bases) of 'fr' and size of 'sz'
 def readBits(pins,fr,sz):
-    b = bin(pins)
+    #b = bin(pins)
     ones = pow(2, sz)-1
     ones_sh = ones << fr
     pins = pins & ones_sh
@@ -27,4 +29,27 @@ def writeBits(pins,fr,sz,uint):
     return pins
 
 def binlend(s):
-    return bin(s)[::-1]
+    return bin(s,None,lEndian=True)
+
+def bin(s,size:int=None, **kwargs):
+    lEndian = console.handleArg(None,'lEndian',
+        kwargs=kwargs,
+        desc = 'If to reverse to little endian',
+        default = False
+    )
+    result = bing(s)[2:]
+    if size!=None:
+        if len(result)<size:
+            result = result.zfill(size)
+        else:
+            result = result[:size]
+    if lEndian:
+        result = result[::-1]
+    return result
+
+def radical(number, root):
+    return (number ** (1/root))
+
+def hex(o,n=None):
+    n = radical(o,4) if n == None else n
+    return ''.join(f'%0{n}x'%o)

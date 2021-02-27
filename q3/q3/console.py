@@ -8,13 +8,19 @@ from . import consts
 
 def handleArg(obj, name, **kwargs):
         defD = kwargs
-        kwargs = defD['kwargs'] if 'kwargs' in defD else None
-        assert kwargs != None, f'kwargs is None !'
+        tkwargs = defD['kwargs'] if 'kwargs' in defD else None
+        if tkwargs == None: #single arg?
+            if 'value' in kwargs: #single arg
+                argVal = kwargs['value']
+                tkwargs = kwargs
+                tkwargs[name] =argVal
+
+        assert tkwargs != None, f'kwargs is None !'
         trequired = defD['required'] if 'required' in defD else False       
         tdefault = defD['default'] if 'default' in defD else None
         tdomainValues = defD['domainValues'] if 'domainValues' in defD else None
         tdesc = defD['desc'] if 'desc' in defD else None
-        result = kwargs[name] if name in kwargs else tdefault
+        result = tkwargs[name] if name in tkwargs else tdefault
         tclname = obj.__class__.__name__
         assert tdesc != None, f'[console.handleArg] Required description argument (desc) missing for {tclname}'
         assert result != None or not trequired, f'[console.handleArg] Required keyword argument "{name}" missing for {tclname}'

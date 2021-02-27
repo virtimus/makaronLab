@@ -157,6 +157,7 @@ static PyObject* method_c6502_init(PyObject* self, PyObject* args) {
     PyObject* resbDict = pyDictNew();
     pyDictSetSizet(resbDict,"from",CPINS_RESB);
     pyDictSetSizet(resbDict,"size",1);
+    pyDictSetSizet(resbDict,"not",1);
     pyDictSetString(resbDict,"info","Reset");
     pyDictSetString(resbDict,"doc","This input is  used to reset or start the microprocessor from a power down condition.  During the time that this  line is  held  low, writing to or from the microprocessor is  inhibited. When a positive edge is detected on  the  input, the microprocessor will  immediately begin the reset sequence.After a  system  initialization time of six clock cycles, the  mask interrupt flag will be set and the microprocessor will  load  the program counter from the memory vector locations FFFC and FFFD. This is the start location for program control. After Vcc reaches 4.75 volts in a  power up routine, reset must be held low for at least two clock cycles. At this time the R/W and (SYNC) signal will become valid.When  the reset signal  goes high following these two clock cycles, the microprocessor will  proceed with the normal  reset procedure detailed above");
     pyDictSetObject(signalMap,"RESB",resbDict);

@@ -1,19 +1,65 @@
 from . import consts, prop, orientation, direction, colors
 
+import q3.console as c
+
+#print(f'dirq3:{dir(q3)}')
+
 from enum import Enum
 
-class ValueType(Enum):
-    BOOL = (1,colors.C.BOOLSIGNALOFF, colors.C.BOOLSIGNALON, 'BOOL')
-    INT = (2,colors.C.INTEGERSIGNALOFF,colors.C.INTEGERSIGNALON,'INT')
-    FLOAT = (3,colors.C.FLOATSIGNALOFF, colors.C.FLOATSIGNALON,'FLOAT')
-    BYTE =  (4, colors.C.BYTESIGNALOFF, colors.C.BYTESIGNALON,'BYTE')
-    WORD64 = (5, colors.C.WORD64SIGNALOFF, colors.C.WORD64SIGNALON,'WORD64')
+class ValueType:
 
-    def __init__(self, number, colorSigOff, colorSigOn, strin):
+
+    def __new__(cls, *args, **kwargs):
+        result = object.__new__(cls)
+        result._args = args
+        result._kwargs = kwargs
+        return result
+
+    def __init__(self, number, size, colorSigOff, colorSigOn, strin=None):
         self._number = number
         self._colorSigOn = colorSigOn
         self._colorSigOff = colorSigOff
+        size = c.handleArg(self,'size',
+            value = size,
+            required = True,
+            desc = 'Size of value'
+        )
+        if strin == None:
+            strin == f'({size}b)'
         self._string = strin
+        self._size = size
+        self._value = False if size == 1 else 0
+        self._parent = None
+
+    def value(self):
+        return self._value
+
+    def setValue(self, newVal):
+        if newVal != self._value:
+            if newVal != None and self.fits(newVal):
+                prevVal = self._value 
+                self._value = newVal
+                if self._parent != None:
+                    self._parent.onValueChanged(prevVal, self._value)
+            else:
+                assert False, f'Value:{newVal} overflows valueType size:{self.size()}'
+
+    def setParentSignal(self, parent):
+        self._parent = parent
+
+    
+    def resetValue(self):
+        prevValue = self._value
+        if isinstance(self._value, bool):
+            self._value = False
+        else:
+            self._value = 0
+
+    def asUInt(self):
+        result = self._value 
+        if self.size()<2:
+            result = 1 if self._value else 0
+        return result
 
     @classmethod
     def fromInt(cls, ii):
@@ -21,8 +67,8 @@ class ValueType(Enum):
             return ValueType.BOOL
         if ii == 2:
             return ValueType.INT
-        if ii == 3:
-            return ValueType.FLOAT
+        #if ii == 3:
+        #    return ValueType.FLOAT
         if ii == 4:
             return ValueType.BYTE
         if ii == 5:
@@ -50,10 +96,13 @@ class ValueType(Enum):
             tsize = 64
         return tsize
 
+    def size(self):
+        return self._size
+
     def fits(self,value):
         return True    
 
-    def number(self):
+    def typeIndex(self):
         return self._number
     
     def colorSigOn(self):
@@ -65,5 +114,11 @@ class ValueType(Enum):
     def toString(self):
         return self._string
 
-    def toInt(self):
-        return self.number()
+    #def toInt(self):
+    #    return self.number()
+
+ValueType.BOOL = ValueType(1,1,colors.C.BOOLSIGNALOFF, colors.C.BOOLSIGNALON, 'BOOL')
+ValueType.INT = ValueType(2,63,colors.C.INTEGERSIGNALOFF,colors.C.INTEGERSIGNALON,'INT')
+#    FLOAT = (3,colors.C.FLOATSIGNALOFF, colors.C.FLOATSIGNALON,'FLOAT')
+ValueType.BYTE =  ValueType(4,8, colors.C.BYTESIGNALOFF, colors.C.BYTESIGNALON,'BYTE')
+ValueType.WORD64 = ValueType(5,64, colors.C.WORD64SIGNALOFF, colors.C.WORD64SIGNALON,'WORD64')

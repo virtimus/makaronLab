@@ -13,6 +13,8 @@ from .valuetype import ValueType
 
 from .EventSignal import EventProps
 
+from . import strutils as su
+
 """
 CNode is a junction pint between different signals with same size
 here should be decided which signal drives in
@@ -23,7 +25,7 @@ class Node(Object):
     def __init__(self, *args, **kwargs):
         #//self._deltaVector = DeltaVector.NONE 
         self._view = None
-        self._signals = Q3Vector()    
+        self._signals = Q3Vector()   
         args = self._loadInitArgs(args)
         if not isinstance(args[0],Module):
             self.raiseExc('[Node] Parent has to be descendant of q3.Module')
@@ -118,8 +120,10 @@ class Node(Object):
         return self._signals
 
     def _checkSignalSize(self,signal):
-        if self.size()!=None and signal!=None and ValueType.fromSize(self.size())!=signal.valueType():
-            self.raiseExc('Signal size differs')  
+        if self.size()!=None and signal!=None and ValueType.fromSize(self.size()).size()<signal.valueType().size():
+            s1 = ValueType.fromSize(self.size()).size()
+            s2 = signal.valueType().size()
+            self.raiseExc(f'Signal size differs {signal.name()} s1:{s1} s2:{s2}')  
 
     def setDriveSignal(self, signal:'Signal'):
         if signal !=None:
@@ -291,6 +295,7 @@ class Module(Object):
         self._signals = Q3Vector()
         self.signalsBy = self._signals.by #@api
         self.sigsBy = self.signalsBy #@api
+        self._sigFormulas = {} #additional calc formulas 
         self._moduleViews = Q3Vector()
         self.moduleViewsBy = self._moduleViews.by
         self.mViewsBy = self.moduleViewsBy 
@@ -588,11 +593,44 @@ class Module(Object):
         calc = getattr(self.impl(),'calc')
         if callable(calc):
             calc()
+        if len(self._sigFormulas)>0:
+            for nodName in self._sigFormulas:
+                nod = self.nod(nodName)
+                if nod!=None and nod.driveSignal()!=None:
+                    tformula = self._sigFormulas[nodName]
+                    self._evalSigFormula(nod.driveSignal(),tformula)
 
     def updateTiming(self, delta):
         uTime = getattr(self.impl(),'updateTiming')
         if callable(uTime):
-            uTime(delta)        
+            uTime(delta)  
+
+    # additional formulas for output signals
+    def _evalSigFormula(self, signal:'Signal', formula:str):
+        tglobals = {}
+        for s in self.signals().values():
+            tglobals[s.name()]=s
+        tformula = formula[1:] #omit = sign
+        fresult = eval(tformula,tglobals)
+        signal.setValue(fresult)
+
+    #@api - set additional signal formula
+    def setSigFormula(self, nodName:str,formula:str):
+        if su.trim(formula) == '=':
+            if nodName in self._sigFormulas:
+                del self._sigFormulas[nodName]
+            return 
+        nod = self.nod(nodName)
+        assert nod!=None and nod.ioType() == NodeIoType.OUTPUT and nod.driveSignal()!=None, '[setSigFormula] For setting formula node has to exist and be output'
+        self._evalSigFormula(nod.driveSignal(),formula)
+        self._sigFormulas[nodName] = formula
+
+    #@api - read additional signal formula
+    def sigFormula(self, nodName:str):
+        result = self._sigFormulas[nodName] if nodName in self._sigFormulas else None
+        return result
+
+           
 
 
 

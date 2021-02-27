@@ -8,6 +8,8 @@ class ModuleImplClock(ModuleImplBase):
     def __init__(self,**kwargs):
         self._intervalType = 'Stop'
         self._interval = 0
+        self._pb = None
+        self._pb2 = None
         self._intervalTypeDomainValues = {
             1:'1ms',
             10:'10ms',
@@ -52,9 +54,11 @@ class ModuleImplClock(ModuleImplBase):
 
     def onSwitchClockState(self, state):
         if state: #off
+            self._pb.setToolTip('Start clock')
             self._prevInterval = self._interval
             self._interval = 0
         else: #on
+            self._pb.setToolTip('Stop the clock')
             self._interval = self._prevInterval
 
     def onToggleClockState(self, state):
@@ -68,8 +72,10 @@ class ModuleImplClock(ModuleImplBase):
             #tw = ui.STable()
             lay = ui.BoxLayout(viewImpl)
             pb = PushButtonWidget(lay)
+            pb.setToolTip('Stop clock')
             pb.onChangeState = self.onSwitchClockState
             pb2 = PushButtonWidget(lay)
+            pb2.setToolTip('Toggle clock')
             pb2.onChangeState = self.onToggleClockState
             #tw.setRowCount(1)
             #tw.setColumnCount(2)
@@ -78,6 +84,8 @@ class ModuleImplClock(ModuleImplBase):
             lay.addH(pb)
             lay.addH(pb2)
             #pb = PushButtonWidget(viewImpl)
+            self._pb = pb
+            self._pb2 = pb2
             viewImpl.setCentralWidget(lay)
 
     # used by custom property builder to set default/current value of corresponding property    
@@ -99,6 +107,6 @@ class ModuleImplClock(ModuleImplBase):
     def setInterval(self, interval:int):
         if interval in self._intervalTypeDomainValues:
             self._intervalType = interval
-        if interval == 'Stop':
+        if interval == 'Stop' or interval == None or not isinstance(interval,int):
             interval = 0
         self._interval = interval

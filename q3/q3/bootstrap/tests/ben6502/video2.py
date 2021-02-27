@@ -59,12 +59,11 @@ if (m6502!=None):
 mAT28C256 = modv.modAdd(
     'AT28C256',
     impl = 'Q3Chips:/AT28C256'
-
 )
 
 
 
-s = m6502.nod('ADR') 
+s = pADR = m6502.nod('ADR') 
 t = mAT28C256.nod('ADR')
 s.connect(t)
 
@@ -79,4 +78,37 @@ m.mod('moduleInputs').setPos(-390.0,-200.0)
 m.mod('Clock').view().setInvert(True) 
 m.mod('Clock').setPos(70.0,-200.0)
 
+# rom file created with makerom.py
 mAT28C256.impl().setMemPath('/src/makaronLab/q3/q3/bootstrap/tests/ben6502/rom.bin')
+
+# as in video - we'll need also a not gate and signal maper
+adrMap = modv.modAdd('adrMap',
+    moduleType = q3.moduletype.ModuleType.GRAPH
+    )
+
+pAIN = adrMap.ioAdd(name ='AIN',ioType=IoType.INPUT, size=16)
+pAdrY = adrMap.ioAdd(name ='Y',ioType=IoType.OUTPUT)
+
+#connect
+pADR.connect(pAIN)
+
+#formula
+adrMap.setSigFormula('Y','=AIN[15]')
+
+#connect to AT28C256 through not gate
+#gNot = modv.modAdd('notG',
+#    impl = 'local:/NOT'
+#    )
+#pAdrY.connect(gNot.nod('A'))
+#gNot.nod('Y').connect(mAT28C256.nod('CEB'))
+
+# ... or much simpler = just replace formula a little bit ...
+adrMap.setSigFormula('Y','= not bool(AIN[15])')
+pAdrY.connect(mAT28C256.nod('CEB'))
+
+#put it in nice place
+adrMap.setPos(-390.0,-40.0)
+
+
+# .. and seems we're now somwhere in here
+# https://youtu.be/yl8vPW5hydQ?t=706

@@ -82,12 +82,12 @@ class ModuleImpl6502(ModuleImplBase):
         return self._io
 
     def calc(self):
-        #self.updateFromNodes()
+        
         #self.sig('RESB').setValue(True)
         resb = self.sig('RESB').value()
         resbDelta = self._prevReset != resb
-        if (resbDelta and not resb): #low active rise
-            self._pins = bu.writeBits(self._pins,30,1,1)
+        #if (resbDelta and not resb): #low active rise
+        #    self._pins = bu.writeBits(self._pins,30,1,0)
         clk = self.sig('PHI0I').value()
         clkDelta = self._prevClock != clk
         rdy = self.sig('RDY').value()
@@ -96,13 +96,16 @@ class ModuleImpl6502(ModuleImplBase):
         self._prevClock = clk 
         self._prevReset = resb
         if (rdy and clkRise):
+            #self.consoleWrite(f'calca:{bu.binlend(self._pins)}\n')
+            self.updateFromNodes()
             #print('clkrise\n')
             #if self._prevPins != self._pins:
                 #if (self._prevPins!=None):
                 #    print(f'a0:{bin(self._prevPins)[::-1]}')
                 #print(f'a1:{bin(self._pins)[::-1]}')
-            print(f'calc:{bu.binlend(self._pins)}\n')
+            #self.consoleWrite(f'calcb:{bu.binlend(self._pins)}\n')
             self._pins = q3c.c6502_calc(self._opened['iv'],self._pins)
+            #self.consoleWrite(f'calcc:{bu.binlend(self._pins)}\n')
             #self.consoleWrite('calc\n')
             if self._prevPins != self._pins:
                 self.updateSignals()
@@ -127,8 +130,13 @@ class ModuleImpl6502(ModuleImplBase):
                             #if (sfrom==None):
                             #    print(f'None for singla:{s.name()}')
                             #ba[sfrom:sfrom+ssize].uint=s.valueAsUInt()
+                            sv = s.valueAsUInt()    
+                            # had to invert some signals after long investigation
+                            # chips implementation is not compliant with pins specs
+                            if s.name() in ['RDY','NMIB','IRQB','RESB']:  
+                                sv = ~sv
                             if sfrom !=None:
-                                self.mutatePins(sfrom,ssize,s.valueAsUInt())
+                                self.mutatePins(sfrom,ssize,sv)
         #self._pins = ba.uint
         #if (self._pins!=self._prevPins):
         #    print(f'6502INPins:{self._pins} ba:{ba.bin}')
@@ -175,10 +183,10 @@ class ModuleImpl6502(ModuleImplBase):
         #pins = self._pins
         pinsb = self._pins
         self._pins = self.writeBits(self._pins,fr,sz,uint)
-        if pinsb != self._pins:
-            print(f'mutatePins:{fr} {sz} {uint}\n')
-            print(f'pinsbefore:{bu.binlend(pinsb)}')
-            print(f' pinsafter:{bu.binlend(self._pins)}')
+        #if pinsb != self._pins:
+        #    print(f'mutatePins:{fr} {sz} {uint}\n')
+        #    print(f'pinsbefore:{bu.binlend(pinsb)}')
+        #    print(f' pinsafter:{bu.binlend(self._pins)}')
 
 
 
@@ -192,6 +200,12 @@ class ModuleImpl6502(ModuleImplBase):
             #    print(f'Nonesssss for singla:{s.name()}')
             if sfrom!=None:
                 cv = self.readPins(sfrom,ssize)
+                '''
+                if s.name()=='DTA':
+                    self.consoleWrite(f'updateDTA:{bu.hex(cv,2)}\n')
+                if s.name()=='ADR':
+                    self.consoleWrite(f'updateADR:{bu.hex(cv,4)}\n')
+                '''
                 s.setValue(cv)    
             #vg = ba.cut(ssize,sfrom, None, 1)
             #for v in vg:
@@ -200,6 +214,6 @@ class ModuleImpl6502(ModuleImplBase):
             #if s.name()=='ADR':
             #    print(f'ad:{bin(s.value())[::-1]}')
         self._prevPins = self._pins
-        c = self.console()
-        s = bin(self._pins)[::-1]+'\n'
-        c.write(s)
+        #c = self.console()
+        #s = bin(self._pins)[::-1]+'\n'
+        #c.write(s)

@@ -54,9 +54,10 @@ class ModuleImplAT28C256(ModuleImplBase):
         cev = bu.readBits(ce,0,1)
         #!temp!
         adrs = self.sig('ADR').value()
-        cev = bu.readBits(adrs,15,1)
-        cev = 0 if cev > 0 else 1 #not gate
-        if cev == 0: #active low
+        #cev = bu.readBits(adrs,15,1)
+        #cev = 0 if cev > 0 else 1 #not gate
+        cev = self.sig('CEB').value()
+        if cev == 0 or cev == False: #active low
             adr = self.sig('ADR').value()
             adrc = bu.readBits(adr,0,15)
             ov = self._memData[adrc]

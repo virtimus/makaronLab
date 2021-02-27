@@ -397,7 +397,7 @@ class EditorFrame(MainWindow):
                 moduleViewImpl = tab.impl().widget(index)
                 moduleViewImpl.centerOn(0.0, 0.0)
                 '''
-            self.cw().write(f'afterShowEd:{index}')
+            #self.cw().write(f'afterShowEd:{index}')
 
 
         #super(EditorFrame, self).showEvent(event)

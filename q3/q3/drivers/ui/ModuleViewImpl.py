@@ -25,6 +25,200 @@ from enum import Enum
 
 from ...EventSignal import EventProps
 
+from ... import bitutils as bu
+import math
+
+import q3.ui as ui
+
+class MonTypes(Enum):
+    NON = 0
+    DEC = 1
+    BIN = 2
+    HEX = 3
+    FUN = 4
+    def toString(self):
+        return self.name[0:1]
+
+    def typeIndex(self):
+        return self
+class TWO(qtw.QTableWidget):
+    def __init__(self,ioNode,comboBox,comboBox2):
+        super(TWO, self).__init__()
+        #self._doMon = False
+        self._doMonType = None
+        #self._tw = tw
+        self._monObj = ioNode.driveSignal()
+        self._ioNode = ioNode
+        self._comboBox = comboBox
+        self._comboBox2 = comboBox2
+        self._monEdit = None #monEdit
+        #self._monCombo = None
+
+        tw = self
+        #tw.width=100
+        tw.horizontalHeader().hide()
+        #tw.horizontalHeader().setSectionResizeMode(qtw.QHeaderView.Stretch)
+        tw.horizontalHeader().setStretchLastSection(True)
+        #horizontalHeader()->setResizeMode(QHeaderView::Stretch)
+        #tw.setFocusPolicy(qtc.Qt.NoFocus)
+        tw.verticalHeader().hide()
+        tw.verticalScrollBar().setDisabled(True)
+        tw.setVerticalScrollBarPolicy(qtc.Qt.ScrollBarAlwaysOff)
+        tw.horizontalScrollBar().setDisabled(True)
+        tw.setHorizontalScrollBarPolicy(qtc.Qt.ScrollBarAlwaysOff)
+        tw.setRowCount(1)
+        
+        #focus disable?
+        #palette = tw.palette()
+        #palette.setBrush(qtg.QPalette.Highlight,qtg.QBrush(qtc.Qt.black))
+        #palette.setBrush(qtg.QPalette.HighlightedText,qtg.QBrush(qtc.Qt.black))
+        #tw.setPalette(palette)
+        #ROW = tw.rowCount()
+        #tw.insertRow(ROW)
+
+        tw._doMonType = MonTypes.NON #!TODO! reading from monObj/propObj?
+        
+        #tw._doMon = False 
+
+        if self._monObj!=None:
+            tw.setColumnCount(4)
+
+
+            monObjMethodName = 'setupValueChanged'
+
+            # setup a table on left
+            #mw = ui.STable()
+            #mw.setColumnCount(2)
+
+            monEdit =  qtw.QLineEdit('')
+            tw.setMonEdit(monEdit)
+            tw.setCellWidget(0,3,monEdit)
+            #tw.setColumnWidth(3,100)
+            monEdit.textChanged.connect(self.onMonEditTextChanged)
+
+
+            
+            #monObj._doMonCB = comboBox
+            #monObj._doMonME = monEdit
+            tw.horizontalHeader().setDefaultSectionSize(0)
+                    
+            
+
+            #monitoring checkBox/switch in right column
+            #monType =  qtw.QCheckBox()
+            #valueRot.setFocusPolicy(qtc.Qt.NoFocus)
+            #monType.setChecked(tw._doMon) 
+            #monType.stateChanged.connect(tw.monStateChanged)
+            #monType.setFixedWidth(20)
+
+
+            monCombo = qtw.QComboBox()
+            for vt in MonTypes:
+                if vt != MonTypes.FUN or self._ioNode.ioType() == NodeIoType.OUTPUT: #FUN only for outputs
+                    monCombo.addItem(vt.toString(), vt.typeIndex())
+
+            INDEX = monCombo.findData(tw._doMonType.typeIndex())
+            #monCombo.setCurrentIndex(INDEX)
+            #monCombo.setFixedWidth(30)
+            #self._properties.setCellWidget(row, 1, monCombo);
+
+            #def onActivated(index):
+            #    VALUE_TYPE = ValueType.fromInt(comboBox.itemData(index))
+            #    self.setSocketType(direction, i, VALUE_TYPE)
+
+            monCombo.activated.connect(tw.monStateChanged)
+
+
+            tw.setCellWidget(0,0,monCombo) #widget in right column
+            #tw.setColumnWidth(0,1)
+
+
+            #setattr(monObj,monObjMethodName,tw.onMonChange)
+            mtms = getattr(self._monObj,monObjMethodName,None)
+            assert mtms!=None and callable(mtms), f'[showIOProperties] Method {monObjMethodName} of object {self._monObj} has to be present and callable'
+            mtms(tw.onMonChange)
+
+            tw.setCellWidget(0,1,comboBox)
+            #tw.setColumnWidth(1,50)
+            tw.setCellWidget(0,2,comboBox2)
+            #tw.setColumnWidth(2,50)
+            #comboBox2.setFixedWidth(100) 
+            monCombo.setCurrentIndex(INDEX)
+            tw.updateMonState()
+        else: #monObj is None
+            tw.setColumnCount(2)
+            tw.setCellWidget(0,0,comboBox)
+            #tw.setColumnWidth(1,50)
+            tw.setCellWidget(0,1,comboBox2)
+
+
+    def updateMonState(self):
+        if self._doMonType!=MonTypes.NON:
+            self._comboBox.hide()
+            self._comboBox2.hide()
+            self._monEdit.show()
+            #tw.resizeColumnsToContents()
+            self.setColumnHidden(1, True)
+            #tw.setColumnWidth(1,0)
+            #tw.setColumnWidth(2,0)
+            self.setColumnHidden(2, True)
+            self.setColumnHidden(3, False)
+            self.resizeColumnsToContents()
+        else:
+            self._comboBox.show()
+            self._comboBox2.show()
+            self._monEdit.hide()
+            #tw.setColumnWidth(3,0)                   
+            self.setColumnHidden(1, False)
+            self.setColumnHidden(2, False)
+            self.setColumnHidden(3, True)
+            self.resizeColumnsToContents()
+
+    def monStateChanged(self,event):
+        self._doMonType = MonTypes(event)
+        #self._doMon = (event == 2)
+        self.onMonChange(self._prevValue,self._currValue,True) 
+        self.updateMonState()
+
+    def onMonEditTextChanged(self, text):
+        mt = self._doMonType
+        if mt == MonTypes.FUN:
+            if text == None or text.startswith('='): # set formula
+                targetName = self._monObj.name()
+                mod = self._ioNode.module()
+                mod.setSigFormula(targetName, text)
+
+
+    # setup monitoring 
+    def onMonChange(self, prevVal, newVal, internalCall:bool=None):
+        self._currValue = newVal
+        self._prevValue = prevVal
+        #print(f'prevMon:{self._ioNode.name()}:{prevVal}')
+        #print(f' newVal:{self._ioNode.name()}:{newVal}')
+        if (self._monEdit!=None and not sip.isdeleted(self._monEdit)):
+            mt = self._doMonType
+            if mt == MonTypes.DEC:
+                self._monEdit.setText(f'{newVal}')
+            elif mt == MonTypes.HEX:
+                s = math.ceil(self._ioNode.size()/4)
+                self._monEdit.setText(f'{bu.hex(newVal,s)}')
+            elif mt == MonTypes.BIN:
+                s = self._ioNode.size()
+                self._monEdit.setText(f'{bu.bin(newVal,s)}')
+            elif mt == MonTypes.FUN:
+                 #s = bu.readBits(newVal,0,2)
+                 #s = bu.bin(s)
+                 targetName = self._monObj.name()
+                 s = self._ioNode.module().sigFormula(targetName)
+                 self._monEdit.setText(f'{s}')
+
+            
+            
+
+
+    def setMonEdit(self,monEdit):
+        self._monEdit = monEdit
+
 class Q3iShowMode(Enum):
     COLLAPSED = 1
     EXPANDED = 2
@@ -33,9 +227,10 @@ class PropertiesBuilder:
     pass
 
 class Property:
-    def __init__(self,id:int, name, parent:PropertiesBuilder, propObj, lWidget, rWidget):
+    def __init__(self,id:int,rowInd:int, name, parent:PropertiesBuilder, propObj, lWidget, rWidget):
         self._parent = parent
         self._id = id
+        self.rowInd = rowInd
         self._obj = None
         #self._obj._propRef = self
         self._name = name
@@ -45,6 +240,9 @@ class Property:
     
     def id(self):
         return self._id
+
+    def rowInd(self):
+        return self._rowInd
 
     def name(self):
         return self._name
@@ -118,7 +316,17 @@ class PropertiesBuilder:
             desc = 'Owner of property to add',
             required = True
             )
+        '''
+        monAttr = console.handleArg(self, 'monAttr',kwargs=kwargs,
+            desc = 'Attribute object for monitoring prev/next value',
+            required = False
+            )
 
+        monAttrMethod = console.handleArg(self, 'monAttrMethod',kwargs=kwargs,
+            desc = 'Attribute object method name to override for monitoring prev/next value',
+            required = False
+            )
+        '''
         #propId = type(propObj).__name__+'.'+str(propObj.id())+'.'+propName
 
         cellWidget = console.handleArg(self, 'widget',kwargs=kwargs,
@@ -152,7 +360,7 @@ class PropertiesBuilder:
         if (lWidget == None):
             lWidget = qtw.QTableWidgetItem(propName) 
             lWidget.setFlags(lWidget.flags() & ~qtc.Qt.ItemIsEditable)
-            self._table.setItem(row, 0, lWidget)
+            #self._table.setItem(row, 0, lWidget)
             if cellWidget.toolTip()!=None: #share toolTip with widget
                 lWidget.setToolTip(cellWidget.toolTip())
             if (isSelected or True):
@@ -160,9 +368,21 @@ class PropertiesBuilder:
                 #itemL.setSelected(True)
                 self._table.selectionModel().setCurrentIndex( ind, qtc.QItemSelectionModel.ClearAndSelect )
         else:
-            self._table.setItem(row, 0, lWidget)
+            #self._table.setItem(row, 0, lWidget)
+            pass
+
+        #check kind of obj
+        #if propObj !=None and monAttr!=None:#monAttr set - prepare mon flag
+        #    assert monAttrMethod!=None, f'method name (monAttrMethod) to monitor attribute:{monAttr} is needed'
+        #    monWidget = self.createMonWidget(lWidget,propName,monAttr,monAttrMethod) 
+        #    self._table.setCellWidget(row,0,monWidget)
+        #    pass
+        #else:#no monitoring
+        self._table.setItem(row, 0, lWidget)
+
+
         if isinstance(cellWidget,qtw.QTableWidgetItem):
-            self._table.setItem(row, 0, cellWidget)
+            self._table.setItem(row, 1, cellWidget)
         else:
             self._table.setCellWidget(row, 1, cellWidget) 
         #if (isSelected or True):
@@ -170,9 +390,11 @@ class PropertiesBuilder:
         #prop = self.props().byLid(propId)
         #if prop == None:
         tid = self.props().nextId()
-        self.props().append(tid,Property(tid,propName,self,propObj, lWidget,cellWidget))
+        nprop = Property(tid,row,propName,self,propObj, lWidget,cellWidget)
+        self.props().append(tid,nprop)
         #else:
         #    prop.update(propObj, lWidget,cellWidget)
+        return nprop
 
     def _buildWidgetFromPropertyDesc(self,propName,propDesc):
         class propType(Enum):
@@ -711,6 +933,9 @@ void Node::advance(int a_phase)
         elif mType == ModuleType.IO:
             dir = self.module().prop('dir')
             self.showIOProperties(dir)
+        elif mType == ModuleType.GRAPH:
+            self.showIOProperties(direction.LEFT)
+            self.showIOProperties(direction.RIGHT)
         #    #self.showIOProperties(direction.LEFT)
         #elif mType == ModuleType.OUTPUTS:
         #    self.showIOProperties(direction.RIGHT)
@@ -996,9 +1221,9 @@ void Node::advance(int a_phase)
 
             comboBox = qtw.QComboBox()
             for vt in io.flags().canHoldValues():
-                comboBox.addItem(vt.toString(), vt.toInt())
+                comboBox.addItem(vt.toString(), vt.typeIndex())
 
-            INDEX = comboBox.findData(io.valueType().toInt())
+            INDEX = comboBox.findData(io.valueType().typeIndex())
             comboBox.setCurrentIndex(INDEX)
             #self._properties.setCellWidget(row, 1, comboBox);
 
@@ -1012,33 +1237,17 @@ void Node::advance(int a_phase)
             for ioType in NodeIoType:
                 comboBox2.addItem(ioType.name, ioType.value)
 
-            tw = qtw.QTableWidget()
-            #tw.width=100
-            tw.horizontalHeader().hide()
-            tw.horizontalHeader().setSectionResizeMode(qtw.QHeaderView.Stretch)
-            tw.verticalHeader().hide()
-            tw.verticalScrollBar().setDisabled(True)
-            tw.setVerticalScrollBarPolicy(qtc.Qt.ScrollBarAlwaysOff)
-            tw.horizontalScrollBar().setDisabled(True)
-            tw.setHorizontalScrollBarPolicy(qtc.Qt.ScrollBarAlwaysOff)
-            tw.setRowCount(1)
-            tw.setColumnCount(2)
-            #ROW = tw.rowCount()
-            #tw.insertRow(ROW)
-            
-            tw.setCellWidget(0,0,comboBox)
-            tw.setCellWidget(0,1,comboBox2)
-            self._propertiesBuilder.addProperty(
+            #monObj = io.driveSignal()
+
+            tw = TWO(io,comboBox,comboBox2)
+
+            nprop = self._propertiesBuilder.addProperty(
                 obj = io,
                 name = 'Name',
                 lWidget = ioName,
                 widget = tw,
-                selected = isAnyHover        
-                )          
-
-
-
- 
+                selected = isAnyHover,      
+                ) 
 
     def setCentralWidget(self, w:qtw.QGraphicsItem):
         if (self._centralWidget != None):

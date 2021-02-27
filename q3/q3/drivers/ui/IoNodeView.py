@@ -393,7 +393,8 @@ class IoNodeView(qtw.QGraphicsItem):
     def mouseDoubleClickEvent(self, event):
         #print(f"Double Click{self.id()}")
         tdsig = self.mdl().driveSignal()
-        tdsig.setValue(not tdsig.value())
+        if tdsig!=None:
+            tdsig.setValue(not tdsig.value())
  
 
     def mousePressEvent(self, event): #QGraphicsSceneMouseEvent
@@ -593,12 +594,12 @@ class IoNodeView(qtw.QGraphicsItem):
     
     def disconnectAllInputs(self):
         links = self._links
-        for l in links:
+        for l in links.values():
             f = l.fr()
             f.disconnect(self)
 
     def disconnectAllOutputs(self):
-        links = self._links
+        links = self._links.values()
         for l in links:
             self.disconnect(l.to())
 
