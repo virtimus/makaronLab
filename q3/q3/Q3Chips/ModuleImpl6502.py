@@ -14,12 +14,13 @@ class ModuleImpl6502(ModuleImplBase):
         self._winid = None
         self._prevClock = None
         self._prevReset = None
+        self._prevDTADrive = None
         super(ModuleImpl6502,self).__init__(**kwargs)
         self._moduleType = ModuleType.ATOMIC
 
     def __del__(self):
         log.warn("Hello from del")
-        super(ModuleImpl6502,self).__init__()
+        super(ModuleImpl6502,self).__del__()
     '''
     def __getattr__(self, name):
         return name
@@ -136,7 +137,7 @@ class ModuleImpl6502(ModuleImplBase):
                             if s.name() in ['RDY','NMIB','IRQB','RESB']:  
                                 sv = ~sv
                             if sfrom !=None:
-                                self.mutatePins(sfrom,ssize,sv)
+                                self.writePins(sfrom,ssize,sv)
         #self._pins = ba.uint
         #if (self._pins!=self._prevPins):
         #    print(f'6502INPins:{self._pins} ba:{ba.bin}')
@@ -179,7 +180,7 @@ class ModuleImpl6502(ModuleImplBase):
         '''
 
 
-    def mutatePins(self,fr,sz,uint):
+    def writePins(self,fr,sz,uint):
         #pins = self._pins
         pinsb = self._pins
         self._pins = self.writeBits(self._pins,fr,sz,uint)
@@ -189,9 +190,8 @@ class ModuleImpl6502(ModuleImplBase):
         #    print(f' pinsafter:{bu.binlend(self._pins)}')
 
 
-
-
     def updateSignals(self):
+
         #ba = BitArray(uint=self._pins,length=64)
         for s in self.signals().values():
             ssize = s.size()
@@ -213,6 +213,26 @@ class ModuleImpl6502(ModuleImplBase):
             #    s.setValue(cv)
             #if s.name()=='ADR':
             #    print(f'ad:{bin(s.value())[::-1]}')
+
+        #check if write
+        rwb = self.sig('RWB').value()
+        dtaSig = self.sig('DTA')
+        dtaNod = self.nod('DTA')
+        if rwb:#read
+            #dtaSig.dvIn(True)
+            if dtaNod.driveSignal()==dtaSig: #change to prev
+                dtaNod.setDriveSignal(self._prevDTADrive)
+            elif dtaNod.driveSignal()!=None and self._prevDTADrive==None: #set initial read signal
+                self._prevDTADrive = dtaNod.driveSignal()
+            pass
+        else:#write
+            #dtaSig.dvOut(True)
+            if dtaNod.driveSignal()!=dtaSig:
+                if dtaNod.driveSignal()!=None:
+                    self._prevDTADrive = dtaNod.driveSignal()
+                dtaNod.setDriveSignal(dtaSig)
+            pass
+        
         self._prevPins = self._pins
         #c = self.console()
         #s = bin(self._pins)[::-1]+'\n'

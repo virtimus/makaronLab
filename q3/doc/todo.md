@@ -1,5 +1,5 @@
-- P1 deleting a link from ui there is a signal conn left 
-- P2 nodAdd module level with eventual view(IoNodeView) (partialy done as module.ioAdd)
-- P3 clear code for inputs/outputs/downs/tops etc
-- P4 con allows to use same input node as target
-- P5 clear valuetype - replace by size/valueSize
+- T1 deleting a link from ui there is a signal conn left 
+- T2 nodAdd module level with eventual view(IoNodeView) (partialy done as module.ioAdd)
+- T3 clear code for inputs/outputs/downs/tops etc
+- T4 con allows to use same input node as target
+- T5 clear valuetype - replace by size/valueSize

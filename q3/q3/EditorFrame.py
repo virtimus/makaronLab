@@ -181,14 +181,14 @@ class EditorFrame(MainWindow):
             #panel_left.setWidget(label)
             tpanel.setWidget(tw)
             self._panelRight = tpanel
-        rightPanel()
-
         
         self._panelBottom = self.newSidePanel(
             parent = parent.impl(),
             side = direction.DOWN,
             widget = self._consoleWidget
         )
+
+        rightPanel()
 
 
     def buildMenuBar(self):

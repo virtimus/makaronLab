@@ -12,7 +12,7 @@ int pyDictSetSizet(PyObject *dict, const char *key, size_t value){
     return PyDict_SetItemString(dict, key, pyVal);
 }
 
-int pyDictSetUint64(PyObject *dict, const char *key, uint64_t value){
+int pyDictSetUint63(PyObject *dict, const char *key, uint64_t value){
     PyObject* pyVal = PyLong_FromUnsignedLongLong(value);
     return PyDict_SetItemString(dict, key, pyVal);
 }
@@ -91,6 +91,43 @@ const char* pyObjectAsString(PyObject * pOb){
     return trim(bytes);
 }
 
+#define isize 64
+
+void fast_d2s(uint64_t x, char* c) {
+    int i;
+    int offset = 48; //asc('0')
+    for(i=0;i<isize;i++)
+        *(c++) = 48 + ((x >> i) & 0x1);
+    *(c++) = 0;
+};
+
+void fast_s2d(char* c, uint64_t *n){
+    int i = isize;   
+    *n = 0;   
+    while(i--) {
+        *n <<= 1;
+        int p = (*(c+i)) - 48;
+        //printf("b%d",p);
+        *n += p;
+    }
+};
+
+int pyDictSetUint64LeBin(PyObject *dict, const char *key, uint64_t value){
+    char ch[isize+1];
+    fast_d2s(value,ch);
+    //PyObject* pyVal = PyLong_FromUnsignedLongLong(value);
+    PyObject* pyVal = PyUnicode_FromString(ch);
+    return PyDict_SetItemString(dict, key, pyVal);
+}
+
+
+uint64_t pyDictGetUint64FromLeBin(PyObject *dict,const char *key){
+    PyObject * pObCmd = pyDictGetItem(dict,key);
+    const char *sVal = pyObjectAsString(pObCmd);
+    uint64_t result;
+    fast_s2d(sVal,&result);
+    return result;
+}
 
 
 #endif //Q3_Q3C_H

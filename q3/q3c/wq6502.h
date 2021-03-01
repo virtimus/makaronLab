@@ -140,6 +140,26 @@
 	void wq6502_init(wq6502Info_t* info);
 	uint64_t wq6502_calc(size_t iv,uint64_t pv);
 
+
+	typedef struct c6522Info_t { 
+		size_t iv;
+		//uint64_t pins;
+		m6522_t cpu;
+		//uint8_t RAM[1<<16];
+		//uint8_t ROM[32768]; 
+		//m6522_desc_t desc;
+		//bool prevClock;
+		//bool prevResb;
+
+	 } c6522Info_t;
+
+	void c6522_init(c6522Info_t* info);
+	uint64_t c6522_calc(size_t iv,uint64_t pv);
+	void c6522_reset(size_t iv);
+
+
+
+
 //https://stackoverflow.com/questions/3456446/a-good-c-equivalent-of-stl-vector
 #define DECLARE_DYN_ARRAY(T) \
     typedef struct \

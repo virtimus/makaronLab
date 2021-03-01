@@ -28,16 +28,17 @@ def writeBits(pins,fr,sz,uint):
     #b=bin(pins)[::-1]
     return pins
 
+#@deprecated use lebin
 def binlend(s):
     return bin(s,None,lEndian=True)
 
-def bin(s,size:int=None, **kwargs):
+def bin(d,size:int=None, **kwargs):
     lEndian = console.handleArg(None,'lEndian',
         kwargs=kwargs,
         desc = 'If to reverse to little endian',
         default = False
     )
-    result = bing(s)[2:]
+    result = bing(d)[2:]
     if size!=None:
         if len(result)<size:
             result = result.zfill(size)
@@ -47,9 +48,33 @@ def bin(s,size:int=None, **kwargs):
         result = result[::-1]
     return result
 
+def lebin(d,size:int=None):
+    return bin(d,size,lEndian=True) 
+
 def radical(number, root):
     return (number ** (1/root))
 
 def hex(o,n=None):
     n = radical(o,4) if n == None else n
     return ''.join(f'%0{n}x'%o)
+
+def lebin2dec(lebin:str):
+    if lebin == None:
+        return None
+    #invert from le
+    sbin = lebin[::-1]
+    return bin2dec(sbin)
+
+
+def bin2dec(sbin:str):
+    if sbin == None:
+        return None
+    if sbin.startswith('0b'):
+       sbin = sbin[2:]
+    return int(sbin,2) 
+
+def dec2bin(d,size=None):
+    return bin(d,size)
+
+def dec2lebin(d,size=None):
+    return lebin(d,size)

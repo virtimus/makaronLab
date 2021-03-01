@@ -388,7 +388,7 @@ static PyObject* method_c6502_open(PyObject* self, PyObject* args) {
 
     pyDictSetSizet(dict,"iv",info.iv);
 
-    pyDictSetUint64(dict,"pins",info.pins);
+    pyDictSetUint63(dict,"pins",info.pins);
 #endif
     goto finally;
 except:
@@ -436,6 +436,83 @@ static PyObject* method_c6502_calc(PyObject* self, PyObject* args) {
     return PyLong_FromLong((unsigned long)result);
 }
 
+static PyObject* method_c6522(PyObject* self, PyObject* args) {
+
+    PyObject* dictIn = NULL;
+
+    Py_ssize_t TupleSize = PyTuple_Size(args);
+    if (TupleSize){
+        if (!PyArg_ParseTuple(args, "|O",  &dictIn)){//&PyDict_Type,
+            goto except;
+        }
+    } else {
+        dictIn = pyDictNew();
+    }
+
+    PyObject* dict = pyDictNew();
+
+    //#PyObject * pOb = pyDictGetItem(dictIn,"winId");
+    //long hwnd = PyLong_AsLong(pOb);
+
+    PyObject * pObCmd = pyDictGetItem(dictIn,"command");
+    const char *sCmd = pyObjectAsString(pObCmd);
+    //printf("c6522commandReceived:%s:\n",sCmd);
+
+    if (strcmp(sCmd,"open")==0){
+        c6522Info_t info;
+        c6522_init(&info);
+        pyDictSetSizet(dict,"iv",info.iv);
+        pyDictSetUint64LeBin(dict,"lebin",info.cpu.pins);
+
+    }
+
+    if (strcmp(sCmd,"calc")==0){
+        PyObject * piv = pyDictGetItem(dictIn,"iv");
+        //PyObject * pPins = pyDictGetItem(dictIn,"pins");
+        size_t iv = PyLong_AsLong(piv);
+        //printf("befpins\n");
+        //uint64_t pins = PyLong_AsLong(pPins); 
+        uint64_t pins = pyDictGetUint64FromLeBin(dictIn,"lebin");
+        //printf("aftpins\n");
+
+        pins = c6522_calc(iv,pins);
+        //printf("aftcalc\n");
+        pyDictSetSizet(dict,"iv",iv);
+        //printf("aftsizet\n");
+        //pyDictSetUint64(dict,"pins",pins);
+        pyDictSetUint64LeBin(dict,"lebin",pins);
+        //printf("aftuint\n");
+    }
+
+    if (strcmp(sCmd,"reset")==0){
+        PyObject * piv = pyDictGetItem(dictIn,"iv");
+        size_t iv = PyLong_AsLong(piv);
+        c6522_reset(iv);
+    }
+
+
+    //pthread_t thread_id; 
+    //printf("Before Thread\n"); 
+   // pthread_create(&thread_id, NULL, myThreadFun, NULL); 
+
+    
+ 
+
+    
+
+    return dict;
+    assert(! PyErr_Occurred());
+    assert(dict);
+    goto finally;
+except:
+    PyErr_Print();
+    //printf("Exception");
+    Py_XDECREF(dict);  
+    dict = NULL;
+finally:
+    return dict;
+}
+
 static PyMethodDef Q3cMethods[] = {
     {"sum", method_sum, METH_VARARGS, "Calculate sum of n numbers."},
     {"c6502_init2", method_c6502_initold, METH_VARARGS, "Init 6502 CPU"},
@@ -447,6 +524,8 @@ static PyMethodDef Q3cMethods[] = {
     {"cpc_open", method_cpc_open, METH_VARARGS, "Open CPC (newObj)."},
     {"cpc_insp", method_cpc_insp, METH_VARARGS, "Insp CPC."},
     {"cpc_calc", method_cpc_calc, METH_VARARGS, "Calc CPC (tick)."},
+    {"c6522", method_c6522, METH_VARARGS, "C6522 (init/tick)."},
+    
     {NULL, NULL, 0, NULL}
 };
 

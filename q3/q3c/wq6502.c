@@ -102,6 +102,8 @@
 		errorAlloc: printf( "Allocation error i = %d\n", iv );
 	}
 
+	
+
 	static void prefetch(size_t iv, uint16_t pc) {
 
 	    wq6502a.buf[iv].pins = M6502_SYNC;
@@ -227,6 +229,75 @@ char* C_getHexStr8(uint8_t value){
 	//std::string result = output;
 	return &output;
 	}
+
+DECLARE_DYN_ARRAY(c6522Info_t);
+DYN_ARRAY(c6522Info_t) c6522a = {0};
+
+	static size_t init6522(void) {
+
+		size_t iv = c6522a.n;//sizeof(wq6502a.buf);
+
+		c6522Info_t c6522Info;
+
+		DYN_ADD(c6522a, c6522Info, errorAlloc);
+
+		c6522Info_t* pb= &c6522a.buf[iv];
+
+		pb->iv = iv;
+
+		//m6502_t cpu = wq6502a.buf[iv].cpu;
+		//wq6502a.buf[iv].cpu = cpu;//.emplace_back(cpu);
+
+		//S_RAM RAM{};
+		//memset(pb->RAM, 0, sizeof(pb->RAM));
+		//V_RAM.emplace_back(RAM);
+
+		//S_ROM ROM{};
+		//V_ROM.emplace_back(ROM);
+
+		//m6502_desc_t& cpu_desc = pb->cpu_desc;
+		//v_cpu_desc.emplace_back(cpu_desc)
+
+		//pb->prevClock = false;
+		//v_prevClock.emplace_back(prevClock);
+
+		//pb->prevResb = false;
+		//v_prevResb.emplace_back(prevResb);
+	    
+	    m6522_init(&pb->cpu);
+		//pb->pins 
+		//v_pins.emplace_back(pins);
+
+        //setBit(pins
+	    //pb->cpu.S = 0xBD;   // perfect6502 starts with S at C0 for some reason
+	    //pb->cpu.P = M6502_ZF|M6502_BF|M6502_IF;
+
+		return iv;
+		errorAlloc: printf( "Allocation error i = %d\n", iv );
+	}
+
+
+ void c6522_init(c6522Info_t* info){
+	size_t iv = init6522();
+	//wq6502Info_t info;
+	info->iv = iv;
+	info->cpu = c6522a.buf[iv].cpu;
+	return info;
+}
+
+uint64_t c6522_calc(size_t iv, uint64_t pv){
+	//char buff[20];
+	c6522Info_t* pb= &c6522a.buf[iv];
+	pb->cpu.pins = pv;
+	return m6522_tick(&pb->cpu, pv);
+}
+
+void c6522_reset(size_t iv){
+	//char buff[20];
+	c6522Info_t* pb= &c6522a.buf[iv];
+	m6522_reset(&pb->cpu);
+}
+
 
  void wq6502_init(wq6502Info_t* info){
 	size_t iv = init();

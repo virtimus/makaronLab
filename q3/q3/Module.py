@@ -7,6 +7,7 @@ from . import moduletype
 from . import consts
 from . import direction
 from .nodeiotype import NodeIoType
+from .nodeiotype import NodeIoType as IoType
 from .q3vector import Q3Vector
 from .moduletype import ModuleType
 from .valuetype import ValueType
@@ -39,6 +40,7 @@ class Node(Object):
                 desc ='Used to check if signal is contained in node, if yes - it will be deleted and disconnected together with parent node'               
             )
         self._driveSignal = None
+        #self._prevDriveSignal = None depr
         self._intSignal = None
         tsignal = self._initHandleArg('signal',
                 kwargs = kwargs,
@@ -116,6 +118,9 @@ class Node(Object):
     def driveSignal(self) -> 'Signal':
         return self._driveSignal
 
+    def intSignal(self) -> 'Signal':
+        return self._intSignal
+
     def signals(self):
         return self._signals
 
@@ -126,21 +131,39 @@ class Node(Object):
             self.raiseExc(f'Signal size differs {signal.name()} s1:{s1} s2:{s2}')  
 
     def setDriveSignal(self, signal:'Signal'):
+        if self._driveSignal == signal:#break recursion on dynamic dc propagate
+            return
         if signal !=None:
             self._checkSignalSize(signal)
         if self._driveSignal == None: #not set yet - just set it
             self._driveSignal = signal
+            if self._driveSignal!=None:
+                self._driveSignal.dvOut(True)
         else: #ds alrady set - check variant
             if signal == None: #ds clear try - allow always ?
-                tid = self._driveSignal.id()
-                self.signals().removeByLid(tid)
-                self._driveSignal = signal
-            else: #setting new ds
+                if self._driveSignal != self._intSignal: #cannot remove internal signal
+                    tid = self._driveSignal.id()                
+                    self.signals().removeByLid(tid)
+                self._driveSignal = self._intSignal
+            else: #replacing with new ds #probably only for dynamic ?
                 if self._driveSignal.size()!=signal.size():  #size differs - problem
                     self.raiseExc('Signal size differs')
                 #msg = signal.canDrive() #don't think this logic is needed now
                 #if msg == None:
+                #self._prevDriveSignal = self._driveSignal
                 self._driveSignal = signal
+                self._driveSignal.dvOut(True)
+                if self.ioType() == IoType.DYNAMIC:#propagate change
+                    nodesToCheck = self.module().graphModule().nodes() \
+                        .filterBy('ioType',IoType.DYNAMIC) \
+                        .filterBy('size',self.size())
+                    
+                    for n in nodesToCheck.values():
+                        if n!=self: #self already handled
+                            ts = n.signals().byLid(self._driveSignal.id())
+                            if ts!=None: #node has the signal - set as drive
+                                n.setDriveSignal(ts) 
+
                 #else: 
                 #    self.raiseExc(f'[signal.canDrive]: {msg}')
         self.addSignal(signal)
@@ -163,6 +186,14 @@ class Node(Object):
             return          
         self._signals.append(lid,signal)
 
+    def dvOutSignal(self):
+        for s in self.signals().values():
+            if s.dvOut():
+                return s
+        return None
+
+
+
     def removeSignal(self, sig:'Signal'):
         if sig == None:
             return
@@ -172,12 +203,12 @@ class Node(Object):
 
     #@api
     def connect(self, targetNode:'Node', **kwargs):
-        assert self.driveSignal()!=None, '[node.connect] Drive signal is none'
+        assert self.intSignal()!=None, '[node.connect] source internal signal is none'
         assert targetNode!=None, '[node.connect] targetNode is none'
         if (isinstance(targetNode,IoNode)):
             assert targetNode.ioType() in [NodeIoType.INPUT,NodeIoType.DYNAMIC], '[node.connect] targetNode.ioType has to be in [INPUT,DYNAMIC]'
         if self.view() == None or targetNode.view()==None: # standalone mode
-            targetNode.setDriveSignal(self.driveSignal())
+            targetNode.setDriveSignal(self.intSignal())
         #emit connection request
         self.events().emitNodeConnectionRequest({
             'sourceNode':self,
@@ -208,6 +239,9 @@ class IoNode(Node):
         #for inputs no driveSignal added for a start
         if self.ioType() == NodeIoType.INPUT:
             self._driveSignal = None
+        else: # for dynamic and output 1st required signal attached as 'internal' - also a candidate for drive on clear
+            self._intSignal = tsignal
+
 
     def acceptVisitor(self, v):
         v.visitIoNode(self)
@@ -243,7 +277,6 @@ rootModule (mainView) isRoot method
             ...
             atomicModule (type=native/Q3C/simple etc - processing logic out of scope of local simulation)
 Module contains:
-    intSignals - set of internal signals
     signals - io signals (connected to io CNodes set - input/output "pins")
 
 

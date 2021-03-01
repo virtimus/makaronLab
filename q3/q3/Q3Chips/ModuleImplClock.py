@@ -10,6 +10,9 @@ class ModuleImplClock(ModuleImplBase):
         self._interval = 0
         self._pb = None
         self._pb2 = None
+        self._isFall = False
+        self._isRise = False
+        self._riseDelay = 0
         self._intervalTypeDomainValues = {
             1:'1ms',
             10:'10ms',
@@ -61,9 +64,23 @@ class ModuleImplClock(ModuleImplBase):
             self._pb.setToolTip('Stop the clock')
             self._interval = self._prevInterval
 
-    def onToggleClockState(self, state):
+    def _setValue(self,nVal=None):
+        self._isRise = False
+        self._isFall = False
         y = self.sig('Y')
-        y.setValue(state)
+        pv = y.value()
+        if (pv!=nVal):
+            pv = nVal if nVal !=None else not pv
+            y.setValue(pv)
+            self._isFall = not pv
+            self._isRise = not self._isFall
+            if self._isRise:
+                self._riseDelay=0
+
+        
+
+    def onToggleClockState(self, state):
+        self._setValue(state)
         self._timer.reset()
 
 
@@ -93,11 +110,10 @@ class ModuleImplClock(ModuleImplBase):
         return self._intervalType    
 
     def calc(self):
+        self._riseDelay+=1
         if self._interval>0 and self._timer.millisDelta()>self._interval:
-            y = self.sig('Y')
-            y.setValue(not y.value())
+            self._setValue(None)
             self._timer.reset()
-
         pass 
 
 
@@ -110,3 +126,12 @@ class ModuleImplClock(ModuleImplBase):
         if interval == 'Stop' or interval == None or not isinstance(interval,int):
             interval = 0
         self._interval = interval
+
+    def isRise(self):
+        return self._isRise
+    
+    def isFall(self):
+        return self._isFall
+
+    def riseDelay(self):
+        return self._riseDelay

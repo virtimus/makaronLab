@@ -417,8 +417,8 @@ class IoNodeView(qtw.QGraphicsItem):
     def finishIoLinkView(self,linkItem:IoLinkView):
         if (linkItem == None):
             return
-        if linkItem.fr().node().driveSignal()!=None:
-            self.node().setDriveSignal(linkItem.fr().node().driveSignal())
+        if linkItem.fr().node().intSignal()!=None:
+            self.node().setDriveSignal(linkItem.fr().node().intSignal())
         self._links.push_back(linkItem)
         linkItem.setTo(self)
         self._used = True

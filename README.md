@@ -6,7 +6,10 @@ Integrated some stuff, played with CPU simulation ...
 
 Currently reimplementng wonderfull Spaghetti logic editor/simulator in Python/PyQT
 
-(early stages in wq folder - level of simple d-latch with no serialisation but with new signal/node/module  simulation model)  
+Early stages in q3 folder - level of simple 6502/6522 simulation following wonderfull Ben's tutorials at
+
+https://www.youtube.com/watch?v=LnzuMJLZRdU
+
 
 
 ## There were few reasons for this project.

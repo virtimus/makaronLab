@@ -178,6 +178,7 @@ class ModuleImplGraph(ModuleImplElement):
     def calculate(self):
         for node in self.mdl().nodes().values():
             ds = node.driveSignal()
+            #ds = node.dvOutSignal()
             if ds != None and node.signals().size()>0:
                 dv = ds.value()
                 for ss in node.signals().values():

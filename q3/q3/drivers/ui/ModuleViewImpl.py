@@ -136,7 +136,8 @@ class TWO(qtw.QTableWidget):
             #setattr(monObj,monObjMethodName,tw.onMonChange)
             mtms = getattr(self._monObj,monObjMethodName,None)
             assert mtms!=None and callable(mtms), f'[showIOProperties] Method {monObjMethodName} of object {self._monObj} has to be present and callable'
-            mtms(tw.onMonChange)
+            self.onMonChange(None,self._monObj.value(),internalCall=True)
+            mtms(tw.heOnMonChange)
 
             tw.setCellWidget(0,1,comboBox)
             #tw.setColumnWidth(1,50)
@@ -188,6 +189,10 @@ class TWO(qtw.QTableWidget):
                 mod = self._ioNode.module()
                 mod.setSigFormula(targetName, text)
 
+    def heOnMonChange(self, event):
+        prevVal = event.props('prevVal')
+        newVal = event.props('newVal')
+        self.onMonChange(prevVal,newVal)
 
     # setup monitoring 
     def onMonChange(self, prevVal, newVal, internalCall:bool=None):

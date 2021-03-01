@@ -118,14 +118,15 @@ class ModuleImplBase(metaclass=ABCMeta):
         consoleWrite = EventSignal(EventProps)
         nodeConnectionRequest = EventSignal(EventProps)
         itemPositionHasChanged = EventSignal(EventProps)
+        
         def emitItemPositionHasChanged(self, d:dict):
             d['eventName']='itemPositionHasChanged' 
             self.itemPositionHasChanged.emit(EventProps(d))
-
         def emitNodeConnectionRequest(self, d:dict):
             #!TODO! validation, waiting for response?
             d['eventName']='nodeConnectionRequest' 
             self.nodeConnectionRequest.emit(EventProps(d))
+
 
    
     def __init__(self, **kwargs):
@@ -359,6 +360,44 @@ class AndGateModule(ModuleImplBaseLocal):
         #print(f'sY={sY.value()}')   
         # 
 
+class NandGateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from NandGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'NAND',
+            'info':'NAND logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        v3 = not (v1 and v2)
+        sY = s.sig('Y')
+        sY.setValue( v3 )
+        #print(f'sY={sY.value()}')   
+        # 
 
 class NorGateModule(ModuleImplBaseLocal):
     def echo(self):
@@ -488,6 +527,7 @@ class LocalModuleLibrary(ModuleLibraryBase):
         "AND":AndGateModule,
         "NOT":NotGateModule,
         "NOR":NorGateModule,
+        'NAND':NandGateModule,
         "TESTG":TestGModule,
         "test2":Test2Module
     }

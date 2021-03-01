@@ -2,6 +2,8 @@
 #cw = _namespace['cw']
 import q3.config
 
+import q3.console as console
+
 c = q3.config.consoleInstance
 cw = q3.config.consoleWidgetInstance
 
@@ -78,16 +80,29 @@ import types
 # takes and object 'obj' and replaces a 'name' method in the object with a "monitor" function 'handler'
 # default behaviour - it calls old method in it's body so method shouldn't tak any addidtional args
 # maybe to be extended by *args, **kwargs
-def mountMonitor(obj, mname, handler):
+def mountMonitor(obj, mname, handler, **kwargs):
+    putBefore = console.handleArg(None,'putBefore',
+        kwargs = kwargs,
+        desc = 'If to put call before call of method',
+        default = False
+    )
     omethod = getattr(obj,mname)
-    def mhandler(self):
-        handler(self)
-        return omethod()
+    def mhandler(self,*args,**kwargs):
+        if putBefore:
+            handler(self,*args,**kwargs)
+            return  omethod(*args,**kwargs)
+        else:
+            result = omethod(*args,**kwargs)
+            handler(self,*args,**kwargs)
+            return result
     nm = types.MethodType(mhandler,obj)
     setattr(obj,mname,nm)
+    return omethod
 
 
 from q3.nodeiotype import NodeIoType as IoType
 from q3 import direction
 from q3 import bitutils as bu
+from q3 import strutils as su
+from q3 import Timer as tm
 #imports 

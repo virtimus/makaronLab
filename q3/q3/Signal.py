@@ -11,7 +11,15 @@ from .valuetype import ValueType
 
 from . import bitutils as bu
 
+from .EventSignal import EventSignal, EventBase, EventProps
+
 class Signal(Object):
+    class Events(EventBase):
+        signalValueChanged = EventSignal(EventProps)
+        def emitSignalValueChanged(self, d:dict):
+            d['eventName']='signalValueChanged' 
+            self.signalValueChanged.emit(EventProps(d))
+
     def __init__(self, *args, **kwargs):
         args = self._loadInitArgs(args)
         if not isinstance(args[0],Module):
@@ -21,6 +29,8 @@ class Signal(Object):
             self.raiseExc(f'Name of Signal required')   
         self._info = kwargs['info'] if 'info' in kwargs else None
         self._desc = kwargs['desc'] if 'desc' in kwargs else None
+        self._dvOut = False 
+        self._events = Signal.Events()
 #        self._driveNode = None
 #        if 'driveNode' in kwargs:
 #            self.addNode(kwargs['driveNode'])       
@@ -48,6 +58,15 @@ class Signal(Object):
 
     def acceptVisitor(self, v):
         v.visitSignal(self)
+
+    def module(self):
+        return self.parent()
+
+    def events(self):
+        return self._events
+    
+    def consoleWrite(self, dta):
+        self.module().consoleWrite(dta)
 
     def id(self):
         return self._id
@@ -87,13 +106,16 @@ class Signal(Object):
 
     #@api func to setup onValueChanged
     def setupValueChanged(self, onValueFunc):
-        self.onValueChanged = onValueFunc
+        #self.onValueChanged = onValueFunc
         #first call to set value in monitor
-        onValueFunc(None,self.value())
+        #onValueFunc(None,self.value())
+        self.events().signalValueChanged.connect(onValueFunc)
+
 
 
     #@apiInternal - function to replace to monitor signal changes - called from valueType delta
     def onValueChanged(self, prevVal, newVal):
+        self.events().emitSignalValueChanged({'prevVal':prevVal,'newVal':newVal})
         pass
 
     def isOn(self):
@@ -115,6 +137,17 @@ class Signal(Object):
 
     def __len__(self):
         return self.size()
+
+    def dvIn(self,n:bool=None):
+        if n!=None:
+            self._dvOut = not n
+        return not self._dvOut
+
+    def dvOut(self,n:bool=None):
+        if n!=None:
+            self._dvOut = n
+        return self._dvOut
+
 
 
 #        if self._value != prevValue and self._driveNode != None: #delta propagation ?
