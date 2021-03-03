@@ -73,6 +73,13 @@ def bin2dec(sbin:str):
        sbin = sbin[2:]
     return int(sbin,2) 
 
+def hex2dec(shex:str):
+    if shex == None:
+        return None
+    if shex.startswith('0x'):
+        shex = shex[2:]
+    return int(shex,16)
+
 def dec2bin(d,size=None):
     return bin(d,size)
 

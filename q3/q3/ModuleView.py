@@ -27,6 +27,7 @@ class ModuleView(Object):
         self._detailWindow = None
         self._avcThread = None
         self._hasTopsDowns = False
+        self._tokenId = None
         #self._scheduledScalings = None;  
         args = self._loadInitArgs(args)
         d1 = isinstance(args[0],ModuleView)
@@ -120,6 +121,13 @@ class ModuleView(Object):
     #    self._avcThread = threading.Thread(target=tocall) #std::thread(&Package::dispatchThreadFunction, this);
     #    self._avcThread.start()
 
+    #used to identify during async creation
+    def tokenId(self):
+        return self._tokenId
+    
+    def setTokenId(self, tokId):
+        self._tokenId = tokId
+
     def events(self):
         return self.module().events()
 
@@ -174,12 +182,16 @@ class ModuleView(Object):
         self.impl().updateInversion()
 
     #@api
-    def modAdd(self, name, **kwargs):
+    def modAdd(self, name:str, **kwargs):
         return self.newModule(name,**kwargs)
 
-    def newModule(self,moduleName, **kwargs):
-        nmodule = self.module().newModule(moduleName,**kwargs)
-        if self.module().isRoot():
+    def newModule(self,moduleName:str, **kwargs):
+        nmodule = self._initHandleArg('module',kwargs = kwargs,
+            desc = 'module to add view to'
+            )
+        if nmodule == None:
+            nmodule = self.module().newModule(moduleName,**kwargs)
+        if self.module().isRoot() and nmodule.view()==None: #if we are root and there is no view for module already
             tModuleView = ModuleView(self,module=nmodule)
         return nmodule
 

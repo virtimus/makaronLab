@@ -2,6 +2,7 @@
 from . import consts, console
 from . import orientation
 from . import direction
+from . import strutils as su
 from .moduletype import ModuleType
 from .Panel import Panel
 
@@ -31,7 +32,16 @@ from .q3vector import Q3Vector
 from .console import ConsoleCtrl
 
 from .ModuleLibraryQ3Chips import ModuleLibraryQ3Chips
+
+from .EventSignal import EventSignal, EventBase, EventProps
+from .Timer import Timer
 class EditorFrame(MainWindow):
+    class Events(EventBase):
+        requestNewModuleView = EventSignal(EventProps)
+        def emitRequestNewModuleView(self, d:dict):
+            d['eventName']='requestNewModuleView'
+            self.requestNewModuleView.emit(EventProps(d))
+
     """
     A main frame of q3Editor
     """
@@ -41,6 +51,7 @@ class EditorFrame(MainWindow):
         super(EditorFrame, self).__init__(parent)
         self._app = parent
         self._rootModule = None
+        self._events = EditorFrame.Events()
         #self._consoleWidget = None
         self._consoleWidget = console.newConsoleWidget(self)
         ss=2
@@ -70,6 +81,9 @@ class EditorFrame(MainWindow):
 
         self.buildSidePanels(self._tabPanel)
         #signal.addSlavePin(pinRef)
+    
+    def events(self):
+        return self._events
 
     def buildLayout(self):
         # create a panel in the frame
@@ -342,14 +356,43 @@ class EditorFrame(MainWindow):
         self._tabPanel.impl().setCurrentIndex(self._moduleViewIndex)
         self._moduleView = module.view()
         return self._moduleView
+
+    def _waitForModuleViewWithToken(self, tokenId):
+        i = 0
+        while (i<30): #while timeout
+            Timer.sleepMs(300)
+            index = self._tabPanel.currentIndex()
+            graphViewImpl = self._tabPanel.impl().widget(index)          
+            tid = graphViewImpl.mdlv().tokenId() if graphViewImpl!=None else None
+            if tid == tokenId:
+                return graphViewImpl.mdlv()
+            else: #looking closer ...
+                for m in self._rootModules.values():
+                    if tokenId == m.view().tokenId():
+                        return m.view()
+            i=i+1
+            # some tomeoout ?
+
+        return None #failure
+
                       
     #@api
-    def moduleViewAdd(self):
-        return self.newModuleView()
+    def moduleViewAdd(self,name:str=None):
+        #return self.newModuleView()
+        tokenId = su.uuid()
+        self.events().emitRequestNewModuleView({'name':name,'tokenId':tokenId})
+        # default:wait for result
+        return self._waitForModuleViewWithToken(tokenId)
 
     #@api
     def modvAdd(self,name:str =None):
-        return self.newModuleView(name)
+        return self.moduleViewAdd(name)
+
+    def heRequestNewModuleView(self, event):
+        tokenId = event.props('tokenId')
+        tname = event.props('name')
+        nView = self.newModuleView(name=tname)
+        nView.setTokenId(tokenId)
         
     def newModuleView(self,name:str=None):
         tnextId = self.rootModules().nextId()
@@ -361,6 +404,7 @@ class EditorFrame(MainWindow):
     #: QShowEvent #@s:editor::showEvent
     def showEvent(self, event):
         if (EditorFrame._firstTime):
+            self.events().requestNewModuleView.connect(self.heRequestNewModuleView)
             EditorFrame._firstTime = False
             tab = self._tabPanel
             '''

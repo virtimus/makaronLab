@@ -84,7 +84,9 @@ m.mod('Clock').view().setInvert(True)
 m.mod('Clock').setPos(70.0,-200.0)
 
 # rom file created with makerom.py
-mAT28C256.impl().setMemPath('/src/makaronLab/q3/q3/bootstrap/tests/ben6502/rom.bin')
+if not 'rompath' in globals():
+    rompath = '/src/makaronLab/q3/q3/bootstrap/tests/ben6502/rom.bin'
+mAT28C256.impl().setMemPath(rompath)
 
 # as in video - we'll need also a not gate and signal maper
 adrMap = modv.modAdd('adrMap',

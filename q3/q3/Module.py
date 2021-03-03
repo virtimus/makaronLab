@@ -16,6 +16,8 @@ from .EventSignal import EventProps
 
 from . import strutils as su
 
+from .ionodeflags import IoNodeFlags
+
 """
 CNode is a junction pint between different signals with same size
 here should be decided which signal drives in
@@ -56,12 +58,15 @@ class Node(Object):
                    
         super(Node, self).__init__(*args, **kwargs)
         #self._id = len(self.parent().graphModule().nodes())
-        self._id = self.parent().graphModule().nodes().nextId()
+        self._id = self.parent().rootModule().allNodes().push(self)
         self._no = len(self.parent().nodes())
         #self.parent()._nodes[self.id()]=self
         self.parent().graphModule().addNode(self)
         if not self.parent().graphModule() is self.parent():
             self.parent().addNode(self)
+        if self.flags()==None: #some call do not put flags - create defaults
+            tflags = IoNodeFlags()    
+            self.setProp('ioNodeFlags',tflags)
 
     def acceptVisitor(self, v):
         v.visitNode(self)
@@ -128,7 +133,7 @@ class Node(Object):
         if self.size()!=None and signal!=None and ValueType.fromSize(self.size()).size()<signal.valueType().size():
             s1 = ValueType.fromSize(self.size()).size()
             s2 = signal.valueType().size()
-            self.raiseExc(f'Signal size differs {signal.name()} s1:{s1} s2:{s2}')  
+            self.raiseExc(f'Signal size differs ({self.name()} {signal.name()}) s1:{s1} s2:{s2}')  
 
     def setDriveSignal(self, signal:'Signal'):
         if self._driveSignal == signal:#break recursion on dynamic dc propagate
@@ -203,8 +208,12 @@ class Node(Object):
 
     #@api
     def connect(self, targetNode:'Node', **kwargs):
-        assert self.intSignal()!=None, '[node.connect] source internal signal is none'
+        assert self.intSignal()!=None, '[node.connect] source internal signal is none' 
         assert targetNode!=None, '[node.connect] targetNode is none'
+        #special case - connect to output from inside of graph 2nd level node - self.view == None
+        if self.view()==None and targetNode.ioType() == NodeIoType.OUTPUT and self.driveSignal()!=None:
+            self.addSignal(targetNode.intSignal())
+            return #we can return here as we're not making any visible change ?
         if (isinstance(targetNode,IoNode)):
             assert targetNode.ioType() in [NodeIoType.INPUT,NodeIoType.DYNAMIC], '[node.connect] targetNode.ioType has to be in [INPUT,DYNAMIC]'
         if self.view() == None or targetNode.view()==None: # standalone mode
@@ -214,6 +223,10 @@ class Node(Object):
             'sourceNode':self,
             'targetNode':targetNode
             })
+
+    #@api
+    def con(self, targetNode:'Node', **kwargs):
+        return self.connect(targetNode,**kwargs)
 
     #@api - alias for connect 
     def con(self, targetNode:'Node', **kwargs):
@@ -262,7 +275,11 @@ class IoNode(Node):
         return self.prop('ioNodeFlags')
 
     def valueType(self):
-        return self.prop('valueType')
+        #P6-Big crash here ?
+        #if self.intSignal()!=None and self.intSignal().valueType()!=None:
+        #    return self.intSignal().valueType()
+        #else:
+            return self.prop('valueType')
 
 
 """
@@ -313,7 +330,7 @@ class Module(Object):
         if self._moduleType != None and self._isImplStr :
             self.raiseExc(f'[Module] moduleType cannot be given for module loaded from lib {self._name}')
         elif not self._isImplStr  and self._moduleType == None:
-            self.raiseExc(f'[Module] ''moduleType'' required {self._name}')
+            self.raiseExc(f'[Module] "moduleType" required {self._name}')
 
         self._scriptRecording = False
         self._modules = Q3Vector()
@@ -321,11 +338,13 @@ class Module(Object):
         self.modsBy = self.modulesBy #@api
         self._modules.append(0,self)
         self._nodes = Q3Vector()
+        self._allNodes = Q3Vector()
         self.nodesBy = self._nodes.by #@api
         self.nodsBy = self.nodesBy #@api
         #self._nodesByName = {} handled by Q3Vector
         self._tabIndex = None
         self._signals = Q3Vector()
+        self._allSignals = Q3Vector()
         self.signalsBy = self._signals.by #@api
         self.sigsBy = self.signalsBy #@api
         self._sigFormulas = {} #additional calc formulas 
@@ -353,7 +372,12 @@ class Module(Object):
             self.parent().addModule(self)
         else:
             self._id = kwargs['id'] if 'id' in kwargs else 0
-        
+
+    def allSignals(self):
+        return self._allSignals
+
+    def allNodes(self):
+        return self._allNodes  
 
     def consoleWrite(self, dta):
         self.impl().consoleWrite(dta)
@@ -491,10 +515,12 @@ class Module(Object):
             #return mod.impl().newIO(**kwargs)
             nme = kwargs['name'] if 'name' in kwargs else None
 
+            size = kwargs['size'] if 'size' in kwargs else 1
+
             if ioType == NodeIoType.INPUT:
-                return mod.view().impl().addInput(nme)
+                return mod.view().impl().addInput(nme,size=size)
             else:
-                return mod.view().impl().addOutput(nme)
+                return mod.view().impl().addOutput(nme,size=size)
         else:
             return self.impl().newIO(**kwargs)
     
@@ -539,6 +565,22 @@ class Module(Object):
     def mod(self,by):
         assert by!=None, '[mod] "by" arg required not None'
         return self.modules(by)
+    
+    #@api
+    def modL(self): #lefts
+        return self.mod(direction.LEFT.graphModName())
+
+    #@api
+    def modR(self): #rights
+        return self.mod(direction.RIGHT.graphModName())
+
+    #@api
+    def modT(self): #tops
+        return self.mod(direction.TOP.graphModName())
+
+    #@api
+    def modD(self): #downs
+        return self.mod(direction.DOWN.graphModName())
 
     def modById(self, id):
         return self._modules.byLid(id)
@@ -611,10 +653,16 @@ class Module(Object):
             del ioNode
 
     #@api
-    def modAdd(self, moduleName,**kwargs):
-        return self.newModule(moduleName,**kwargs)
+    def modAdd(self, moduleName:str,**kwargs):
+        result = self.newModule(moduleName,**kwargs)
+        if self.view()!=None:
+            self.view().modAdd(moduleName, module=result)
+        return result
 
-    def newModule(self, moduleName, **kwargs):
+    def newModule(self, moduleName:str, **kwargs):
+        #on api level i think it would be better to have default moduleType = GRAPH if impl not present
+        if 'moduleType' not in kwargs and 'impl' not in kwargs:
+            kwargs['moduleType'] = ModuleType.GRAPH
         result = Module(self,moduleName,**kwargs)
         self.impl().add(result)
         return result             
@@ -654,7 +702,7 @@ class Module(Object):
                 del self._sigFormulas[nodName]
             return 
         nod = self.nod(nodName)
-        assert nod!=None and nod.ioType() == NodeIoType.OUTPUT and nod.driveSignal()!=None, '[setSigFormula] For setting formula node has to exist and be output'
+        assert nod!=None and nod.ioType() == NodeIoType.OUTPUT and nod.driveSignal()!=None, f'[setSigFormula] For setting formula node has to exist and be output ({nodName})'
         self._evalSigFormula(nod.driveSignal(),formula)
         self._sigFormulas[nodName] = formula
 

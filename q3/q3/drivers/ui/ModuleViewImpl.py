@@ -26,6 +26,7 @@ from enum import Enum
 from ...EventSignal import EventProps
 
 from ... import bitutils as bu
+from ... import strutils as su
 import math
 
 import q3.ui as ui
@@ -52,6 +53,8 @@ class TWO(qtw.QTableWidget):
         self._comboBox = comboBox
         self._comboBox2 = comboBox2
         self._monEdit = None #monEdit
+        self._inMonChange = False
+        self._inMonEditChange = False
         #self._monCombo = None
 
         tw = self
@@ -183,11 +186,45 @@ class TWO(qtw.QTableWidget):
 
     def onMonEditTextChanged(self, text):
         mt = self._doMonType
+        
         if mt == MonTypes.FUN:
             if text == None or text.startswith('='): # set formula
                 targetName = self._monObj.name()
                 mod = self._ioNode.module()
                 mod.setSigFormula(targetName, text)
+        elif not self._inMonChange and mt in [MonTypes.DEC,MonTypes.HEX,MonTypes.BIN]:
+            # user changed edit contents - get the signal ...
+            self._inMonEditChange = True
+            targetName = self._monObj.name()
+            tsig = self._monObj
+            tText = su.trim(text) 
+            isNone = su.isBlank(tText)           
+            if mt == MonTypes.DEC:
+                if isNone: #allow value clear ?
+                    tsig.setValue(None)
+                if tText in ['T','Y','True']:
+                    nval = True
+                    tsig.setValue(nval)
+                elif tText in ['N','F','False']:
+                    nval = False
+                    tsig.setValue(nval)
+                elif su.isSDigits(tText):
+                    nval = int(text)
+                    tsig.setValue(nval)
+            elif mt == MonTypes.HEX:
+                try:
+                    result = bu.hex2dec(tText)
+                    tsig.setValue(result)
+                except ValueError:
+                    pass ## ignore
+            elif mt == MonTypes.BIN:
+                try:
+                    result = bu.bin2dec(tText)
+                    tsig.setValue(result)
+                except ValueError:
+                    pass ## ignore
+
+        self._inMonEditChange = False
 
     def heOnMonChange(self, event):
         prevVal = event.props('prevVal')
@@ -198,6 +235,7 @@ class TWO(qtw.QTableWidget):
     def onMonChange(self, prevVal, newVal, internalCall:bool=None):
         self._currValue = newVal
         self._prevValue = prevVal
+        self._inMonChange = True
         #print(f'prevMon:{self._ioNode.name()}:{prevVal}')
         #print(f' newVal:{self._ioNode.name()}:{newVal}')
         if (self._monEdit!=None and not sip.isdeleted(self._monEdit)):
@@ -217,7 +255,7 @@ class TWO(qtw.QTableWidget):
                  s = self._ioNode.module().sigFormula(targetName)
                  self._monEdit.setText(f'{s}')
 
-            
+        self._inMonChange = False    
             
 
 
@@ -467,11 +505,12 @@ class ModuleViewImpl(qtw.QGraphicsItem):
         self._nameFont = qtg.QFont()
         self._element:ModuleImplBase = None
         self._centralWidget = None #QGraphicsItem
-        self._centralWidgetPosition = None  #QPointF
+        self._centralWidgetPosition = qtc.QPointF(0,0) #None  #QPointF
         self._mode = None #Q3iShowMode
         self._icon = qtg.QPixmap()
         self._showName = True
         self._boundingRect = None
+        self._boundingRect = qtc.QRectF(0.0, 0.0, 1, 1)
         self._rotate = False
         self._invertH = False
         #self._inputs = Q3Vector()
@@ -553,6 +592,7 @@ class ModuleViewImpl(qtw.QGraphicsItem):
     #----------------------
     def boundingRect(self):
         return self._boundingRect
+        #return self.calculateBoundingRect()
 
     #paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget)
     def paint(self, painter,option,widget=None):
@@ -837,7 +877,9 @@ void Node::advance(int a_phase)
             METRICS = qtg.QFontMetrics( self._nameFont )
             FONT_HEIGHT = METRICS.height()
             NAME_Y = (ROUNDED_SOCKET_SIZE / 2.0) + (FONT_HEIGHT - METRICS.strikeOutPos()) / 2.0 - 1.0
-            painter.drawText(qtc.QPointF(5.0, NAME_Y), self.s().name())
+            sname = self.s().name()
+            qpointF = qtc.QPointF(5.0, NAME_Y)
+            painter.drawText(qpointF, sname)
         selColor = qtg.QColor(156, 156, 156, 255) if self.isSelected() else qtg.QColor(58, 66, 71, 255)
         pen.setColor( selColor )
         pen.setWidth(2)
@@ -1040,6 +1082,8 @@ void Node::advance(int a_phase)
         dir = self._getOutDir()
         self.addSocket(dir, out.id(), out.name(), out.valueType(), out.ioType())
         self.calculateBoundingRect()
+        event.setDone(True)
+
 
     def heOutputRemoved(self, event):
         dir = self._getOutDir()
@@ -1205,13 +1249,17 @@ void Node::advance(int a_phase)
         #for (int i = 0; i < IOS_SIZE; ++i) {
         for io in ios.values():
             #auto const &IO = ios[static_cast<size_t>(i)];
-            ioView = io.view()
-            isAnyHover = ioView.isAnyHover()# or ioView.isInHover
-            if (isAnyHover):
-                self.console().write(f'isAnyHoverOn for {io.name()}\n')
+            isAnyHover = False
+            if io.view()!=None:
+                ioView = io.view()
+                isAnyHover = ioView.isAnyHover()# or ioView.isInHover
+                #if (isAnyHover):
+                #    self.console().write(f'isAnyHoverOn for {io.name()}\n')
             i = io.id()
             ioName = None
             ioNameStr = io.name()+'('+str(io.size())+')'
+            if io.flags()==None:
+                print('trace')
             if (io.flags().canChangeName()):
                 ioName =  qtw.QLineEdit(ioNameStr) #QString::fromStdString(IO.name) } };
                 def editingFinished(self):
@@ -1376,7 +1424,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         self.changeIOName(direction.RIGHT, vid, name)
 
     #@deprecated
-    def addInput(self, name:str=None):
+    def addInput(self, name:str=None,size:int=None):
         dir = direction.LEFT
         ioNodes = self._element.nodesByDir(dir)
         SIZE = ioNodes.size() #self._element.inputs().size()
@@ -1384,6 +1432,8 @@ auto max_element(Container &a_container, Comparator a_comparator)
         last = ioNodes.last() #self._element.inputs().last()
         #first_available_type_for_flags(self._element.defaultNewInputFlags())
         TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType()        
+        if size!=None:
+            TYPE.setSizeTmp(size)
         tnt = NodeIoType.INPUT
         if self.mType() == ModuleType.IO:
             tnt = NodeIoType.OUTPUT
@@ -1392,7 +1442,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         result = self._element.nodes().byLid(result) if result >-1 else None
         return result
 
-    def addIoNode(self, dir:direction.Dir, name:str=None):
+    def addIoNode(self, dir:direction.Dir, name:str=None, size:int=None):
         tnt = NodeIoType.INPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.OUTPUT
         if self.mType() == ModuleType.IO:
             tnt = NodeIoType.OUTPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.INPUT
@@ -1403,6 +1453,8 @@ auto max_element(Container &a_container, Comparator a_comparator)
         last = ioNodes.last() #self._element.inputs().last()
         #first_available_type_for_flags(self._element.defaultNewInputFlags())
         TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType()        
+        if size!=None:
+            TYPE.setSizeTmp(size)
         result = self._element.addIoNode(dir,TYPE, NAME, self._element.defaultFlags(dir), tnt)
         self.m_packageView.showProperties()
         result = self._element.nodes().byLid(result) if result >-1 else None
@@ -1423,7 +1475,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         self.m_packageView.showProperties()
 
 
-    def addOutput(self, name:str=None):
+    def addOutput(self, name:str=None, size:int=None):
         dir = direction.RIGHT        
         ioNodes = self._element.nodesByDir(dir)
         SIZE = ioNodes.size() #self._element.outputs().size()
@@ -1431,6 +1483,8 @@ auto max_element(Container &a_container, Comparator a_comparator)
         last= ioNodes.last() #self._element.outputs().last()
         #{ first_available_type_for_flags(m_element->defaultNewOutputFlags()) };
         TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType() 
+        if size!=None:
+            TYPE.setSizeTmp(size)
         tnt = NodeIoType.OUTPUT
         #dirp = dir
         if self.mType() == ModuleType.IO:
@@ -1460,7 +1514,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
                 valueType = ValueType.fromSize(sig.size())
                 ioNode.setProp('valueType',valueType)
 
-        if ioNode.flags() == None:
+        if ioNode.flags() == None: #!TODO! now probably not needed - set as default in constructor
             tflags = IoNodeFlags()
             '''
             if (dir == direction.LEFT):

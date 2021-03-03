@@ -15,7 +15,7 @@ class Timer:
         ms = (t.days * 24 * 60 * 60 + t.seconds) * 1000 + t.microseconds / 1000.0
         return round(ms)
 
-    def ms(self,number=1):
+    def ms(self,number=1): # a given number of ms to compare
         #return number*self._startTime.microsecond/1000 #!!
         return timedelta(milliseconds=number)
 

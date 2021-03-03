@@ -124,7 +124,7 @@ class ModuleImplElement(ModuleImplBase):
         index = self.nodesByDir(dir).size()
         if (index+1 > self.defaultFlags(dir).max()):
             return -1
-        tsize = self._tsizeFromValueType(valueType)
+        tsize = self._tsizeFromValueType(valueType) if valueType._sizeTmp == None else valueType._sizeTmp
         io = self.newIO(
             name = name,
             direction = dir,
@@ -150,7 +150,7 @@ class ModuleImplElement(ModuleImplBase):
         #input.sItemType = sItemType;
         #input.inFlags = 1;
 
-        tsize = self._tsizeFromValueType(valueType)
+        tsize = self._tsizeFromValueType(valueType) if valueType._sizeTmp == None else valueType._sizeTmp
 
         input = self.newIO(
             name = name,
@@ -237,7 +237,7 @@ class ModuleImplElement(ModuleImplBase):
         #output.sItemType = sItemType;
         #output.inFlags = 2;
 
-        tsize = self._tsizeFromValueType(valueType)
+        tsize = self._tsizeFromValueType(valueType) if valueType._sizeTmp == None else valueType._sizeTmp  
 
         output = self.newIO(
             name = name,

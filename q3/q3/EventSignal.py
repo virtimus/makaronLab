@@ -5,6 +5,39 @@ import PyQt5.QtWidgets as qtw
 
 
 from .q3vector import Q3Vector
+from .Timer import Timer
+
+#@deprecated - wrong direction
+class DoneItem: 
+    def __init__(self):
+        self._done = False
+
+    def done(self):
+        return self._done
+
+    def setDone(self, n):
+        self._done = n
+
+    def waitForDone(self):
+        tm = Timer()
+        ms5k = tm.ms(5000)
+        while(tm.now()-tm.startTime()<ms5k and not self._done):
+            tm.sleepMs(0)
+        assert self._done, '[DoneItem.waitForDone] Job not finished after 5 sek'
+
+    def emit(self):
+        self._event.emit(self._eventProps)
+
+    @staticmethod
+    def emitAndWaitForDone(event,ep:'EventProps'):
+        di = DoneItem()
+        di._event = event
+        ep._props['doneItem']=di
+        di._eventProps = ep
+        th2 = threading.Thread(target=di.emit)
+        th2.start()
+        #Timer.sleepMs(500)
+        #di.waitForDone()
 
 #class EventSignalBaseImpl(EventSignalBase):
 #    def __init__(self, *args, **kwargs):
@@ -33,7 +66,16 @@ class SyncHandler:
         for tcall in  self._registeredHandlers.values():
             thandled = tcall(*args,**kwargs)
             if thandled == True:
-                return 
+                return
+
+import threading, queue
+class QueueHandler:
+    def __init__(self, *args,**kwargs):
+        self._queue = queue.Queue()
+
+    def connect(self):
+        pass
+             
 
 EventSignal = EventSignalBase
 
@@ -57,6 +99,12 @@ class EventProps:
     def props(self, name:str=None):
         result = self._props[name] if name != None and name in self._props else self._props
         return result
+
+    def setDone(self, d:bool):
+        #doneItem = self.props('doneItem')
+        #if doneItem!=None:
+        #    doneItem.setDone(d)
+        pass
 
 CommandBase = EventBase
 

@@ -105,4 +105,12 @@ from q3 import direction
 from q3 import bitutils as bu
 from q3 import strutils as su
 from q3 import Timer as tm
+from q3.Module import Node
+from q3.Module import IoNode
+from q3.Module import Module 
+from q3.Module import ModuleType 
+from q3.Module import ModuleType as MType 
+
+from q3.Signal import Signal
+
 #imports 

@@ -43,13 +43,13 @@ class Signal(Object):
             self.raiseExc('Size for signal not specified')
         assert tsize<=consts.MAX_SIGNAL_SIZE, f'Max signal size overflow({tsize})'
         svlType = ValueType.fromSize(tsize) 
-        self._valueType = ValueType(0,tsize,svlType.colorSigOff,svlType.colorSigOn)
+        self._valueType = ValueType(0,tsize,svlType._colorSigOff,svlType._colorSigOn)
         self._valueType.setParentSignal(self)
         #self._size = self._valueType.size()
         #self._value = False if tsize == 1 else 0 moved to valueType
         super(Signal, self).__init__(*args, **kwargs)
         #self._id = len(self.parent().graphModule().signals())
-        self._id = self.parent().graphModule().signals().nextId()
+        self._id = self.parent().rootModule().allSignals().push(self)
         self._no = len(self.parent().signals())
         #self.parent()._signals[self.id()]=self
         self.parent().graphModule().addSignal(self)

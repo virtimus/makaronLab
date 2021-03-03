@@ -146,7 +146,11 @@ class GraphViewImpl(qtw.QGraphicsView):
     def s(self):
         return self._self 
 
-    def mdl(self):
+    #@deprecated - can be misleading mdlv/moduleView
+    #def mdl(self):
+    #    return self._self
+
+    def mdlv(self):
         return self._self
 
     def module(self):

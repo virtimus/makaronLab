@@ -7,7 +7,7 @@ import q3.console as c
 from enum import Enum
 
 class ValueType:
-
+    # moved down
 
     def __new__(cls, *args, **kwargs):
         result = object.__new__(cls)
@@ -17,8 +17,11 @@ class ValueType:
 
     def __init__(self, number, size, colorSigOff, colorSigOn, strin=None):
         self._number = number
+        if (callable(colorSigOff)):
+            print('trace')
         self._colorSigOn = colorSigOn
         self._colorSigOff = colorSigOff
+        self._sizeTmp = None
         size = c.handleArg(self,'size',
             value = size,
             required = True,
@@ -31,12 +34,15 @@ class ValueType:
         self._value = False if size == 1 else 0
         self._parent = None
 
+    # central point for signal values change
+    # currently no validation on get and very liitle on set (fits fixed to True)
+    # handy for development but to be fixed in target sol !TODO!
     def value(self):
         return self._value
 
     def setValue(self, newVal):
-        if newVal != self._value:
-            if newVal != None and self.fits(newVal):
+        if newVal != self._value: # is there a real change ?
+            if self.fits(newVal): # why newVal != None and was there ?
                 prevVal = self._value 
                 self._value = newVal
                 if self._parent != None:
@@ -98,6 +104,10 @@ class ValueType:
 
     def size(self):
         return self._size
+
+    #@deprecated - to be deleted after cleaning addinput/io etc
+    def setSizeTmp(self, nsize:int):
+        self._sizeTmp = nsize 
 
     def fits(self,value):
         return True    

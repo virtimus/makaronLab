@@ -17,6 +17,54 @@ import types
 
 pr('After show editoFrame')
 
+modv = modvAdd('rootModule')
+
+rootModule = modv.module()
+
+#self._rootModule = rootModule
+
+#andModuleImpl = q3lLib.createModule('AND')       
+#andModule = Module(rootModule,'andModule',
+#    impl = 'local/AND'
+#    )
+andModule1 = modv.modAdd('andModule1',
+    impl = 'local:/AND'
+    )
+
+andModule2 = modv.modAdd('andModule2',
+    impl = 'local:/AND'
+    )
+
+notModule = modv.modAdd('notModule',
+    impl = 'local:/NOT'
+    )
+
+norModule1 = modv.modAdd('norModule1',
+    impl = 'local:/NOR'
+    ) 
+
+norModule2 = modv.modAdd('norModule2',
+    impl = 'local:/NOR'
+    )  
+
+graphModule1 = modv.modAdd('graphModule1',
+    #impl = 'file:/tmp/test'
+    moduleType =  q3.moduletype.ModuleType.GRAPH
+    )
+
+
+
+m6502Module = modv.modAdd('m6502Module',
+    #type=ModuleType.ATOMIC,
+    impl='Q3Chips:/c6502'
+    )
+
+#'''
+cpcModule = modv.modAdd('cpcModule',
+    #type=ModuleType.ATOMIC,
+    impl='Q3Chips:/CPC'
+    )
+
 
 
 
@@ -88,12 +136,19 @@ for i in range(0,10,1):
 for i in range(0,10,1):
     outputs.view().impl().addOutput()
 
-s = inputsViewImpl.module().nodes().by('name','#0').view()
-t = m6502.nodes().by('name','RDY').view()
+#tm.sleepMs(1000) #has to wait in mt mode
+
+#replaced by non view operations - safer in mthread env (objects on view created async)
+#s = inputsViewImpl.module().nodes().by('name','#0').view()
+s = inputsViewImpl.module().nodes().by('name','#0')
+#t = m6502.nodes().by('name','RDY').view()
+t = m6502.nodes().by('name','RDY')
 s.connect(t)
 
-s = inputsViewImpl.module().nodes().by('name','#9').view()
-t = m6502.nodes().by('name','PHI0I').view()
+#s = inputsViewImpl.module().nodes().by('name','#9').view()
+s = inputsViewImpl.module().nodes().by('name','#9')
+#t = m6502.nodes().by('name','PHI0I').view()
+t = m6502.nodes().by('name','PHI0I')
 s.connect(t)
 
 
@@ -105,45 +160,63 @@ s = inp.nodes().by('name','#0')
 t= m6502.nodes().by('name','NMIB') 
 s.connect(t) 
 
-c.rm.modulesBy('id',7).setPos(-240.0,-240.0) #6502
-c.rm.modulesBy('id',8).setPos(-420.0,-140.0) #cpc
-c.rm.modulesBy('id',6).setPos(-380.0,-190.0) #graph
-c.rm.modulesBy('id',12).setPos(-440.0,-80.0) #downs
-c.rm.modulesBy('id',11).setPos(-470.0,-170.0) #tops
-c.rm.modulesBy('id',5).setPos(180.0,-100.0) #nor up
-mods(4).setPos(190.0,80.0) #nor down
-c.rm.modulesBy('id',1).setPos(50.0,-100.0) # andup
-mods(2).setPos(50.0,100.0) # anddown
-c.rm.modulesBy('id',3).setPos(-80.0,-100.0) # notup
-mods(10).setPos(390.0,-100.0) #outputs
-mods(9).setPos(-380.0,40.0) #inputs
+m6502.setPos(-240.0,-240.0) #6502
+cpcModule.setPos(-420.0,-140.0) #cpc
+graphModule1.setPos(-380.0,-190.0) #graph
+#c.rm.modulesBy('id',12).setPos(-440.0,-80.0) #downs
+#c.rm.modulesBy('id',11).setPos(-470.0,-170.0) #tops
+norModule1.setPos(180.0,-100.0) #nor up
+norModule2.setPos(190.0,80.0) #nor down
+andModule1.setPos(50.0,-100.0) # andup
+andModule2.setPos(50.0,100.0) # anddown
+notModule.setPos(-80.0,-100.0) # notup
+mo = rootModule.mod('moduleOutputs')
+mo.setPos(390.0,-100.0) #outputs
+mi = rootModule.mod('moduleInputs')
+mi.setPos(-380.0,40.0) #inputs
 
-c.rm.connect(8,13) #nor2nor # here to have more lag to stabilize
+#c.rm.connect(8,13) #nor2nor # here to have more lag to stabilize
+norModule1.nod('Y').connect(norModule2.nod('A'))
 
-c.rm.connect(26,7) # inp #3 to not
-c.rm.connect(6,1) #not2and
-c.rm.connect(0,12) #and2nor
-c.rm.connect(11,33) #nor2out
+#c.rm.connect(26,7) # inp #3 to not
+mi.nod('#3').connect(notModule.nod('A'))
+#c.rm.connect(6,1) #not2and
+notModule.nod('Y').connect(andModule1.nod('A'))
 
-c.rm.connect(26,4) # inp #3 to and
-c.rm.connect(3,10) # and2nor
-c.rm.connect(8,42) # nor2 out
+#c.rm.connect(0,12) #and2nor
+andModule1.nod('Y').connect(norModule1.nod('A'))
 
-c.rm.connect(27,2) #inp #4 to and
-c.rm.connect(27,5) #inp #4 to and
+#c.rm.connect(11,33) #nor2out
+norModule1.nod('Y').connect(mo.nod('#0'))
 
-c.rm.connect(11,9) #nor2nor # and the second feedback
+#c.rm.connect(26,4) # inp #3 to and down
+mi.nod('#3').connect(andModule2.nod('A'))
+
+#c.rm.connect(3,10) # and2nor
+andModule2.nod('Y').connect(norModule2.nod('B'))
+
+#c.rm.connect(8,42) # nor2 out
+norModule2.nod('Y').connect(mo.nod('#9'))
+
+#c.rm.connect(27,2) #inp #4 to and
+mi.nod('#4').connect(andModule1.nod('B'))
+
+#c.rm.connect(27,5) #inp #4 to and
+mi.nod('#4').connect(andModule2.nod('B'))
+
+#c.rm.connect(11,9) #nor2nor # and the second feedback
+norModule2.nod('Y').connect(norModule1.nod('B'))
 
 mainRootModule = c.rm
 
-
+#tm.sleepMs(3000)
 #new module
 moduleView = modvAdd()
 
 m = moduleView.module()
 
-mod(3).setPos(0.0,-400.0)
-mod(4).setPos(0.0,400.0)
+#mod(3).setPos(0.0,-400.0)
+#mod(4).setPos(0.0,400.0)
 
 #from ..moduletype import ModuleType as ModuleType
 
@@ -199,6 +272,7 @@ def norGraph(parent, name:str, A,B,Y):
 
 #rmsel('rootModule')
 #rmsel(mainRootModule)
+#tm.sleepMs(3000)
 
 gr1 = norGraph(moduleView,'gr1',mi0,mi1,mo0)
 

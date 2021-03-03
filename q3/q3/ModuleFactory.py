@@ -8,7 +8,7 @@ from .nodeiotype import NodeIoType
 from .moduletype import ModuleType
 from . import direction, consts
 
-
+from operator import xor
 
 log = logging.getLogger(__name__)
 
@@ -100,8 +100,10 @@ class EventIOTypeChanged:
         self._oldSize = osize
         self._newSize = tsize
 
-from .EventSignal import SyncHandler
+from .EventSignal import SyncHandler, DoneItem
 class ModuleImplBase(metaclass=ABCMeta):
+
+
     class Events(EventBase):
         elementNameChanged = EventSignal(EventNameChanged)
         inputAdded = EventSignal(EventProps)
@@ -118,7 +120,17 @@ class ModuleImplBase(metaclass=ABCMeta):
         consoleWrite = EventSignal(EventProps)
         nodeConnectionRequest = EventSignal(EventProps)
         itemPositionHasChanged = EventSignal(EventProps)
-        
+
+
+        def emitOutputAdded(self,d:dict):
+            d['eventName']='outputAdded'
+            #doneItem = DoneItem()
+            #DoneItem.emitAndWaitForDone(self.outputAdded,EventProps(d))
+            #d['doneItem']=doneItem
+            #self.outputAdded.emit(EventProps(d)) 
+            #doneItem.waitForDone()
+            self.outputAdded.emit(EventProps(d))
+
         def emitItemPositionHasChanged(self, d:dict):
             d['eventName']='itemPositionHasChanged' 
             self.itemPositionHasChanged.emit(EventProps(d))
@@ -126,8 +138,6 @@ class ModuleImplBase(metaclass=ABCMeta):
             #!TODO! validation, waiting for response?
             d['eventName']='nodeConnectionRequest' 
             self.nodeConnectionRequest.emit(EventProps(d))
-
-
    
     def __init__(self, **kwargs):
         """ Constructor """
@@ -192,6 +202,7 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     def events(self):
         return self._events
+        #return self.events
 
     def id(self):
         return self._self.id()
@@ -239,7 +250,8 @@ class ModuleImplBase(metaclass=ABCMeta):
         elif dir == direction.LEFT:
             self.events().inputAdded.emit(EventProps({'inputId':result.id()}))
         else:
-            self.events().outputAdded.emit(EventProps({'outputId':result.id()}))
+            #self.events().outputAdded.emit(EventProps({'outputId':result.id()}))
+            self.events().emitOutputAdded({'outputId':result.id()}) # this can wait for async depending if doneItem used
         return result
 
     def removeIO(self, id): #todo event emmiter
@@ -320,6 +332,57 @@ class ModuleLibraryBase(metaclass=ABCMeta):
     def listModules(cls):
         return cls._modules
 
+class And4GateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from AndGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'AND4',
+            'info':'AND4 logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        c = self.newIO(
+            name='C',
+            ioType=IoType.INPUT
+        )
+        d = self.newIO(
+            name='D',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b,
+            'C':c,
+            'D':d
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        v3 = s.sig('C').value()
+        v4 = s.sig('D').value()
+        vY = v1 and v2 and v3 and v4
+        sY = s.sig('Y')
+        sY.setValue( vY )
+        #print(f'sY={sY.value()}')   
+        # 
+
 
 class AndGateModule(ModuleImplBaseLocal):
     def echo(self):
@@ -399,6 +462,63 @@ class NandGateModule(ModuleImplBaseLocal):
         #print(f'sY={sY.value()}')   
         # 
 
+class Nand4GateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from NandGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'NAND4',
+            'info':'NAND4 logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        c = self.newIO(
+            name='C',
+            ioType=IoType.INPUT
+        )   
+        d = self.newIO(
+            name='D',
+            ioType=IoType.INPUT
+        )
+        e = self.newIO(
+            name='E',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b,
+            'C':c,
+            'D':d,
+            'E':e
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        v3 = s.sig('C').value()
+        v4 = s.sig('D').value()
+        v5 = s.sig('E').value()
+        vY = not (v1 and v2 and v3 and v4 and v5)
+        sY = s.sig('Y')
+        sY.setValue( vY )
+        #print(f'sY={sY.value()}')   
+        # 
+
 class NorGateModule(ModuleImplBaseLocal):
     def echo(self):
         print("Hello World from NorGateModule")
@@ -438,6 +558,134 @@ class NorGateModule(ModuleImplBaseLocal):
         #print(f'sY={sY.value()}')   
         # 
         
+class Nor4GateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from NorGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'NOR4',
+            'info':'NOR4 logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        c = self.newIO(
+            name='C',
+            ioType=IoType.INPUT
+        )   
+        d = self.newIO(
+            name='D',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b,
+            'C':c,
+            'D':d
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        v3 = s.sig('C').value()
+        v4 = s.sig('D').value()
+        vY = True if not (v1 or v2 or v3 or v4) else False
+        sY = s.sig('Y')
+        sY.setValue( vY )
+        #print(f'sY={sY.value()}')   
+        # 
+
+class OrGateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from OrGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'OR',
+            'info':'OR logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        v3 = True if (v1 or v2) else False
+        sY = s.sig('Y')
+        sY.setValue( v3 )
+        #print(f'sY={sY.value()}')   
+        # 
+        # 
+class XorGateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from XorGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'XOR',
+            'info':'XOR logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        v2 = s.sig('B').value()
+        vY = True if xor(v1,v2) else False
+        sY = s.sig('Y')
+        sY.setValue( vY )
+        #print(f'sY={sY.value()}')   
+        #   
 class NotGateModule(ModuleImplBaseLocal):
     def echo(self):
         print("Hello World from NotGateModule")
@@ -525,9 +773,14 @@ class LocalModuleLibrary(ModuleLibraryBase):
 
     _modules = {
         "AND":AndGateModule,
+        "AND4":And4GateModule,
         "NOT":NotGateModule,
         "NOR":NorGateModule,
+        "NOR4":Nor4GateModule,
+        "OR":OrGateModule,
+        "XOR":XorGateModule,
         'NAND':NandGateModule,
+        'NAND4':Nand4GateModule,
         "TESTG":TestGModule,
         "test2":Test2Module
     }

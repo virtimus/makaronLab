@@ -112,10 +112,54 @@ cw.write('\n===bootstrap/beforeShow.py:\n'+s + '\n')
 
 frm.Show()
 
+#run "afterShow" in separate thread
+''' # moved to test 2
+class enc2Impl:
+    def __init__(self):
+        self._namespace = None
+        self._initialized = False
+
+    def run(self):
+        fileName = cPath+"bootstrap/afterShow.py"
+        s=execF(fileName)
+        #cw.write(repr(s.getvalue()) + '\n')   
+        cw.write('\n===bootstrap/afterShow.py:\n'+s + '\n')
+        self._initialized = True
+
+
+qor = qtc.Qt.Orientation
+tgb = enc2Impl()
+tgb._namespace = frm.consoleNamespace()
+th2 = threading.Thread(target=tgb.run)
+th2.start()
+# do not wait for this thread as it can be long ...
+#while (not tgb._initialized):
+#    Timer.sleepMs(0)
+# just keeping handle for frame in case of presenting something to user
+frm._afterShowThread = th2
+
+'''
 fileName = cPath+"bootstrap/afterShow.py"
 s=execF(fileName)
 #cw.write(repr(s.getvalue()) + '\n')   
 cw.write('\n===bootstrap/afterShow.py:\n'+s + '\n')
+#'''
+
+
+#timer = qtc.QTimer()
+#timer.timeout.connect(lambda: None)
+#timer.start(100)
+#app.timerr= timer
+
+#globals()['frm0']=frm
+#app.setQuitOnLastWindowClosed(False)
+
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
+
+import sys
+sys.excepthook = except_hook
+
 
 app.MainLoop()
 
