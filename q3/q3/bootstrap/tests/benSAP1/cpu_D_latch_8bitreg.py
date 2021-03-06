@@ -40,6 +40,7 @@ def makeDLach8bitreg(name:str,parent:Module=None):
 
     #t1 = m.mod('DL0').n('CLK')
     #nCLK.c(t1)
+    return m
 
 
 

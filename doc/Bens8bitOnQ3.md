@@ -29,3 +29,18 @@ Then I've prepared a package with 1bit register:
 
 ![D-latch-8bitreg](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_8bitreg.png)
 [source](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_8bitreg.py)
+
+-- and then kind of general "output enabler" constructed with some AND gates:
+
+![cpu-OE-8bit-ei](../q3/q3/bootstrap/tests/benSAP1/cpu_OE_8bit_ei.png)
+[source](../q3/q3/bootstrap/tests/benSAP1/cpu_OE_8bit_ei.py)
+
+with simple fromula based bits to byte mappers (to move to byte signal level)
+Final 8bit register with buffered output:
+
+![cpu-D-latch-8bitreg-ei](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_8bitreg_ei.png)
+[source](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_8bitreg_ei.py)
+
+
+
+

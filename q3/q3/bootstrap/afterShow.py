@@ -16,7 +16,10 @@ dirPath = os.path.dirname(os.path.realpath(__file__))
 # building Bens 8bit SAP1
 #outs = execF(dirPath+'/tests/benSAP1/cpu_D_latch.py', asMain=True)
 #outs = execF(dirPath+'/tests/benSAP1/cpu_D_latch_1bitreg.py', asMain=True)
-outs = execF(dirPath+'/tests/benSAP1/cpu_D_latch_8bitreg.py', asMain=True)
+#outs = execF(dirPath+'/tests/benSAP1/cpu_D_latch_8bitreg.py', asMain=True)
+#outs = execF(dirPath+'/tests/benSAP1/cpu_OE_8bit_ei.py', asMain=True)
+outs = execF(dirPath+'/tests/benSAP1/common.py', asMain=True)
+outs = execF(dirPath+'/tests/benSAP1/cpu_D_latch_8bitreg_ei.py', asMain=True)
 
 
 print(outs)

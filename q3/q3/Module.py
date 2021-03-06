@@ -230,7 +230,10 @@ class Node(Object):
         assert self.intSignal()!=None, '[node.connect] source internal signal is none' 
         assert targetNode!=None, '[node.connect] targetNode is none'
         #special case - connect to output from inside of graph 2nd level node - self.view == None
-        if self.view()==None and targetNode.ioType() == NodeIoType.OUTPUT and self.driveSignal()!=None:
+        isSC1 = self.view()==None and targetNode.ioType() == NodeIoType.OUTPUT and self.driveSignal()!=None
+        #another special case connecting directly in and out of non root module
+        isSC2 = not self.module().isRoot() and self.module() == targetNode.module()
+        if isSC1 or isSC2:
             #self.addSignal(targetNode.intSignal())
             #above won't work with new algo
             targetNode.setDriveSignal(self.intSignal())
@@ -512,10 +515,23 @@ class Module(Object):
     def nods(self, by=None):
         return self.nodes(by)
 
+    def _intNod(self):
+        result = Q3Vector()
+        if self.isRoot():
+            tm = self.mod(direction.LEFT.graphModName())
+            if tm!=None:
+                result.appendAll(tm.nodes())
+            tm = self.mod(direction.RIGHT.graphModName())
+            if tm!=None:
+                result.appendAll(tm.nodes()) #!TODO! reimplement optimal
+        else:
+            result = self.nodes().filterBy('parent',self)
+        return result
+
     #@api
     def nod(self, by):
         assert by!=None, '[nod] "by" arg required not None'
-        return self.nodes().filterBy('parent',self).defaultGetter('name',by) #nodes(by) !TODO! optimize filterBY 
+        return self._intNod().defaultGetter('name',by) #nodes(by) !TODO! optimize filterBY 
 
     #@api
     def n(self, by):
@@ -591,10 +607,24 @@ class Module(Object):
     def sigs(self,by=None):
         return self.signals(by)
 
+    #signals onlu direct children of cur module
+    def _intSig(self):
+        result = Q3Vector()
+        if self.isRoot():
+            tm = self.mod(direction.LEFT.graphModName())
+            if tm!=None:
+                result.appendAll(tm.signals())
+            tm = self.mod(direction.RIGHT.graphModName())
+            if tm!=None:
+                result.appendAll(tm.signals()) #!TODO! reimplement optimal
+        else:
+            result = self.signals().filterBy('parent',self) #signals(by) !TODO! optimize filterBY 
+        return result
+
     #@api
     def sig(self,by):
         assert by!=None, '[sig] "by" arg required not None'
-        return self.signals().filterBy('parent',self).defaultGetter('name',by) #signals(by) !TODO! optimize filterBY 
+        return self._intSig().defaultGetter('name',by)
 
     #@api - shortest
     def s(self, by):
@@ -769,15 +799,22 @@ class Module(Object):
         fresult = eval(tformula,tglobals)
         signal.setValue(fresult)
 
+    def canHaveFormula(self, nodName):
+        nod = self.nod(nodName)
+        canHave = nod!=None and ((nod.ioType() == NodeIoType.OUTPUT and not self.isRoot()) or (nod.ioType() == NodeIoType.INPUT and self.isRoot())) #and nod.driveSignal()!=None
+        if canHave:
+            return nod 
+        return None
+
     #@api - set additional signal formula
     def setSigFormula(self, nodName:str,formula:str):
         if su.trim(formula) == '=':
             if nodName in self._sigFormulas:
                 del self._sigFormulas[nodName]
             return 
-        nod = self.nod(nodName)
-        assert nod!=None and nod.ioType() == NodeIoType.OUTPUT and nod.driveSignal()!=None, f'[setSigFormula] For setting formula node has to exist and be output ({nodName})'
-        self._evalSigFormula(nod.driveSignal(),formula)
+        nod = self.canHaveFormula(nodName)
+        nod!=None, f'[setSigFormula] For setting formula node has to exist and be output ({nodName})'
+        self._evalSigFormula(nod.intSignal(),formula)
         self._sigFormulas[nodName] = formula
 
     #@api - read additional signal formula

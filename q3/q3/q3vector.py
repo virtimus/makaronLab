@@ -228,6 +228,13 @@ class Q3Vector:
         else:
             return self
 
+    def appendAll(self, other:'Q3Vector'):
+        if other == None:
+            return
+        for v in other.values():
+            self.append(v.id(),v)
+
+
 
 
 

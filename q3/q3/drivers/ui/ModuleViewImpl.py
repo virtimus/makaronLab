@@ -112,11 +112,14 @@ class TWO(qtw.QTableWidget):
             #monType.setChecked(tw._doMon) 
             #monType.stateChanged.connect(tw.monStateChanged)
             #monType.setFixedWidth(20)
+            def canHaveFormula(ioNode):
+                #self._ioNode.ioType() == NodeIoType.OUTPUT
+                return ioNode.parent().canHaveFormula(ioNode.name())
 
 
             monCombo = qtw.QComboBox()
             for vt in MonTypes:
-                if vt != MonTypes.FUN or self._ioNode.ioType() == NodeIoType.OUTPUT: #FUN only for outputs
+                if vt != MonTypes.FUN or canHaveFormula(self._ioNode): #FUN only for outputs
                     monCombo.addItem(vt.toString(), vt.typeIndex())
 
             INDEX = monCombo.findData(tw._doMonType.typeIndex())
