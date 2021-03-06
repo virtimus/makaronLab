@@ -1,5 +1,4 @@
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
+from q3.ui.engine import qtw,qtc,qtg
 
 '''
 /*  ┌──╔══╗

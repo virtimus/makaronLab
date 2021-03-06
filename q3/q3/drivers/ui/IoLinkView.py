@@ -1,11 +1,9 @@
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
+from q3.ui.engine import qtw,qtc,qtg
 
-from ... import colors
 from ...valuetype import ValueType
 
-from ... import consts, prop, orientation, direction, colors
+from ... import consts, prop, direction 
+from ...ui import orientation, colors
 
 from . import stypes
 
@@ -115,16 +113,23 @@ class IoLinkView(qtw.QGraphicsPathItem):
         pen.setStyle(pstyle)
         pen.setWidth(2)
 
-        if (self._valueType != ValueType.BOOL):
+        if (self._valueType.size() > 1):
+            pen.setStyle(qtc.Qt.DotLine)
+            pen.setWidth(4)
+            pen.setDashOffset(self._dashOffset)    
+            '''        
             dash = pen
             hover2 = signalColor
-            hover2.setAlpha(85)
+            #hover2.setAlpha(85)
             dash.setColor(hover2)
             dash.setStyle(qtc.Qt.DotLine)
-            dash.setWidth(6)
+            dash.setWidth(4)
             dash.setDashOffset(self._dashOffset)
             painter.setPen(dash)
             painter.drawPath(self._path)
+
+        else
+        '''
 
         painter.setPen(pen)
         painter.drawPath(self._path)

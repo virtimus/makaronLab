@@ -110,6 +110,10 @@ class ModuleImpl6502(ModuleImplBase):
             #self.consoleWrite('calc\n')
             if self._prevPins != self._pins:
                 self.updateSignals()
+                #sRWB = self.sig('RWB')
+                #if not sRWB.value():#Active low - write
+                #    sDTA = self.sig('DTA')
+                #    self.nod('DTA').setDriveSignal(sDTA,True)
                 #print(f'zd:{bin(self._pins)[::-1]}')
             #self._counter+=1
             #if self._counter>1011: 
@@ -216,21 +220,25 @@ class ModuleImpl6502(ModuleImplBase):
 
         #check if write
         rwb = self.sig('RWB').value()
-        dtaSig = self.sig('DTA')
-        dtaNod = self.nod('DTA')
+        sDTA = self.sig('DTA')
+        nDTA = self.nod('DTA')
         if rwb:#read
             #dtaSig.dvIn(True)
-            if dtaNod.driveSignal()==dtaSig: #change to prev
-                dtaNod.setDriveSignal(self._prevDTADrive)
-            elif dtaNod.driveSignal()!=None and self._prevDTADrive==None: #set initial read signal
-                self._prevDTADrive = dtaNod.driveSignal()
+            #if dtaNod.driveSignal()==dtaSig: #change to prev
+            #    dtaNod.setDriveSignal(self._prevDTADrive)
+            #elif dtaNod.driveSignal()!=None and self._prevDTADrive==None: #set initial read signal
+            #    self._prevDTADrive = dtaNod.driveSignal()
+            #above wrong - this should be enough:
+            #on reading nothing to be done - external chips set signals
             pass
         else:#write
             #dtaSig.dvOut(True)
-            if dtaNod.driveSignal()!=dtaSig:
-                if dtaNod.driveSignal()!=None:
-                    self._prevDTADrive = dtaNod.driveSignal()
-                dtaNod.setDriveSignal(dtaSig)
+            #if dtaNod.driveSignal()!=dtaSig:
+            #    if dtaNod.driveSignal()!=None:
+            #        self._prevDTADrive = dtaNod.driveSignal()
+            #    dtaNod.setDriveSignal(dtaSig)
+            #on write set our as drive
+            nDTA.setIntSignalAsDrive()
             pass
         
         self._prevPins = self._pins

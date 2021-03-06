@@ -6,18 +6,10 @@ import sys
 
 import sip 
 
+from q3.ui.engine import qtw,qtc,qtg
 
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
-import PyQt5.QtWidgets as QtWidgets
-from PyQt5.QtCore import Qt, QPoint, QTimeLine
-from PyQt5.QtGui import QBrush, QColor, QIcon, QPainter, QPalette, QPen
-from PyQt5.QtWidgets import (QAction, QApplication, QGraphicsItem,
-                             QGraphicsScene, QGraphicsView, qApp)
-
-from ... import consts, prop, orientation, direction, colors
+from ... import consts, prop, direction 
+from ...ui import orientation, colors
 from ...moduletype import ModuleType
 from ...nodeiotype import NodeIoType
 from ...q3vector import Q3Vector
@@ -97,7 +89,7 @@ class Q3Driver(Q3DriverBase):
                 result.drawBackground = drawBackground 
             '''               
         else:  
-            if isinstance(self.pimpl(), QGraphicsView): #//MODULES FIRST LEVEL
+            if isinstance(self.pimpl(), qtw.QGraphicsView): #//MODULES FIRST LEVEL
                 result = ModuleViewImpl(None)
                 result._self = self.s()
                 self.pimpl()._scene.addItem(result)
@@ -128,7 +120,7 @@ class Q3Driver(Q3DriverBase):
             tImpl._nameFont.setFamily("Consolas")
             tImpl._nameFont.setPointSize(8)
 
-            tImpl.setFlags(qtw.QGraphicsItem.ItemIsMovable | qtw.QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemSendsGeometryChanges)
+            tImpl.setFlags(qtw.QGraphicsItem.ItemIsMovable | qtw.QGraphicsItem.ItemIsSelectable | qtw.QGraphicsItem.ItemSendsGeometryChanges)
 
             tImpl.collapse()
             tImpl.setGraphView(self.pimpl())
@@ -150,25 +142,25 @@ class Q3Driver(Q3DriverBase):
     def doApp_Init(self):
         result = qtw.QApplication(sys.argv) 
         app = result
-        app.setStyle(QtWidgets.QStyleFactory.create("Fusion"));
+        app.setStyle(qtw.QStyleFactory.create("Fusion"));
 
-        darkPalette=QPalette()
-        c1 = QColor(55, 55, 55);
-        c2 = QColor(25, 25, 25);
-        c3 = QColor(45, 130, 220);
-        darkPalette.setColor(QPalette.Window, c1);
-        darkPalette.setColor(QPalette.WindowText, Qt.white);
-        darkPalette.setColor(QPalette.Base, c2);
-        darkPalette.setColor(QPalette.AlternateBase, c1);
-        darkPalette.setColor(QPalette.ToolTipBase, Qt.white);
-        darkPalette.setColor(QPalette.ToolTipText, Qt.white);
-        darkPalette.setColor(QPalette.Text, Qt.white);
-        darkPalette.setColor(QPalette.Button, c1);
-        darkPalette.setColor(QPalette.ButtonText, Qt.white);
-        darkPalette.setColor(QPalette.BrightText, Qt.red);
-        darkPalette.setColor(QPalette.Link, c3);
-        darkPalette.setColor(QPalette.Highlight, c3);
-        darkPalette.setColor(QPalette.HighlightedText, Qt.white);
+        darkPalette=qtg.QPalette()
+        c1 = qtg.QColor(55, 55, 55);
+        c2 = qtg.QColor(25, 25, 25);
+        c3 = qtg.QColor(45, 130, 220);
+        darkPalette.setColor(qtg.QPalette.Window, c1);
+        darkPalette.setColor(qtg.QPalette.WindowText, qtc.Qt.white);
+        darkPalette.setColor(qtg.QPalette.Base, c2);
+        darkPalette.setColor(qtg.QPalette.AlternateBase, c1);
+        darkPalette.setColor(qtg.QPalette.ToolTipBase, qtc.Qt.white);
+        darkPalette.setColor(qtg.QPalette.ToolTipText, qtc.Qt.white);
+        darkPalette.setColor(qtg.QPalette.Text, qtc.Qt.white);
+        darkPalette.setColor(qtg.QPalette.Button, c1);
+        darkPalette.setColor(qtg.QPalette.ButtonText, qtc.Qt.white);
+        darkPalette.setColor(qtg.QPalette.BrightText, qtc.Qt.red);
+        darkPalette.setColor(qtg.QPalette.Link, c3);
+        darkPalette.setColor(qtg.QPalette.Highlight, c3);
+        darkPalette.setColor(qtg.QPalette.HighlightedText, qtc.Qt.white);
         app.setPalette(darkPalette);
         app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2b8bdb; border: 1px solid white; }");
 
@@ -234,10 +226,10 @@ class Q3Driver(Q3DriverBase):
 
     def doMenu_addAction(self, label,id,helpStr,onClick):
         if (label == None and consts.ID_EXIT == id):
-            exitAct = QAction(QIcon('exit.png'), '&Exit', self._self.implObject())
+            exitAct = qtw.QAction(qtg.QIcon('exit.png'), '&Exit', self._self.implObject())
             exitAct.setShortcut('Ctrl+Q')
             exitAct.setStatusTip('Exit application')
-            exitAct.triggered.connect(qApp.quit)
+            exitAct.triggered.connect(qtw.qApp.quit)
             result = self._self.implObject().addAction(exitAct)
         else:
             result = self._self.implObject().addAction(label, onClick)

@@ -1,9 +1,8 @@
 import q3
 
+from q3.ui.engine import qtw,qtc,qtg
 
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventSignal
+EventSignal = qtc.Signal
 
 from q3.sidePanel.SidePanelState import SidePanelState
 

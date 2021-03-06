@@ -1,17 +1,15 @@
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
+from q3.ui.engine import qtw,qtc,qtg
 
 import sip
 
 from ...nodeiotype import NodeIoType
 from ...q3vector import Q3Vector
 
-from ... import consts, prop, orientation, direction, colors
+from ... import consts, prop, direction 
+from ...ui import orientation, colors
 
 #from ...Module import IoNode
 
-from ... import colors
 from ...valuetype import ValueType
 
 from .IoLinkView import IoLinkView
@@ -346,7 +344,7 @@ class IoNodeView(qtw.QGraphicsItem):
             return
         view = self.scene().views()[0]#%PackageView
         linkItem = view.dragLink() #IoLinkView
-        if ( linkItem == None or self._valueType != linkItem.valueType()):
+        if ( linkItem == None or self._valueType.size() != linkItem.valueType().size()):
             event.ignore()
             return
         linkItem.setTo(self)
@@ -418,7 +416,11 @@ class IoNodeView(qtw.QGraphicsItem):
         if (linkItem == None):
             return
         if linkItem.fr().node().intSignal()!=None:
-            self.node().setDriveSignal(linkItem.fr().node().intSignal())
+            sn = linkItem.fr().node()
+            tn = self.node()
+            tn.setDriveSignal(sn.intSignal()) #!TODO! redundant implementation to be reduced (Module.py/node.connect)
+            if sn.ioType() == NodeIoType.DYNAMIC and tn.ioType() == NodeIoType.DYNAMIC:
+                sn.addSignal(tn.intSignal())
         self._links.push_back(linkItem)
         linkItem.setTo(self)
         self._used = True

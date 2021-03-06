@@ -8,6 +8,8 @@ class ModuleImplAT28C256(ModuleImplBase):
         self._moduleType = ModuleType.ATOMIC
         self._memData = bytearray([0x0]*32768) 
         self._memPath = None
+        self._prevCEV = None
+        self._prevADRC = None
 
     def init(self,**kwargs):
         self._customProperties['memPath'] ={
@@ -60,8 +62,22 @@ class ModuleImplAT28C256(ModuleImplBase):
         if cev == 0 or cev == False: #active low
             adr = self.sig('ADR').value()
             adrc = bu.readBits(adr,0,15)
-            ov = self._memData[adrc]
-            self.sig('I/O').setValue(ov)
+            #lets do each op once
+            deltaCEV = self._prevCEV != cev
+            #has adr changed ?
+            adrDelta = self._prevADRC != adrc
+            # do we have any delta ?
+            isDelta = deltaCEV or adrDelta
+            if isDelta:
+                ov = self._memData[adrc]
+                sIO = self.sig('I/O')
+                sIO.setValue(ov)
+                nIO = self.nod('I/O') #change driveSignal to send change
+                nIO.setIntSignalAsDrive()
+                self._prevCEV = cev
+                self._prevADRC = adrc
+
         else:
-            self.sig('I/O').setValue(0)
+            #self.sig('I/O').setValue(0)
+            pass # not active == nop
         return {}

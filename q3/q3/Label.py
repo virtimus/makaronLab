@@ -1,6 +1,5 @@
 
-import wx
-import PyQt5.QtWidgets as qtw
+from q3.ui.engine import qtw,qtc,qtg
 
 from .Object import Object
 from . import Font

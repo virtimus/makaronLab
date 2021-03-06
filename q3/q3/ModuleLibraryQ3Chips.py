@@ -22,6 +22,7 @@ from .Q3Chips.ModuleImplClock import ModuleImplClock
 from .Q3Chips.ModuleImplCPC import ModuleImplCPC
 from .Q3Chips.ModuleImplAT28C256 import ModuleImplAT28C256
 from .Q3Chips.ModuleImpl6522 import ModuleImpl6522
+from .Q3Chips.ModuleImplRAM62256 import ModuleImplRAM62256
 
 @ModuleFactory.registerLibrary('Q3Chips')
 class ModuleLibraryQ3Chips(ModuleLibraryBase):
@@ -33,6 +34,7 @@ class ModuleLibraryQ3Chips(ModuleLibraryBase):
         "Clock":ModuleImplClock,
         'AT28C256':ModuleImplAT28C256,
         "C6522":ModuleImpl6522,
+        "RAM62256":ModuleImplRAM62256,
     }
 
     @classmethod

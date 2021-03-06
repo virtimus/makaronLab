@@ -1,9 +1,6 @@
 
 
-#from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QMessageBox
-#from PyQt5.QtCore import *
-import wx
+from q3.ui.engine import qtw,qtc,qtg
 
 from . import consts
 from . import Object

@@ -1,6 +1,6 @@
 
 from . import consts, console
-from . import orientation
+from .ui import orientation
 from . import direction
 from . import strutils as su
 from .moduletype import ModuleType
@@ -22,9 +22,7 @@ from .ModuleView import ModuleView
 from .sidePanel.SidePanel import SidePanel
 from .ModuleFactory import ModuleFactory
 
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui as qtg
+from q3.ui.engine import qtw,qtc,qtg
 #from .ModuleLibraryQ3Chips import ModuleLibraryQ3Chips
 
 from .q3vector import Q3Vector

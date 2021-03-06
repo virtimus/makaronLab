@@ -77,6 +77,13 @@ class ConsoleCtrl:
         else:
             self._registeredCommands[name] = handler
 
+    def command(self, commandName:str,asGlobal=False):
+        result = None
+        if asGlobal:
+            result = self._globalNamespace[commandName] if commandName in self._globalNamespace else None
+        else:
+            result = self._registeredCommands[commandName] if commandName in self._registeredCommands else None
+        return result
     #def registerAutoCorrection(self,)
 
 namespace = {} #{'pg': pg, 'np': np}

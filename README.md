@@ -32,7 +32,7 @@ I had to tune it a little bit, add some additional features and to prepare a lib
 
 Here are some screenshots from my build and detailed description of steps I've took.
 
-[Bens SAP-1 build using simulation](doc/Bens8bit.md)
+### [Bens SAP-1 build using simulation](doc/Bens8bit.md) 
 
 ![cpu-EI-part8](packages/cpu-EI-part8.png)
 

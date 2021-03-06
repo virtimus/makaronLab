@@ -5,10 +5,6 @@ Hello World, but with more meat.
 """
 
 
-#from PyQt5.QtCore import Qt 
-#from PyQt5.QtGui import QIcon, QPalette, QColor
-#from PyQt5.QtWidgets import QProgressBar, QLabel
-
 
 #q3c.Q3_IMPL = "qt"
 

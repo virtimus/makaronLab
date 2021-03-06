@@ -4,10 +4,8 @@ from ...ModuleFactory import IoType, ModuleFactory, ModuleImplBase, ModuleType
 
 from ...ionodeflags import IoNodeFlags
 
-from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventSignal
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
+from q3.ui.engine import qtw,qtc,qtg
+EventSignal = qtc.Signal
 
 from ...valuetype import ValueType
 
@@ -29,7 +27,7 @@ class ModuleImplElement(ModuleImplBase):
         self.m_package = None #initialisation on driver level
         self.m_node = None
         #self.m_id = None
-        #self.m_name = None self.s()name
+        #self.m_name = None self.mdl()name
         pass
 
     #id() const noexcept { return m_id; }
@@ -41,10 +39,10 @@ class ModuleImplElement(ModuleImplBase):
         return self.m_package == None
 
     def name(self):
-        return self.s().name()
+        return self.mdl().name()
 
     def description(self):
-        return self.s().desc()
+        return self.mdl().desc()
 
 
 
@@ -84,20 +82,20 @@ class ModuleImplElement(ModuleImplBase):
 
 
     def setName(self, name:str):
-        OLD_NAME = self.s().name()
+        OLD_NAME = self.mdl().name()
         #m_name = a_name;
-        self.s().setName(name)
+        self.mdl().setName(name)
         self.elementNameChanged.emit(EventProps({'oldName':OLD_NAME, 'name':name}))
         #handleEvent(Event{ EventType::eElementNameChanged, EventNameChanged{ OLD_NAME, a_name } });
     
     def setInfo(self, info:str):
-        self.s().setInfo(info)
+        self.mdl().setInfo(info)
 
     def setDesc(self, desc:str):
-        self.s().setDesc(desc)
+        self.mdl().setDesc(desc)
 
     def desc(self):
-        return self.s().desc()
+        return self.mdl().desc()
 
     #bool Element::addInput(ValueType const a_type, std::string const &a_name, uint8_t const a_flags){
 	#return addInput(a_type,a_name,a_flags,SocketItemType::eInput);
@@ -107,6 +105,7 @@ class ModuleImplElement(ModuleImplBase):
 
     #bool Element::addInput(ValueType const a_type, std::string const &a_name, uint8_t const a_flags,SocketItemType sItemType)
     #return (addInputS(a_type,a_name,a_flags,sItemType)>=0);
+    '''
     def addInput(self, valueType:ValueType, name:str, flags:IoNodeFlags,ioType:IoType=None) -> int:
         if ioType == None:
             ioType = IoType.INPUT
@@ -135,7 +134,7 @@ class ModuleImplElement(ModuleImplBase):
                 'valueType':valueType
             }
         )        
-        self.resetIOSocketValue(io)
+        #self.resetIOSocketValue(io)
         return io.id()
 
     def addInputS(self, valueType:ValueType, name:str, flags:IoNodeFlags, ioType:IoType) -> int:
@@ -165,7 +164,7 @@ class ModuleImplElement(ModuleImplBase):
             }
         )
         
-        self.resetIOSocketValue(input)
+        #self.resetIOSocketValue(input)
 
         #m_inputs.emplace_back(input); not needed - should be on list
 
@@ -174,9 +173,11 @@ class ModuleImplElement(ModuleImplBase):
 
         #return index;
         return input.id()
-
+    '''
+    '''
     def resetIOSocketValue(self, io:'IoNode'):
         io.resetValue()
+    '''
 
     #void Element::setInputName(uint8_t const a_input, std::string const &a_name)
     def setInputName(self, inputId:int, name:str):
@@ -218,6 +219,7 @@ class ModuleImplElement(ModuleImplBase):
 
     #bool Element::addOutput(ValueType const a_type, std::string const &a_name, uint8_t const a_flags, SocketItemType sItemType)
     #return (addOutputS(a_type, a_name, a_flags, sItemType)>=0);
+    '''
     def addOutput(self, valueType:ValueType, name:str, flags:IoNodeFlags, ioType:IoType=None) -> int:
         if ioType == None:
             ioType = IoType.OUTPUT
@@ -252,7 +254,7 @@ class ModuleImplElement(ModuleImplBase):
             }
         )
 
-        self.resetIOSocketValue(output)
+        #self.resetIOSocketValue(output)
 
         #m_outputs.emplace_back(output); already done
         
@@ -262,6 +264,7 @@ class ModuleImplElement(ModuleImplBase):
 
         #return index;
         return output.id()  
+    '''
 
     #void Element::setOutputName(uint8_t const a_output, std::string const &a_name)
     def setOutputName(self, outputId:int,name:str):
@@ -297,7 +300,7 @@ class ModuleImplElement(ModuleImplBase):
             self.setInputName(id, name)
         else:
             self.setOutputName(id, name)
-
+    '''
     def setIOValueType(self, isInput:bool, id:int, valueType:ValueType):
         #io = a_input ? m_inputs[a_id] : m_outputs[a_id];
         io = self.nodes().by('id',id)
@@ -315,11 +318,11 @@ class ModuleImplElement(ModuleImplBase):
         io.setSize(tsize)
 
         #io.type = a_type;
-        self.resetIOSocketValue(io)
+        #self.resetIOSocketValue(io)
 
         #handleEvent(Event{ EventType::eIOTypeChanged, EventIOTypeChanged{ a_input, a_id, OLD_TYPE, a_type } });
         self.events().ioTypeChanged.emit(EventIOTypeChanged(isInput, id, osize, tsize ))
-
+    '''
 
     #def connect(self, sourceId:int, outputId:int, outputFlags, inputId:int, inputFlags):
     def connect(self, fr, to):

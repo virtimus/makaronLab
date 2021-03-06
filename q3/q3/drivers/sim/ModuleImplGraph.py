@@ -1,6 +1,4 @@
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
+from q3.ui.engine import qtw,qtc,qtg
 
 import threading
 
@@ -179,6 +177,12 @@ class ModuleImplGraph(ModuleImplElement):
         for node in self.mdl().nodes().values():
             ds = node.driveSignal()
             #ds = node.dvOutSignal()
+            isig = node.intSignal()
+            if ds == None: #disconnected
+                isig.setValue(False) #!TODO! P8-NoneValueHandler
+            else:
+                isig.setValue(ds.value())
+            '''
             if ds != None and node.signals().size()>0:
                 dv = ds.value()
                 for ss in node.signals().values():
@@ -187,6 +191,7 @@ class ModuleImplGraph(ModuleImplElement):
                 dv = False
                 for ss in node.signals().values():
                     ss.setValue(dv)
+            '''
 
         for element in self.m_elements.values():
             if (element == None or element == self._self):

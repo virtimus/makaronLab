@@ -125,28 +125,34 @@ c.debug =c.write
 #c.rm.setSelected(c.rm.mods().by('name','moduleInputs'))
 
 
-inputs = c.rm.mods().by('name','moduleInputs')
-outputs = c.rm.mods().by('name','moduleOutputs')
-inp = inputs
-inputsViewImpl = inputs.view().impl()
+mInp = c.rm.mods().by('name','moduleInputs')
+mOut = c.rm.mods().by('name','moduleOutputs')
+inputs = mInp
+inp = mInp
+
+#inputsViewImpl = inputs.view().impl()
 
 for i in range(0,10,1):
-    inputsViewImpl.addInput()
+    #mInp.oAdd()
+    rootModule.iAdd()
+
 
 for i in range(0,10,1):
-    outputs.view().impl().addOutput()
+    #mOut.iAdd()
+    rootModule.oAdd()
+
 
 #tm.sleepMs(1000) #has to wait in mt mode
 
 #replaced by non view operations - safer in mthread env (objects on view created async)
 #s = inputsViewImpl.module().nodes().by('name','#0').view()
-s = inputsViewImpl.module().nodes().by('name','#0')
+s = mInp.nodes().by('name','#0')
 #t = m6502.nodes().by('name','RDY').view()
 t = m6502.nodes().by('name','RDY')
 s.connect(t)
 
 #s = inputsViewImpl.module().nodes().by('name','#9').view()
-s = inputsViewImpl.module().nodes().by('name','#9')
+s = mInp.nodes().by('name','#9')
 #t = m6502.nodes().by('name','PHI0I').view()
 t = m6502.nodes().by('name','PHI0I')
 s.connect(t)
@@ -225,23 +231,23 @@ from q3.nodeiotype import NodeIoType
 
 minputs = m.mods('moduleInputs')
 moutputs = m.mods('moduleOutputs')
-minputsViewImpl = minputs.view().impl()
-mi0 = minputsViewImpl.addInput()
-mi1 = minputsViewImpl.addInput()
-mi2 = minputsViewImpl.addInput()
-mi3 = minputsViewImpl.addInput()
+#minputsViewImpl = minputs.view().impl()
+mi0 = minputs.oAdd()
+mi1 = minputs.oAdd()
+mi2 = minputs.oAdd()
+mi3 = minputs.oAdd()
 
-moutputsViewImpl = moutputs.view().impl()
-mo0 = moutputsViewImpl.addOutput()
-mo1 = moutputsViewImpl.addOutput()
+#moutputsViewImpl = moutputs.view().impl()
+mo0 = moutputs.iAdd()
+mo1 = moutputs.iAdd()
 
 def norGraph(parent, name:str, A,B,Y):
     graphModule1 = parent.modAdd(name,
         moduleType = q3.moduletype.ModuleType.GRAPH
         )
-    i0 = graphModule1.view().impl().addInput()
-    i1 = graphModule1.view().impl().addInput()
-    o0 = graphModule1.view().impl().addOutput()
+    i0 = graphModule1.iAdd() #view().impl().addInput()
+    i1 = graphModule1.iAdd() #view().impl().addInput()
+    o0 = graphModule1.oAdd() #view().impl().addOutput()
     #o1 = graphModule1.view().impl().addOutput()
 
 
@@ -264,8 +270,9 @@ def norGraph(parent, name:str, A,B,Y):
 
     i0.connect(nor1.nod('A'))
     i1.connect(nor1.nod('B'))
-    #nor1.nod('Y').connect(o0) #currently invalid 
-    nor1.nod('Y').addSignal(o0.driveSignal())
+    nor1.nod('Y').connect(o0) #currently invalid 
+    #nor1.nod('Y').addSignal(o0.driveSignal())
+
 
     o0.connect(Y)
     return graphModule1
@@ -280,8 +287,8 @@ graphParent = moduleView.modAdd('graphParent',
     moduleType = q3.moduletype.ModuleType.GRAPH
     )
 igp0 = graphParent.ioAdd(name = '#0', ioType = NodeIoType.INPUT) #graphParent.view().impl().addInput()
-igp1 = graphParent.view().impl().addInput()
-ogp0 = graphParent.view().impl().addOutput()
+igp1 = graphParent.iAdd() #view().impl().addInput()
+ogp0 = graphParent.oAdd() #view().impl().addOutput()
 mi2.connect(graphParent.nodl('#0'))
 mi3.connect(graphParent.nodl('#1'))
 graphParent.nodr('#0').connect(mo1)

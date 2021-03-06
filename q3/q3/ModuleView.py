@@ -10,9 +10,7 @@ from enum import Enum
 from . import direction
 
 
-from PyQt5.QtGui import QBrush, QColor, QPen
-
-from PyQt5.QtCore import QPointF
+from q3.ui.engine import qtw,qtc,qtg
 
 from .DetailWindow import DetailWindow
 

@@ -106,8 +106,8 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     class Events(EventBase):
         elementNameChanged = EventSignal(EventNameChanged)
-        inputAdded = EventSignal(EventProps)
-        outputAdded = EventSignal(EventProps)
+        #inputAdded = EventSignal(EventProps)
+        #outputAdded = EventSignal(EventProps)
         ioNodeAdded = EventSignal(EventProps)
         ioNameChanged = EventSignal(EventIONameChanged)
         inputRemoved = EventSignal(EventProps)
@@ -188,6 +188,7 @@ class ModuleImplBase(metaclass=ABCMeta):
     def acceptVisitor(self, v):
         v.visitModuleImpl(self)
 
+    #@deprecated - use mdl
     def s(self):
         return self._self
 
@@ -243,19 +244,19 @@ class ModuleImplBase(metaclass=ABCMeta):
         pass
 
     def newIO(self, **kwargs):
-        result=self.s().newIO(**kwargs)
+        result=self.mdl().newIO(**kwargs)
         dir = result.dir()
-        if dir in [direction.TOP,direction.DOWN]:
-            self.events().ioNodeAdded.emit(EventProps({'nodeId':result.id()}))
-        elif dir == direction.LEFT:
-            self.events().inputAdded.emit(EventProps({'inputId':result.id()}))
-        else:
+        #if dir in [direction.TOP,direction.DOWN]:
+        self.events().ioNodeAdded.emit(EventProps({'nodeId':result.id()}))
+        #elif dir == direction.LEFT:
+        #    self.events().inputAdded.emit(EventProps({'inputId':result.id()}))
+        #else:
             #self.events().outputAdded.emit(EventProps({'outputId':result.id()}))
-            self.events().emitOutputAdded({'outputId':result.id()}) # this can wait for async depending if doneItem used
+        #self.events().emitOutputAdded({'outputId':result.id()}) # this can wait for async depending if doneItem used
         return result
 
     def removeIO(self, id): #todo event emmiter
-        return self.s().removeIO(id)    
+        return self.mdl().removeIO(id)    
 
     def signals(self,by=None):
         return self.mdl().signals(by)
@@ -295,7 +296,7 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     #@deprecated
     def outputs(self):
-        #return self.s().nodes().filterBy('direction',direction.RIGHT)
+        #return self.mdl().nodes().filterBy('direction',direction.RIGHT)
         return self.nodesByDir(direction.RIGHT)
 
   
@@ -764,9 +765,47 @@ class TestGModule(ModuleImplBaseLocal):
         sY.setValue( v3 )
         #print(f'sY={sY.value()}')   
 
-class Test2Module(ModuleImplBase):
+class Test2Module(ModuleImplBaseLocal):
     def echo(self):
         print("Hello World from test2")
+
+class CRIEDModule(ModuleImplBaseLocal):
+    def __init__(self,**kwargs):
+        super(CRIEDModule,self).__init__(**kwargs)
+        self._prevA = None
+
+    def init(self,**kwargs):
+        return {
+            'name':'CRIED',
+            'info':'CRIED is rising edge detector module. It produces single True impulse when rising input edge is detected'    
+        }
+        
+    def open(self, **kwargs):
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        ) 
+        return {
+            'Y':y,
+            'A':a,
+        }
+
+    def calc(s, **kwargs):
+        v1 = s.sig('A').value()
+        sY = s.sig('Y')
+        #we need single output  impulse on input change
+        if v1 and v1 != s._prevA:
+            sY.setValue(True)
+        else:
+            sY.setValue( False )
+        s._prevA = v1
+        
+        
+
 
 @ModuleFactory.registerLibrary('local')
 class LocalModuleLibrary(ModuleLibraryBase):
@@ -781,8 +820,8 @@ class LocalModuleLibrary(ModuleLibraryBase):
         "XOR":XorGateModule,
         'NAND':NandGateModule,
         'NAND4':Nand4GateModule,
-        "TESTG":TestGModule,
-        "test2":Test2Module
+       # "TESTG":TestGModule,
+        "CRIED":CRIEDModule
     }
 
     @classmethod

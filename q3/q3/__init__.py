@@ -11,7 +11,7 @@ except ImportError:
     __version__ = "unknown" # :nocov:
 
 from .consts import *
-#from .orientation import *
+#from .ui.orientation import *
 #from .direction import *
 from .MainWindow import *
 from .MainWindow import MainWindow as Frame
@@ -36,7 +36,7 @@ from .Timer import Timer
 from .moduletype import ModuleType
 
 
-from . import orientation
+from .ui import orientation
 from . import direction
 
 from .sidePanel.SidePanel import SidePanel

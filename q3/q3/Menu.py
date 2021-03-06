@@ -1,9 +1,5 @@
 
-import wx
-import PyQt5.QtWidgets as qtw
-
-from PyQt5.QtWidgets import QAction, qApp, QApplication
-from PyQt5.QtGui import QIcon 
+from q3.ui.engine import qtw,qtc,qtg 
 
 from . import consts
 from . import Object

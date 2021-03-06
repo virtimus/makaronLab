@@ -1,7 +1,7 @@
 from SidePanel import SidePanel
 import sp_helpers as h
 
-import PyQt5.QtCore as qtc
+from q3.ui.engine import qtw,qtc,qtg
 
 from SidePanelState import SidePanelState
 

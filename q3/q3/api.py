@@ -75,6 +75,44 @@ modvAdd = ed.modvAdd
 rc('moduleViewAdd',ed.moduleViewAdd,True)
 rc('modvAdd',ed.modvAdd,True)
 
+
+import sys
+from io import StringIO
+import contextlib
+
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = StringIO()
+    sys.stdout = stdout
+    yield stdout
+    sys.stdout = old
+
+#cw = frm.consoleWidget()
+
+#oldversion
+def execF0(fileName:str):
+    with stdoutIO() as s:
+        exec(open(fileName).read(),cw.globals(),cw.locals())
+    result = s if isinstance(s,str) else s.getvalue()
+    return result
+
+def execF(fileName:str):
+    with stdoutIO() as s:
+        f = open(fileName).read()
+        #exec(f,cw.globals(),cw.locals())
+        code_block = compile(f, fileName, 'exec')
+        cw.globals()['__file__']=fileName
+        exec(code_block,cw.globals(),cw.locals())
+
+    result = s if isinstance(s,str) else s.getvalue()
+    return result
+
+
+rc('execF',execF,True)
+rc('execF',execF)
+
 import types
 
 # takes and object 'obj' and replaces a 'name' method in the object with a "monitor" function 'handler'
@@ -98,6 +136,9 @@ def mountMonitor(obj, mname, handler, **kwargs):
     nm = types.MethodType(mhandler,obj)
     setattr(obj,mname,nm)
     return omethod
+
+#if not 'execF' in globals():
+#    execF = c.command('execF',True)
 
 
 from q3.nodeiotype import NodeIoType as IoType

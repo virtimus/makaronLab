@@ -1,5 +1,6 @@
 
 #from .Signal import Signal
+from sys import api_version
 from .Object import Object
 from .MainWindow import MainWindow
 
@@ -42,6 +43,7 @@ class Node(Object):
                 desc ='Used to check if signal is contained in node, if yes - it will be deleted and disconnected together with parent node'               
             )
         self._driveSignal = None
+        #self._driveSignalDelta = False
         #self._prevDriveSignal = None depr
         self._intSignal = None
         tsignal = self._initHandleArg('signal',
@@ -107,9 +109,11 @@ class Node(Object):
             s = self.signals().byLid(lid)
             s.setSize(nsize)
 
+    '''None - disconnected
     def resetValue(self):
         if self._driveSignal != None:
             self._driveSignal.resetValue()
+    '''
 
     def desc(self):
         return self._desc
@@ -135,21 +139,42 @@ class Node(Object):
             s2 = signal.valueType().size()
             self.raiseExc(f'Signal size differs ({self.name()} {signal.name()}) s1:{s1} s2:{s2}')  
 
+    def setIntSignalAsDrive(self):
+        #go through none to propagate
+        self.setDriveSignal(None)
+        self.setDriveSignal(self.intSignal())
+
+
+    def _propagateDynamicDriveSignalChange(self):
+        if self.ioType() == IoType.DYNAMIC and self._driveSignal == self._intSignal:#propagate change if dynamic and (IMPORTANT) if set to self.intSignal
+            nodesToCheck = self.module().graphModule().nodes() \
+                .filterBy('ioType',IoType.DYNAMIC) \
+                .filterBy('size',self.size())
+            
+            for n in nodesToCheck.values():
+                if n!=self: #self already handled
+                    ts = n.signals().byLid(self._driveSignal.id())
+                    if ts!=None: #node has the signal - set as drive
+                        n.setDriveSignal(ts) 
+
     def setDriveSignal(self, signal:'Signal'):
         if self._driveSignal == signal:#break recursion on dynamic dc propagate
             return
         if signal !=None:
             self._checkSignalSize(signal)
+        propagateDynamicChange = False
         if self._driveSignal == None: #not set yet - just set it
             self._driveSignal = signal
-            if self._driveSignal!=None:
-                self._driveSignal.dvOut(True)
+            propagateDynamicChange = self._driveSignal == self._intSignal
+            #if self._driveSignal!=None:
+            #   self._driveSignal.dvOut(True)
         else: #ds alrady set - check variant
             if signal == None: #ds clear try - allow always ?
-                if self._driveSignal != self._intSignal: #cannot remove internal signal
-                    tid = self._driveSignal.id()                
-                    self.signals().removeByLid(tid)
-                self._driveSignal = self._intSignal
+                self._driveSignal = signal
+                #if self._driveSignal != self._intSignal: #cannot remove internal signal
+                #    tid = self._driveSignal.id()                
+                #    self.signals().removeByLid(tid)
+                #self._driveSignal = self._intSignal
             else: #replacing with new ds #probably only for dynamic ?
                 if self._driveSignal.size()!=signal.size():  #size differs - problem
                     self.raiseExc('Signal size differs')
@@ -157,21 +182,14 @@ class Node(Object):
                 #if msg == None:
                 #self._prevDriveSignal = self._driveSignal
                 self._driveSignal = signal
-                self._driveSignal.dvOut(True)
-                if self.ioType() == IoType.DYNAMIC:#propagate change
-                    nodesToCheck = self.module().graphModule().nodes() \
-                        .filterBy('ioType',IoType.DYNAMIC) \
-                        .filterBy('size',self.size())
-                    
-                    for n in nodesToCheck.values():
-                        if n!=self: #self already handled
-                            ts = n.signals().byLid(self._driveSignal.id())
-                            if ts!=None: #node has the signal - set as drive
-                                n.setDriveSignal(ts) 
+                #self._driveSignal.dvOut(True)#deprecated
+                propagateDynamicChange = self._driveSignal == self._intSignal
 
                 #else: 
                 #    self.raiseExc(f'[signal.canDrive]: {msg}')
         self.addSignal(signal)
+        if propagateDynamicChange == True:
+            self._propagateDynamicDriveSignalChange()
 
     def isSignalOn(self):
         return self.driveSignal().isOn() if self.driveSignal() != None else False
@@ -202,6 +220,7 @@ class Node(Object):
     def removeSignal(self, sig:'Signal'):
         if sig == None:
             return
+        assert sig != self._intSignal, '[removeSignal] Cannot remove internal signal'
         self._signals.removeByLid(sig.id())
         if self.driveSignal()!=None and self.driveSignal().id() == sig.id():
             self.setDriveSignal(None)
@@ -212,12 +231,18 @@ class Node(Object):
         assert targetNode!=None, '[node.connect] targetNode is none'
         #special case - connect to output from inside of graph 2nd level node - self.view == None
         if self.view()==None and targetNode.ioType() == NodeIoType.OUTPUT and self.driveSignal()!=None:
-            self.addSignal(targetNode.intSignal())
+            #self.addSignal(targetNode.intSignal())
+            #above won't work with new algo
+            targetNode.setDriveSignal(self.intSignal())
             return #we can return here as we're not making any visible change ?
         if (isinstance(targetNode,IoNode)):
             assert targetNode.ioType() in [NodeIoType.INPUT,NodeIoType.DYNAMIC], '[node.connect] targetNode.ioType has to be in [INPUT,DYNAMIC]'
         if self.view() == None or targetNode.view()==None: # standalone mode
             targetNode.setDriveSignal(self.intSignal())
+            #dynamic (two way) nodes need feedback connection in case com direction change
+            if self.ioType() == NodeIoType.DYNAMIC and targetNode.ioType() == NodeIoType.DYNAMIC:
+                self.addSignal(targetNode.intSignal())
+
         #emit connection request
         self.events().emitNodeConnectionRequest({
             'sourceNode':self,
@@ -229,7 +254,7 @@ class Node(Object):
         return self.connect(targetNode,**kwargs)
 
     #@api - alias for connect 
-    def con(self, targetNode:'Node', **kwargs):
+    def c(self, targetNode:'Node', **kwargs):
         return self.connect(targetNode,**kwargs)
 
 class IoNode(Node):
@@ -242,7 +267,9 @@ class IoNode(Node):
         if tsignal == None:
             self.raiseExc(f'Signal required fo ioNode')
         self._name = kwargs['name'] if 'name' in kwargs else tsignal.name()
-        self._dir = kwargs['direction'] if 'direction' in kwargs else None
+        self._dir = None
+        if 'direction' in kwargs:
+            self._dir = kwargs['direction']
         if self._dir == None:
             self._dir = direction.LEFT if self.ioType() == NodeIoType.INPUT else direction.RIGHT
 
@@ -276,10 +303,11 @@ class IoNode(Node):
 
     def valueType(self):
         #P6-Big crash here ?
-        #if self.intSignal()!=None and self.intSignal().valueType()!=None:
-        #    return self.intSignal().valueType()
+        result = self.prop('valueType')
+        if result == None and self.intSignal()!=None and self.intSignal().valueType()!=None:
+            result = self.intSignal().valueType()
         #else:
-            return self.prop('valueType')
+        return result
 
 
 """
@@ -490,6 +518,10 @@ class Module(Object):
         return self.nodes(by)
 
     #@api
+    def n(self, by):
+        return self.nod(by)
+
+    #@api
     def nodl(self,by):
         assert by!=None, '[nodl] "by" arg required not None'
         return self.nodes().filterBy('dir',direction.LEFT).defaultGetter('name',by)
@@ -499,17 +531,29 @@ class Module(Object):
         assert by!=None, '[nodr] "by" arg required not None'
         return self.nodes().filterBy('dir',direction.RIGHT).defaultGetter('name',by)
 
+    #@api 
+    def iAdd(self, name=None, **kwargs):
+        kwargs['ioType']=NodeIoType.INPUT
+        return self.ioAdd(name, **kwargs)
+
+    #@api 
+    def oAdd(self, name=None, **kwargs):
+        kwargs['ioType'] = NodeIoType.OUTPUT
+        return self.ioAdd(name,**kwargs)
+
     #@api
     def ioAdd(self, name=None, **kwargs):
         if name !=None:
             kwargs['name'] = name
-        if self.isRoot(): # add to inp/out dep on dir          
-            dir = kwargs['dir'] if 'dir' in kwargs else None
-            if dir == None:
-                ioType = self._initHandleArg('ioType',kwargs=kwargs,
-                required = True,
+        ioType = self._initHandleArg('ioType',kwargs=kwargs,
+                #required = True,
                 desc = 'ioType'
                 )
+        props = kwargs['props'] if 'props' in kwargs else {}        
+        if self.isRoot(): # add to inp/out dep on dir          
+            dir = kwargs['dir'] if 'dir' in kwargs else None
+            assert dir != None or ioType!=None,'[mod.ioAdd] dir or ioType required'
+            if dir == None:
                 dir = direction.LEFT if ioType == NodeIoType.INPUT else direction.RIGHT
             mod = self.modules().by('name',dir.graphModName())
             #return mod.impl().newIO(**kwargs)
@@ -517,12 +561,27 @@ class Module(Object):
 
             size = kwargs['size'] if 'size' in kwargs else 1
 
-            if ioType == NodeIoType.INPUT:
-                return mod.view().impl().addInput(nme,size=size)
-            else:
-                return mod.view().impl().addOutput(nme,size=size)
+            #if ioType == NodeIoType.INPUT:
+            #    return mod.view().impl().addInput(nme,size=size)
+            #else:
+            #    return mod.view().impl().addOutput(nme,size=size)
+            #if mod.mType() == ModuleType.IO:
+            isIO = mod.mType() == ModuleType.IO
+
+            props['isRoot']= True
+
+            result = mod.view().impl().addIoNode(
+                dir = dir,
+                name = nme,
+                size = size,
+                ioType = ioType,
+                props = props
+            )
+            if isIO: #this may should go to constructor of ioNode?
+                result.setDriveSignal(result.intSignal())
         else:
-            return self.impl().newIO(**kwargs)
+            result = self.impl().newIO(**kwargs)
+        return result
     
     #@api
     def signals(self, by=None):
@@ -536,6 +595,10 @@ class Module(Object):
     def sig(self,by):
         assert by!=None, '[sig] "by" arg required not None'
         return self.signals(by)
+
+    #@api - shortest
+    def s(self, by):
+        return self.sig(by)
 
     def mType(self):
         return self.moduleType()
@@ -567,8 +630,13 @@ class Module(Object):
         return self.modules(by)
     
     #@api
+    def m(self,by):
+        return self.mod(by)
+    
+    #@api
     def modL(self): #lefts
         return self.mod(direction.LEFT.graphModName())
+    
 
     #@api
     def modR(self): #rights
@@ -626,14 +694,20 @@ class Module(Object):
         return IoNode(self,**kwargs) 
 
     def newIO(self, **kwargs):
+        tIoType = kwargs['ioType'] if 'ioType' in kwargs else None
+        assert tIoType!=None, '[mod.newIO] ioType required'
         tname = kwargs['name'] if 'name' in kwargs else None
         if tname == None:
-            self.raiseExc('Name required')
+            #self.raiseExc('Name required')
+            tnodes = self.nodes().filterBy('ioType',tIoType)
+            SIZE = tnodes.size() 
+            tname = f'#{SIZE}'
         tsize = kwargs['size'] if 'size' in kwargs else 1
-        tIoType = kwargs['ioType'] if 'ioType' in kwargs else None
-        tSigProps = kwargs['props'] if 'props' in kwargs else {}
-        sig = self.newSignal(name=tname,size=tsize,props=tSigProps)
+        tprops = kwargs['props'] if 'props' in kwargs else {}
+        sig = self.newSignal(name=tname,size=tsize,props=tprops)
         kwargs.pop('ioType',None)
+        if 'isRoot' in tprops and tprops['isRoot']==True: #added from api on root level 
+            tIoType = tIoType.oposite()
         result = self.newIoNode(signal=sig, sigInternal=True, ioType=tIoType,**kwargs)
         return result 
 

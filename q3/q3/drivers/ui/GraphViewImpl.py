@@ -1,10 +1,9 @@
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
+from q3.ui.engine import qtw,qtc,qtg
 
 from enum import Enum
 
-from ... import consts, prop, orientation, direction, colors, strutils
+from ... import consts, prop, direction, strutils
+from ...ui import orientation, colors
 from ...q3vector import Q3Vector
 
 from . import stypes
@@ -87,8 +86,8 @@ class GraphViewImpl(qtw.QGraphicsView):
         brush = colors.C.GRAPH_BACKGROUND.qColor() 
         self.m_scene.setBackgroundBrush(brush)
 
-        self.m_inputs = self.s()._inputsView.impl()
-        self.m_outputs = self.s()._outputsView.impl()
+        self.m_inputs = self.mdlv()._inputsView.impl()
+        self.m_outputs = self.mdlv()._outputsView.impl()
 
         self.m_inputs.setPropertiesTable(self.m_properties)
         self.m_outputs.setPropertiesTable(self.m_properties)
@@ -208,12 +207,12 @@ class GraphViewImpl(qtw.QGraphicsView):
 
 
     def open(self):#@s:PAckageView::open
-        tiv = self.s()._inputsView
+        tiv = self.mdlv()._inputsView
         x = tiv.prop(prop.PositionX)
         y = tiv.prop(prop.PositionY)
         tii =  tiv.impl()
         tii.setPos(x,y)
-        tov = self.s()._outputsView
+        tov = self.mdlv()._outputsView
         tov.impl().setPos(tov.prop(prop.PositionX),tov.prop(prop.PositionY))
 
         self._inputsModImpl = tii 

@@ -1,6 +1,4 @@
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
+from q3.ui.engine import qtw,qtc,qtg
 
 import sip
 
@@ -8,7 +6,8 @@ from ...nodeiotype import NodeIoType
 
 from ...q3vector import Q3Vector
 
-from ... import consts, prop, orientation, direction, colors
+from ... import consts, prop, direction 
+from ...ui import orientation, colors
 
 from ...ModuleFactory import ModuleType,ModuleImplBase
 
@@ -299,7 +298,8 @@ class Property:
         if objView != None:
             if callable(objView):
                 objView = objView()
-            objView._uiPropRef = tPropRef
+            if objView != None:
+                objView._uiPropRef = tPropRef
         self._lWidget = lWidget
         self._rWidget = rWidget
         
@@ -525,7 +525,11 @@ class ModuleViewImpl(qtw.QGraphicsItem):
         super(ModuleViewImpl,self).__init__(parent)
         #self.setContextMenuPolicy(qtc.Qt.ActionsContextMenu)
 
+    #@deprecated - use mdlv
     def s(self):
+        return self._self
+
+    def mdlv(self):
         return self._self
 
     def moduleView(self): #for use by view elements
@@ -664,24 +668,6 @@ class ModuleViewImpl(qtw.QGraphicsItem):
             
         return super().itemChange(change, value)
 
-
-
-
-
-
-    '''!TODO!
-
-void Node::advance(int a_phase)
-{
-  if (!a_phase) return;
-
-  updateOutputs();
-
-  refreshCentralWidget();
-
-  update();
-}
-'''
     def updateRotation(self):
         if (self.isRotate()):
             self._rotation = -90
@@ -711,9 +697,9 @@ void Node::advance(int a_phase)
 
         #if (mType == ModuleType.ATOMIC):
         #self._element.registerEventHandler(self.handleEvent)
-        self._element.events().inputAdded.connect(self.heInputAdded)
+        #self._element.events().inputAdded.connect(self.heInputAdded)
         self._element.events().inputRemoved.connect(self.heInputRemoved)
-        self._element.events().outputAdded.connect(self.heOutputAdded)
+        #self._element.events().outputAdded.connect(self.heOutputAdded)
         self._element.events().outputRemoved.connect(self.heOutputRemoved)
         self._element.events().ioNodeAdded.connect(self.heIoNodeAdded)
         self._element.events().ioNodeRemoved.connect(self.heIoNodeRemoved)
@@ -728,13 +714,15 @@ void Node::advance(int a_phase)
 
         if mType == ModuleType.ATOMIC:
             for inp in INPUTS.values():
-                NAME = inp.name()
+                #NAME = inp.name()
                 #addSocket(direction.LEFT, inp.id(), NAME, INPUTS[i].type, INPUTS[i].sItemType);
-                self.addSocket(direction.LEFT, inp.id(), NAME, inp.valueType(), inp.ioType())
+                self.addIoNodeView(direction.LEFT, inp)
+                #.id(), NAME, inp.valueType(), inp.ioType())
             for out in OUTPUTS.values():
-                NAME = out.name()
+                #NAME = out.name()
                 #addSocket(IOSocketsType::eOutputs, static_cast<uint8_t>(i), NAME, OUTPUTS[i].type,OUTPUTS[i].sItemType);
-                self.addSocket(direction.RIGHT,out.id(), NAME, out.valueType(), out.ioType())
+                self.addIoNodeView(direction.RIGHT,out)
+                #.id(), NAME, out.valueType(), out.ioType())
             #self._element.setPosition(self.x(), self.y())
             #self._element.collapse(self._mode == Q3iShowMode.COLLAPSED)
             self.setName(self._element.name())
@@ -743,12 +731,13 @@ void Node::advance(int a_phase)
             dir = self.module().prop('dir')
             ios = INPUTS if dir == direction.RIGHT else OUTPUTS
             for inp in ios.values():
-                NAME = inp.name()
-                self.addSocket(dir, inp.id(), NAME, inp.valueType(),inp.ioType())
+                #NAME = inp.name()
+                self.addIoNodeView(dir, inp)
+                #.id(), NAME, inp.valueType(),inp.ioType())
         #elif mType == ModuleType.OUTPUTS:
         #    for out in OUTPUTS.values():
         #        NAME = out.name()
-        #        self.addSocket(direction.LEFT, out.id(), NAME, out.valueType(),out.ioType())
+        #        self.addIoNodeView(direction.LEFT, out.id(), NAME, out.valueType(),out.ioType())
         self.elementSet()
         self.calculateBoundingRect()
 
@@ -877,7 +866,7 @@ void Node::advance(int a_phase)
             METRICS = qtg.QFontMetrics( self._nameFont )
             FONT_HEIGHT = METRICS.height()
             NAME_Y = (ROUNDED_SOCKET_SIZE / 2.0) + (FONT_HEIGHT - METRICS.strikeOutPos()) / 2.0 - 1.0
-            sname = self.s().name()
+            sname = self.mdlv().name()
             qpointF = qtc.QPointF(5.0, NAME_Y)
             painter.drawText(qpointF, sname)
         selColor = qtg.QColor(156, 156, 156, 255) if self.isSelected() else qtg.QColor(58, 66, 71, 255)
@@ -894,45 +883,17 @@ void Node::advance(int a_phase)
         HEIGHT = HALF_ICON_SIZE.height()
         painter.drawPixmap(self._centralWidgetPosition.x(), Y, WIDTH, HEIGHT, self._icon)
 
-
-    #EOrientation orientation
-    '''
-    def dir(self):
-        dir = direction.RIGHT
-        if (self._rotate):
-            if (not self._invertH):
-                dir = direction.TOP
-            else:
-                dir = direction.DOWN
-        else:
-            if (self._invertH):
-                dir = direction.LEFT
-        return dir
-    '''
-
     def isInvertH(self):
         return self._invertH
     
     def setInvertH(self, invertH:bool):
-        if (invertH):
-            self._invertH = True
-        else:
-            self._invertH = False
-
+        self._invertH = True if (invertH) else False
 
     def isRotate(self) -> bool:
-        return self._rotate;#//EOrientation::eUp == orientation();
+        return self._rotate
 
     def setRotate(self, rotate):
-        #//m_orient = (n)?EOrientation::eUp:EOrientation::eRight;
-        if (rotate):
-            self._rotate = True
-        else:
-            self._rotate = False
-		#//m_invertH = false;
-
-	#//updateRotation();
-
+        self._rotate = True if (rotate) else False
 
     def onPropCurrentRotChanged(self, event):
         state = event
@@ -987,7 +948,7 @@ void Node::advance(int a_phase)
         #elif mType == ModuleType.OUTPUTS:
         #    self.showIOProperties(direction.RIGHT)
         self.showCustomProperties()
-
+    '''
     def _getInpDir(self):
         dir = direction.LEFT # for input default dir is LEFT but ...       
         if self.mType() == ModuleType.IO: #if it is INPUTS module - direction for input is right
@@ -998,15 +959,17 @@ void Node::advance(int a_phase)
         inpId = event.props('inputId')
         inp = self._element.inputs().byId(inpId)
         dir = self._getInpDir()
-        self.addSocket(dir, inp.id(), inp.name(), inp.valueType(), inp.ioType())
+        self.addIoNodeView(dir, inp)
+        #.id(), inp.name(), inp.valueType(), inp.ioType())
         self.calculateBoundingRect()
-
+    '''
     def heIoNodeAdded(self, event):
         inpId = event.props('nodeId')
         inp = self._element.nodes().byId(inpId)
         #dir = self._getInpDir()
         dir = self._getIoDir(inp.dir())
-        self.addSocket(dir, inp.id(), inp.name(), inp.valueType(), inp.ioType())
+        self.addIoNodeView(dir, inp)
+        #.id(), inp.name(), inp.valueType(), inp.ioType())
         self.calculateBoundingRect()
     
     def heInputRemoved(self,event):
@@ -1023,9 +986,13 @@ void Node::advance(int a_phase)
         self.calculateBoundingRect()
 
     def heModuleDoubleClicked(self,event):
+        p = event.props('event')
+        p = p.screenPos()
+        #self.mapToGlobal( qtc.QPoint( 0, 0 ) )
+        qtw.QToolTip.showText( p, 'DupaBiskupa' )
         MODIFIERS = qtw.QApplication.keyboardModifiers()
         if MODIFIERS & qtc.Qt.ControlModifier:
-            self.mdlv().showDetailWindow(event=event)
+            self.mdlv().showDetailWindow(event=event, parent=self)
         else:
             self.switchView()
 
@@ -1070,6 +1037,8 @@ void Node::advance(int a_phase)
             result = dir.oposite()
         return result
 
+    '''
+
     def _getOutDir(self):
         dir = direction.RIGHT # default for output socket
         if self.mType() == ModuleType.IO:
@@ -1080,10 +1049,11 @@ void Node::advance(int a_phase)
         outId = event.props('outputId')
         out = self._element.outputs().byId(outId)
         dir = self._getOutDir()
-        self.addSocket(dir, out.id(), out.name(), out.valueType(), out.ioType())
+        self.addIoNodeView(dir, out)
+        #.id(), out.name(), out.valueType(), out.ioType())
         self.calculateBoundingRect()
         event.setDone(True)
-
+    '''
 
     def heOutputRemoved(self, event):
         dir = self._getOutDir()
@@ -1221,12 +1191,12 @@ void Node::advance(int a_phase)
         def countValueChanged(value):
             SIZE = ios.size()
             if (SIZE < value):
-                if dir in [direction.TOP,direction.DOWN]:
-                    ioEventTarget.addIoNode(dir)
-                elif INPUTS:
-                    ioEventTarget.addInput()
-                else:
-                    ioEventTarget.addOutput()
+                #if dir in [direction.TOP,direction.DOWN]:
+                ioEventTarget.addIoNode(dir)
+                #elif INPUTS:
+                #    ioEventTarget.addInput()
+                #else:
+                #    ioEventTarget.addOutput()
             else:
                 if dir in [direction.TOP,direction.DOWN]:
                     ioEventTarget.removeIoNode(dir)
@@ -1423,6 +1393,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
     def changeOutputName(self, vid:int, name):
         self.changeIOName(direction.RIGHT, vid, name)
 
+    '''
     #@deprecated
     def addInput(self, name:str=None,size:int=None):
         dir = direction.LEFT
@@ -1431,34 +1402,101 @@ auto max_element(Container &a_container, Comparator a_comparator)
         INPUT_NAME = f'#{SIZE}' if name==None else name
         last = ioNodes.last() #self._element.inputs().last()
         #first_available_type_for_flags(self._element.defaultNewInputFlags())
-        TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType()        
+        flags = self._element.defaultFlags(dir)
+        TYPE = last.valueType() if last != None else flags.firstAvailableType()        
         if size!=None:
             TYPE.setSizeTmp(size)
-        tnt = NodeIoType.INPUT
+        tsize = size if size!=None else TYPE.size()
+        ioType = NodeIoType.INPUT
         if self.mType() == ModuleType.IO:
-            tnt = NodeIoType.OUTPUT
-        result = self._element.addInput(TYPE, INPUT_NAME, self._element.defaultFlags(dir), tnt)
-        self.m_packageView.showProperties()
-        result = self._element.nodes().byLid(result) if result >-1 else None
-        return result
+            ioType = NodeIoType.OUTPUT
+        
+        result= self._element.newIO(
+            name = name,
+            direction = dir,
+            size = tsize,
+            ioType = ioType,
+            props = {
+                'ioNodeFlags':flags,
+                'valueType':TYPE
+            }
+        )
 
-    def addIoNode(self, dir:direction.Dir, name:str=None, size:int=None):
-        tnt = NodeIoType.INPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.OUTPUT
-        if self.mType() == ModuleType.IO:
-            tnt = NodeIoType.OUTPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.INPUT
+        #result = self._element.addInput(TYPE, INPUT_NAME, self._element.defaultFlags(dir), ioType)
+        self.m_packageView.showProperties()
+        #result = self._element.nodes().byLid(result) if result >-1 else None
+        return result
+    '''
+
+    def addIoNode(self, dir:direction.Dir, name:str=None, size:int=None, ioType:NodeIoType=None, props:dict={}):
+        if ioType==None:
+            ioType = NodeIoType.INPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.OUTPUT
+            if self.mType() == ModuleType.IO:
+                ioType = NodeIoType.OUTPUT if dir in [direction.TOP,direction.LEFT] else NodeIoType.INPUT
             #dir = dir.oposite()
         ioNodes = self._element.nodesByDir(dir)
         SIZE = ioNodes.size() #self._element.inputs().size()
         NAME = f'#{SIZE}' if name==None else name
         last = ioNodes.last() #self._element.inputs().last()
         #first_available_type_for_flags(self._element.defaultNewInputFlags())
-        TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType()        
+        flags = self._element.defaultFlags(dir)
+        TYPE = last.valueType() if last != None else flags.firstAvailableType()
+
+        if size!=None:
+            TYPE.setSizeTmp(size)        
+        tsize = size if size!=None else TYPE.size()
+
+        props['ioNodeFlags'] = flags
+        props['valueType'] = TYPE
+
+        result= self._element.newIO(
+            name = name,
+            direction = dir,
+            size = tsize,
+            ioType = ioType,
+            props =  props
+        )
+
+        #result = self._element.addIoNode(dir,TYPE, NAME, self._element.defaultFlags(dir), ioType)
+        self.m_packageView.showProperties()
+        #result = self._element.nodes().byLid(result) if result >-1 else None
+        return result
+
+    '''
+    def addOutput(self, name:str=None, size:int=None):
+        dir = direction.RIGHT        
+        ioNodes = self._element.nodesByDir(dir)
+        SIZE = ioNodes.size() #self._element.outputs().size()
+        NAME = f'#{SIZE}' if name==None else name
+        last= ioNodes.last() #self._element.outputs().last()
+        #{ first_available_type_for_flags(m_element->defaultNewOutputFlags()) };
+        flags = self._element.defaultFlags(dir)
+        TYPE = last.valueType() if last != None else flags.firstAvailableType() 
+
         if size!=None:
             TYPE.setSizeTmp(size)
-        result = self._element.addIoNode(dir,TYPE, NAME, self._element.defaultFlags(dir), tnt)
+        tsize = size if size!=None else TYPE.size()
+
+        ioType = NodeIoType.OUTPUT
+        if self.mType() == ModuleType.IO:
+            ioType = NodeIoType.INPUT       
+         
+        result= self._element.newIO(
+            name = name,
+            direction = dir,
+            size = tsize,
+            ioType = ioType,
+            props = {
+                'ioNodeFlags':flags,
+                'valueType':TYPE
+            }
+        )                
+        #result = self._element.addOutput(TYPE, NAME, self._element.defaultFlags(dir), ioType)
         self.m_packageView.showProperties()
-        result = self._element.nodes().byLid(result) if result >-1 else None
+        #result = self._element.nodes().byLid(result) if result >-1 else None
         return result
+    '''
+
 
     def removeIoNode(self, dir:direction.Dir):
         self._element.removeIoNode(dir)
@@ -1475,24 +1513,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         self.m_packageView.showProperties()
 
 
-    def addOutput(self, name:str=None, size:int=None):
-        dir = direction.RIGHT        
-        ioNodes = self._element.nodesByDir(dir)
-        SIZE = ioNodes.size() #self._element.outputs().size()
-        NAME = f'#{SIZE}' if name==None else name
-        last= ioNodes.last() #self._element.outputs().last()
-        #{ first_available_type_for_flags(m_element->defaultNewOutputFlags()) };
-        TYPE = last.valueType() if last != None else self._element.defaultFlags(dir).firstAvailableType() 
-        if size!=None:
-            TYPE.setSizeTmp(size)
-        tnt = NodeIoType.OUTPUT
-        #dirp = dir
-        if self.mType() == ModuleType.IO:
-            tnt = NodeIoType.INPUT                 
-        result = self._element.addOutput(TYPE, NAME, self._element.defaultFlags(dir), tnt)
-        self.m_packageView.showProperties()
-        result = self._element.nodes().byLid(result) if result >-1 else None
-        return result
+
 
     def removeOutput(self):
         self._element.removeOutput()
@@ -1506,8 +1527,9 @@ auto max_element(Container &a_container, Comparator a_comparator)
 
 
 
-    def addSocket(self, dir, vid, name, valueType:ValueType, mType:ModuleType):
-        ioNode = self._element.nodes().byId(vid)
+    def addIoNodeView(self, dir:direction.Dir, ioNode:'IoNode'):
+    #, vid, name, valueType:ValueType, mType:ModuleType):
+        #ioNode = self._element.nodes().byId(vid)
         if ioNode.valueType() == None:
             if ioNode.signals().size()>0:
                 sig = ioNode.signals().first()
@@ -1526,7 +1548,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
 
         ioNodeView = IoNodeView(self, ioNode, dir)
         #ioNodeView.setName(a_name);
-        ioNodeView.setToolTip(name)
+        ioNodeView.setToolTip(ioNode.name())
         #ioNodeView.setValueType(valueType);
 
         if (self._mode == Q3iShowMode.COLLAPSED):

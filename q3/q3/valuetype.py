@@ -1,4 +1,5 @@
-from . import consts, prop, orientation, direction, colors
+from . import consts, prop, direction
+from .ui import orientation, colors
 
 import q3.console as c
 
@@ -53,13 +54,14 @@ class ValueType:
     def setParentSignal(self, parent):
         self._parent = parent
 
-    
+    ''' value None (disconnected)
     def resetValue(self):
         prevValue = self._value
         if isinstance(self._value, bool):
             self._value = False
         else:
             self._value = 0
+    '''
 
     def asUInt(self):
         result = self._value 

@@ -1,4 +1,0 @@
-
-
-PositionX = 'PositionX'
-PositionY = 'PositionY'

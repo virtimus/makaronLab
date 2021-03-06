@@ -7,7 +7,11 @@ class Q3DriverBase:
         self._parent = parent
         self._self = _self
 
+    #@deprecated - use self
     def s(self):
+        return self._self
+
+    def self(self):
         return self._self
     
     def impl(self):

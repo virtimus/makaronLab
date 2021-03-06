@@ -3,3 +3,4 @@
 consoleInstance = None
 #same for console widget instance
 consoleWidgetInstance = None
+

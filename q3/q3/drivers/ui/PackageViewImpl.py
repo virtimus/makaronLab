@@ -1,13 +1,12 @@
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui  as qtg
+from q3.ui.engine import qtw,qtc,qtg
 
 from .ModuleViewImpl import ModuleViewImpl, PropertiesBuilder
-from ... import consts, prop, orientation, direction, colors
+from ... import consts, prop, direction
+from ...ui import orientation, colors
 
 #node package
 class PackageViewImpl(ModuleViewImpl):
-        #self._moduleType = self.s().moduleType()
+        #self._moduleType = self.mdlv().moduleType()
     def setInputsNode(self, node): #Node *const a_
         self.m_inputsNode = node
     def inputsNode(self):

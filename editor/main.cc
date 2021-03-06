@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 
   QObject::connect(&app, &QApplication::aboutToQuit, &editor, &spaghetti::Editor::aboutToQuit);
 
-  editor.setWidRef();//set wid for chips view
+  //editor.setWidRef();//set wid for chips view
 
   registry.loadPlugins();
   registry.loadPackages();

@@ -48,10 +48,24 @@ def video1(modv):
     mod('Clock').impl().setInterval(1000) 
 
     # put some signals to the net...
-    ti1.driveSignal().setValue(1)
+    ti1.intSignal().setValue(1)
 
     sig('i2').setValue(1) 
 
 #modv = modvAdd('Videos')
 
 #video1(modv)
+# cd /src/makaronLab/externalTools && wget http://sun.hasenbraten.de/vasm/release/vasm.tar.gz
+# tar -xvf vasm.tar.gz && cd vasm && make CPU=6502 SYNTAX=oldstyle
+# cd /src/makaronLab/q3/q3/bootstrap/tests/ben6502/ && hexdump -C a.out
+fpath = '/src/makaronLab/q3/q3/bootstrap/tests/ben6502/'
+def videoCompile(vName:str): 
+    vasmbin = '/src/makaronLab/externalTools/vasm/vasm6502_oldstyle'
+
+    # compile the assembler code
+    import subprocess
+    subprocess.call([vasmbin, '-Fbin','-dotdir',vName],cwd=fpath)
+
+    # set rom path
+    rompath = fpath+'a.out' 
+    return rompath

@@ -1,7 +1,8 @@
 
+from q3.ui.engine import qtw,qtc,qtg
 
-from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventSignalBase
-import PyQt5.QtWidgets as qtw
+EventSignalBase = qtc.Signal  
+
 
 
 from .q3vector import Q3Vector

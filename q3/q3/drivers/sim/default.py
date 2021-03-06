@@ -3,11 +3,9 @@ from ... import direction, consts
 from ...ModuleFactory import IoType, ModuleFactory, ModuleImplBase, ModuleType
 from ..driverBase import Q3DriverBase
 
-from PyQt5.QtCore import Qt, QFileSystemWatcher, QSettings, pyqtSignal as EventSignal
+from q3.ui.engine import qtw,qtc,qtg
+EventSignal = qtc.Signal
 
-#import PyQt5.QtWidgets as qtw
-#import PyQt5.QtCore as qtc
-#import PyQt5.QtGui  as qtg
 
 from ...valuetype import ValueType
 

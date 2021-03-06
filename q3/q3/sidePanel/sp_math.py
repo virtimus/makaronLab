@@ -1,6 +1,6 @@
 
 
-import PyQt5.QtCore as qtc
+from q3.ui.engine import qtw,qtc,qtg
 
 #constexpr double scale(const double& valueIn, const double& baseMin, const double& baseMax, const double& limitMin, const double& limitMax)
 #{

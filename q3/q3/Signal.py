@@ -122,8 +122,11 @@ class Signal(Object):
         result = self.value() if self.size()==1 else self.value()>0
         return result
     
+    '''None - disconnected
     def resetValue(self):
         return self._valueType.resetValue()
+    '''
+
 
     #some methods for slice calculation
     def __getitem__(self,i):

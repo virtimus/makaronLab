@@ -6,14 +6,12 @@
 ## @ref: https://stackoverflow.com/questions/9377914/how-to-customize-title-bar-and-window-of-desktop-application
 #########################################################
 import sys
-from PyQt5 import QtWidgets, QtGui
-from PyQt5 import QtCore
-from PyQt5.QtCore import Qt
+from q3.ui.engine import qtw,qtc,qtg
 
-class MainWindowTB(QtWidgets.QDialog):
+class MainWindowTB(qtw.QDialog):
     def __init__(self, parent=None):
-        QtWidgets.QDialog.__init__(self, parent)
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        qtw.QDialog.__init__(self, parent)
+        self.setWindowFlags(qtc.Qt.FramelessWindowHint)
         
         css = """
         QWidget{

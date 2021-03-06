@@ -15,6 +15,12 @@ fi
 if [ ! -e /src/tinyemu-2019-12-21 ]; then
 	cd /src && wget https://bellard.org/tinyemu/tinyemu-2019-12-21.tar.gz && tar -xvf tinyemu-2019-12-21.tar.gz
 fi
+if [ ! -e /src/makaronLab/externalTools/tinyEMU ]; then
+	ln -s /src/tinyemu-2019-12-21 /src/makaronLab/externalTools/tinyEMU
+fi
+if [ ! -e /src/makaronLab/externalTools/spaghetti/plugins/components ]; then
+	ln -s /src/makaronLab/components /src/makaronLab/externalTools/spaghetti/plugins/components
+fi
 cd /src/makaronLab/externalTools/tinyEMU && echo '#define MAX_XLEN 32' > riscv_cpu32.c && cat riscv_cpu.c >> riscv_cpu32.c && echo '#define MAX_XLEN 64' > riscv_cpu64.c && cat riscv_cpu.c >> riscv_cpu64.c && echo '#define MAX_XLEN 128' > riscv_cpu128.c && cat riscv_cpu.c >> riscv_cpu128.c
 cd /src/makaronLab && git submodule update --init --recursive && cd externalTools/spaghetti &&  git pull origin master
 cp /src/makaronLab/res/CMakeLists.txt  /src/makaronLab/externalTools/spaghetti/plugins/CMakeLists.txt 
