@@ -1450,7 +1450,7 @@ auto max_element(Container &a_container, Comparator a_comparator)
         props['valueType'] = TYPE
 
         result= self._element.newIO(
-            name = name,
+            name = NAME,
             direction = dir,
             size = tsize,
             ioType = ioType,

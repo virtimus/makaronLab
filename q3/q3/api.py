@@ -98,12 +98,19 @@ def execF0(fileName:str):
     result = s if isinstance(s,str) else s.getvalue()
     return result
 
-def execF(fileName:str):
+def execF(fileName:str,**kwargs):
     with stdoutIO() as s:
         f = open(fileName).read()
         #exec(f,cw.globals(),cw.locals())
         code_block = compile(f, fileName, 'exec')
         cw.globals()['__file__']=fileName
+        asMain = console.handleArg(None,'asMain',
+            kwargs = kwargs,
+            desc = 'If to process file as main/run',
+            default=False 
+            ) 
+        if asMain:
+            cw.globals()['__name__']='__main__'   # builtins        )      
         exec(code_block,cw.globals(),cw.locals())
 
     result = s if isinstance(s,str) else s.getvalue()

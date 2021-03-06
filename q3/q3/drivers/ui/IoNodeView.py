@@ -514,7 +514,8 @@ class IoNodeView(qtw.QGraphicsItem):
         if (link != None): #already connected
             return
 
-        self._used = True
+        #self._used = True # wrong if input of graph module
+
         if (other != None ): #3dlevel
             '''
             linkItem = IoLinkView() #/LinkItem;

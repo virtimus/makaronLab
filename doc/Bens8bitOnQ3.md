@@ -15,5 +15,17 @@ https://eater.net/8bit
 ## 1. State persistence - D-latch/flipflop
 
 First I've built  a simple D-latch item:
-![d-latch](../q3/q3/bootstrap/tests/benSAP1/cpu-D-latch.png)
-[source](../q3/q3/bootstrap/tests/benSAP1/cpu-D-latch.py)
+![d-latch](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch.png)
+[source](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch.py)
+
+## 2. Registers - 1bit reg/8bit reg
+
+Then I've prepared a package with 1bit register:
+
+![D-latch-1bitreg](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_1bitreg.png)
+[source](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_1bitreg.py)
+
+... and 8-bit one:
+
+![D-latch-8bitreg](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_8bitreg.png)
+[source](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_8bitreg.py)

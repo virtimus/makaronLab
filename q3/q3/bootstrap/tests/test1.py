@@ -229,17 +229,17 @@ m = moduleView.module()
 import q3.moduletype
 from q3.nodeiotype import NodeIoType
 
-minputs = m.mods('moduleInputs')
-moutputs = m.mods('moduleOutputs')
+#minputs = m.mods('moduleInputs')
+#moutputs = m.mods('moduleOutputs')
 #minputsViewImpl = minputs.view().impl()
-mi0 = minputs.oAdd()
-mi1 = minputs.oAdd()
-mi2 = minputs.oAdd()
-mi3 = minputs.oAdd()
+mi0 = m.iAdd()
+mi1 = m.iAdd()
+mi2 = m.iAdd()
+mi3 = m.iAdd()
 
 #moutputsViewImpl = moutputs.view().impl()
-mo0 = moutputs.iAdd()
-mo1 = moutputs.iAdd()
+mo0 = m.oAdd()
+mo1 = m.oAdd()
 
 def norGraph(parent, name:str, A,B,Y):
     graphModule1 = parent.modAdd(name,

@@ -515,7 +515,7 @@ class Module(Object):
     #@api
     def nod(self, by):
         assert by!=None, '[nod] "by" arg required not None'
-        return self.nodes(by)
+        return self.nodes().filterBy('parent',self).defaultGetter('name',by) #nodes(by) !TODO! optimize filterBY 
 
     #@api
     def n(self, by):
@@ -594,7 +594,7 @@ class Module(Object):
     #@api
     def sig(self,by):
         assert by!=None, '[sig] "by" arg required not None'
-        return self.signals(by)
+        return self.signals().filterBy('parent',self).defaultGetter('name',by) #signals(by) !TODO! optimize filterBY 
 
     #@api - shortest
     def s(self, by):
