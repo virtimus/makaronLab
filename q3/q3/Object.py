@@ -1,10 +1,12 @@
 from . import consts, console
 from .drivers.ui import pyqt5 as drvQt
-from .drivers.ui import wxWidgets as drvWx
+#from .drivers.ui import wxWidgets as drvWx
 from .drivers import loader as q3Loader
 
 from .Log import Log
 log = Log(__name__)
+
+import types
 
 class Object():
     def __new__(cls, *args, **kwargs):
@@ -19,6 +21,10 @@ class Object():
 
     def __init__(self, parent, impl, **kwargs):
         self._parent = parent
+        if not hasattr(self,'_name'):
+            self._name = kwargs['name'] if 'name' in kwargs else None
+        self._info = kwargs['info'] if 'info' in kwargs else None         
+        self._desc = kwargs['desc'] if 'desc' in kwargs else None
         #kwargs['props'] if 'props' in kwargs else {}
         self._props = self._initHandleArg('props',
             kwargs = kwargs,
@@ -59,6 +65,22 @@ class Object():
         if (self._q3D._parent==None):
             self._q3D._parent=self._parent
 
+    def desc(self):
+        return self._desc
+
+    def info(self):
+        return self._info
+
+    def name(self):
+        return self._name
+
+    def mdlPath(self):
+        path=''
+        p=self
+        while p!=None:
+            path = p.name() +'/'+ path
+            p=p.parent()
+        return path
 
     def _initHandleArg(self, name:str, **kwargs):
         return console.handleArg(self, name,**kwargs)
@@ -141,3 +163,8 @@ class Object():
 
     def raiseExc(self, a0):
         raise Exception(a0)
+
+    def addMethod(self,methodName,method):
+        md = self        
+        nm = types.MethodType(method ,md)
+        setattr(md,methodName,nm)

@@ -1,6 +1,7 @@
 
 #from .Signal import Signal
 from sys import api_version
+import types
 from .Object import Object
 from .MainWindow import MainWindow
 
@@ -29,13 +30,12 @@ class Node(Object):
     def __init__(self, *args, **kwargs):
         #//self._deltaVector = DeltaVector.NONE 
         self._view = None
-        self._signals = Q3Vector()   
+        self._signals = Q3Vector() 
+        self._signalsAsNot = {}  
         args = self._loadInitArgs(args)
         if not isinstance(args[0],Module):
             self.raiseExc('[Node] Parent has to be descendant of q3.Module')
-        self._name = kwargs['name'] if 'name' in kwargs else None
-        self._info = kwargs['info'] if 'info' in kwargs else None
-        self._desc = kwargs['desc'] if 'desc' in kwargs else None               
+              
         self._sigInternal = self._initHandleArg('sigInternal',
                 kwargs = kwargs,
                 required = False,
@@ -50,6 +50,9 @@ class Node(Object):
                 kwargs = kwargs,
                 desc = 'Internal or drive (for output node) signal contained in Node'
             )
+        self.setIntSignalAsDrive()
+        super(Node, self).__init__(*args, **kwargs)
+        
         if tsignal != None:
             self.addSignal(tsignal)
             if self._sigInternal:
@@ -58,12 +61,14 @@ class Node(Object):
         if self._name == None:
             self.raiseExc(f'Name of Node required')             
                    
-        super(Node, self).__init__(*args, **kwargs)
+        
         #self._id = len(self.parent().graphModule().nodes())
         self._id = self.parent().rootModule().allNodes().push(self)
         self._no = len(self.parent().nodes())
+        self.parent().intNodes().push(self)
         #self.parent()._nodes[self.id()]=self
-        self.parent().graphModule().addNode(self)
+
+        self.parent().rootModule().addNode(self)
         if not self.parent().graphModule() is self.parent():
             self.parent().addNode(self)
         if self.flags()==None: #some call do not put flags - create defaults
@@ -115,20 +120,23 @@ class Node(Object):
             self._driveSignal.resetValue()
     '''
 
-    def desc(self):
-        return self._desc
 
-    def info(self):
-        return self._info
-
-    def name(self):
-        return self._name
 
     def driveSignal(self) -> 'Signal':
         return self._driveSignal
 
     def intSignal(self) -> 'Signal':
         return self._intSignal
+    
+    def value(self):
+        result = None
+        if self.intSignal() != None:
+            result = self.intSignal().value()
+        return result
+
+    def setValue(self, nVal):
+        assert self.intSignal() != None, '[node.setValue] intSignal is not set for the node'
+        return self.intSignal().setValue(nVal)
 
     def signals(self):
         return self._signals
@@ -163,14 +171,17 @@ class Node(Object):
         if signal !=None:
             self._checkSignalSize(signal)
         propagateDynamicChange = False
+        
         if self._driveSignal == None: #not set yet - just set it
             self._driveSignal = signal
             propagateDynamicChange = self._driveSignal == self._intSignal
+            #self.parent()._hasDSChanged = True
             #if self._driveSignal!=None:
             #   self._driveSignal.dvOut(True)
         else: #ds alrady set - check variant
             if signal == None: #ds clear try - allow always ?
                 self._driveSignal = signal
+                #self.parent()._hasDSChanged = True
                 #if self._driveSignal != self._intSignal: #cannot remove internal signal
                 #    tid = self._driveSignal.id()                
                 #    self.signals().removeByLid(tid)
@@ -181,7 +192,9 @@ class Node(Object):
                 #msg = signal.canDrive() #don't think this logic is needed now
                 #if msg == None:
                 #self._prevDriveSignal = self._driveSignal
+                #self.parent()._hasDSChanged = self._driveSignal.value() != signal.value()
                 self._driveSignal = signal
+                
                 #self._driveSignal.dvOut(True)#deprecated
                 propagateDynamicChange = self._driveSignal == self._intSignal
 
@@ -233,15 +246,23 @@ class Node(Object):
         isSC1 = self.view()==None and targetNode.ioType() == NodeIoType.OUTPUT and self.driveSignal()!=None
         #another special case connecting directly in and out of non root module
         isSC2 = not self.module().isRoot() and self.module() == targetNode.module()
+        asNot = self._initHandleArg('asNot',
+                kwargs = kwargs,
+                required = False,
+                defaultValue = False,
+                desc ='Used to invert Node calculated value'               
+            )
         if isSC1 or isSC2:
             #self.addSignal(targetNode.intSignal())
             #above won't work with new algo
             targetNode.setDriveSignal(self.intSignal())
+            targetNode.setAsNot(self.intSignal().id(),asNot)
             return #we can return here as we're not making any visible change ?
         if (isinstance(targetNode,IoNode)):
             assert targetNode.ioType() in [NodeIoType.INPUT,NodeIoType.DYNAMIC], '[node.connect] targetNode.ioType has to be in [INPUT,DYNAMIC]'
         if self.view() == None or targetNode.view()==None: # standalone mode
             targetNode.setDriveSignal(self.intSignal())
+            targetNode.setAsNot(self.intSignal().id(),asNot)            
             #dynamic (two way) nodes need feedback connection in case com direction change
             if self.ioType() == NodeIoType.DYNAMIC and targetNode.ioType() == NodeIoType.DYNAMIC:
                 self.addSignal(targetNode.intSignal())
@@ -260,8 +281,15 @@ class Node(Object):
     def c(self, targetNode:'Node', **kwargs):
         return self.connect(targetNode,**kwargs)
 
+    def setAsNot(self,k,v:bool):
+        self._signalsAsNot[k]=v
+    
+    def isSignalInverted(self, signal:'Signal'):
+        return signal.id() in self._signalsAsNot and self._signalsAsNot[signal.id()] #invert
+
 class IoNode(Node):
     def __init__(self, *args, **kwargs): 
+        self._currMonType = None #used to save monType state in properties
         self._ioType = kwargs['ioType'] if 'ioType' in kwargs else None #nodeiotype
         if self._ioType == None:
             self.raiseExc('ioType required')
@@ -364,26 +392,29 @@ class Module(Object):
             self.raiseExc(f'[Module] "moduleType" required {self._name}')
 
         self._scriptRecording = False
+        self._calculated = False
         self._modules = Q3Vector()
         self.modulesBy = self._modules.by #@api
         self.modsBy = self.modulesBy #@api
         self._modules.append(0,self)
         self._nodes = Q3Vector()
         self._allNodes = Q3Vector()
+        self._intNodes = Q3Vector()
         self.nodesBy = self._nodes.by #@api
         self.nodsBy = self.nodesBy #@api
         #self._nodesByName = {} handled by Q3Vector
         self._tabIndex = None
         self._signals = Q3Vector()
         self._allSignals = Q3Vector()
+        self._intSignals = Q3Vector()
         self.signalsBy = self._signals.by #@api
         self.sigsBy = self.signalsBy #@api
         self._sigFormulas = {} #additional calc formulas 
         self._moduleViews = Q3Vector()
         self.moduleViewsBy = self._moduleViews.by
         self.mViewsBy = self.moduleViewsBy 
-        self._info = None
-        self._desc = None
+        #self._info = None
+        #self._desc = None
         #self._signalsByName = {}
         self._id = None
         kwargs.pop('type', None) 
@@ -408,10 +439,16 @@ class Module(Object):
         return self._allSignals
 
     def allNodes(self):
-        return self._allNodes  
+        return self._allNodes 
+
+    def intSignals(self):
+        return self._intSignals
+
+    def intNodes(self):
+        return self._intNodes
 
     def consoleWrite(self, dta):
-        self.impl().consoleWrite(dta)
+        self.impl().consoleWrite(dta+"\n")
 
     def isScriptRecordingOn(self):
         return self._scriptRecording
@@ -429,10 +466,11 @@ class Module(Object):
 
     def setPos(self, x, y):
         if self.view()!=None:
-            self.view().impl().setPos(x,y)
+            vimpl = self.view().impl() 
+            vimpl.setPos(x,y)
 
     def recordScript(self, recData:dict):
-        self.consoleWrite(f'[recordScript] {recData}\n')
+        self.consoleWrite(f'[recordScript] {recData}')
         recordType = recData['recordType']
         if recordType == 'event':
             eventName = recData['eventName']
@@ -451,7 +489,7 @@ class Module(Object):
             if methodName == 'IoNodeView.finishIoLinkView':
                 sourceNodeId = recData['sourceNodeId']
                 targetNodeId = recData['targetNodeId']
-                self.consoleWrite(f'[recordScript] c.rm.connect({sourceNodeId},{targetNodeId})\n')
+                self.consoleWrite(f'[recordScript] c.rm.connect({sourceNodeId},{targetNodeId})')
             else:
                 self.consoleWrite(f'[recordScript] Unhandled methodName:{methodName}')
         else:
@@ -471,18 +509,19 @@ class Module(Object):
 
     def id(self):
         return self._id
-
+    '''
     def name(self):
         return self._name
-
+    '''
     def setName(self, n:str):
         self._name = n
-
+    '''
     def info(self):
         return self._info
 
     def desc(self):
         return self._desc
+    '''    
 
     def graphModule(self):
         return self._graphModule
@@ -775,6 +814,8 @@ class Module(Object):
         return isinstance(self.parent(), MainWindow) #alt id == 0
 
     def calculate(self):
+        #calc nodes on input
+
         calc = getattr(self.impl(),'calc')
         if callable(calc):
             calc()
@@ -785,17 +826,29 @@ class Module(Object):
                     tformula = self._sigFormulas[nodName]
                     self._evalSigFormula(nod.driveSignal(),tformula)
 
+    def setCalculate(self,ncalculate):
+        md = self       
+        nm = types.MethodType(ncalculate ,md)
+        setattr(md,'calculate',nm)
+
+    def setCalc(self,ncalc):
+        md = self.impl()       
+        nm = types.MethodType(ncalc ,md)
+        setattr(md,'calc',nm) 
+
     def updateTiming(self, delta):
         uTime = getattr(self.impl(),'updateTiming')
         if callable(uTime):
             uTime(delta)  
 
     # additional formulas for output signals
-    def _evalSigFormula(self, signal:'Signal', formula:str):
-        tglobals = {}
+    def _evalSigFormula(self, signal:'Signal', formula:str,globals:dict={}):
+        tglobals = globals
         for s in self.signals().values():
             tglobals[s.name()]=s
-        tformula = formula[1:] #omit = sign
+        tformula = formula
+        if formula.startswith('='):
+            tformula = formula[1:] #omit = sign
         fresult = eval(tformula,tglobals)
         signal.setValue(fresult)
 
@@ -813,7 +866,7 @@ class Module(Object):
                 del self._sigFormulas[nodName]
             return 
         nod = self.canHaveFormula(nodName)
-        nod!=None, f'[setSigFormula] For setting formula node has to exist and be output ({nodName})'
+        assert nod!=None, f'[setSigFormula] For setting formula node has to exist and be output ({nodName})'
         self._evalSigFormula(nod.intSignal(),formula)
         self._sigFormulas[nodName] = formula
 

@@ -27,6 +27,7 @@ rootModule = modv.module()
 #andModule = Module(rootModule,'andModule',
 #    impl = 'local/AND'
 #    )
+'''
 andModule1 = modv.modAdd('andModule1',
     impl = 'local:/AND'
     )
@@ -53,13 +54,13 @@ graphModule1 = modv.modAdd('graphModule1',
     )
 
 
-
+'''
 m6502Module = modv.modAdd('m6502Module',
     #type=ModuleType.ATOMIC,
     impl='Q3Chips:/c6502'
     )
 
-#'''
+
 cpcModule = modv.modAdd('cpcModule',
     #type=ModuleType.ATOMIC,
     impl='Q3Chips:/CPC'
@@ -168,19 +169,19 @@ s.connect(t)
 
 m6502.setPos(-240.0,-240.0) #6502
 cpcModule.setPos(-420.0,-140.0) #cpc
-graphModule1.setPos(-380.0,-190.0) #graph
+#graphModule1.setPos(-380.0,-190.0) #graph
 #c.rm.modulesBy('id',12).setPos(-440.0,-80.0) #downs
 #c.rm.modulesBy('id',11).setPos(-470.0,-170.0) #tops
-norModule1.setPos(180.0,-100.0) #nor up
-norModule2.setPos(190.0,80.0) #nor down
-andModule1.setPos(50.0,-100.0) # andup
-andModule2.setPos(50.0,100.0) # anddown
-notModule.setPos(-80.0,-100.0) # notup
+#norModule1.setPos(180.0,-100.0) #nor up
+#norModule2.setPos(190.0,80.0) #nor down
+#andModule1.setPos(50.0,-100.0) # andup
+#andModule2.setPos(50.0,100.0) # anddown
+#notModule.setPos(-80.0,-100.0) # notup
 mo = rootModule.mod('moduleOutputs')
 mo.setPos(390.0,-100.0) #outputs
 mi = rootModule.mod('moduleInputs')
 mi.setPos(-380.0,40.0) #inputs
-
+'''
 #c.rm.connect(8,13) #nor2nor # here to have more lag to stabilize
 norModule1.nod('Y').connect(norModule2.nod('A'))
 
@@ -212,7 +213,7 @@ mi.nod('#4').connect(andModule2.nod('B'))
 
 #c.rm.connect(11,9) #nor2nor # and the second feedback
 norModule2.nod('Y').connect(norModule1.nod('B'))
-
+'''
 mainRootModule = c.rm
 
 #tm.sleepMs(3000)

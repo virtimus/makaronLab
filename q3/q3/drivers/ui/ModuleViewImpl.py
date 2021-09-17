@@ -79,6 +79,8 @@ class TWO(qtw.QTableWidget):
         #tw.insertRow(ROW)
 
         tw._doMonType = MonTypes.NON #!TODO! reading from monObj/propObj?
+        if (ioNode._currMonType != None):
+             tw._doMonType = ioNode._currMonType.typeIndex()
         
         #tw._doMon = False 
 
@@ -184,6 +186,8 @@ class TWO(qtw.QTableWidget):
         self._doMonType = MonTypes(event)
         #self._doMon = (event == 2)
         self.onMonChange(self._prevValue,self._currValue,True) 
+        if (self._ioNode!=None):
+            self._ioNode._currMonType = self._doMonType 
         self.updateMonState()
 
     def onMonEditTextChanged(self, text):
@@ -1104,7 +1108,8 @@ class ModuleViewImpl(qtw.QGraphicsItem):
 
         #QTableWidgetItem *item{};
         ID = self._element.id()
-        TYPE = '' #{ QString::fromLocal8Bit(m_element->type()) };
+        TYPE = self._element.moduleType().name #{ QString::fromLocal8Bit(m_element->type()) };
+        #TYPE_str = TYPE.name
         NAME = self._element.name()
         DESCRIPTION = self._element.description()
 

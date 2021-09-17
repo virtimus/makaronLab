@@ -62,7 +62,35 @@ def makeOE8bitEI(name:str,parent:Module=None):
         nD.connect(nI)
     return m
 
+def makeOENbitEI(name:str,parent:Module=None, size = 16):
+    #make root if parent is None
+    m = parent.modAdd(name) if parent!=None else modvAdd(name).module()
 
+    nENABLEB = m.iAdd('ENABLEB')
+    mNOT0 = m.modAdd('NOT0',
+        impl = 'local:/NOT'
+        )
+    nENABLEB.c(mNOT0.n('A'))
+
+    #view
+    mNOT0.setPos(-170.0,-250.0)
+
+    nD = m.iAdd('D',size=size)
+    nO = m.oAdd('O',size=size)
+    nI = m.oAdd('I',size=size)
+
+    def calc(mimpl):
+        m = mimpl.mdl()
+        mProps = m.props()
+        m.n('I').intSignal().setValue(m.n('D').value())
+        if not m.n('ENABLEB').value():
+            m.n('O').intSignal().setValue(m.n('D').value())
+        else:
+            m.n('O').intSignal().setValue(False)
+
+    m.setCalc(calc)
+
+    return m
 
 if __name__ == '__main__':
     makeOE8bitEI('cpu-OE-8bit-ei')

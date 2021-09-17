@@ -27,8 +27,8 @@ class Signal(Object):
         self._name = kwargs['name'] if 'name' in kwargs else None
         if self._name == None:
             self.raiseExc(f'Name of Signal required')   
-        self._info = kwargs['info'] if 'info' in kwargs else None
-        self._desc = kwargs['desc'] if 'desc' in kwargs else None
+        #self._info = kwargs['info'] if 'info' in kwargs else None
+        #self._desc = kwargs['desc'] if 'desc' in kwargs else None
         self._dvOut = False 
         self._events = Signal.Events()
 #        self._driveNode = None
@@ -51,6 +51,7 @@ class Signal(Object):
         #self._id = len(self.parent().graphModule().signals())
         self._id = self.parent().rootModule().allSignals().push(self)
         self._no = len(self.parent().signals())
+        self.parent().intSignals().push(self)
         #self.parent()._signals[self.id()]=self
         self.parent().graphModule().addSignal(self)
         if not self.parent().graphModule() is self.parent():

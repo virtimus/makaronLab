@@ -393,6 +393,9 @@ class IoNodeView(qtw.QGraphicsItem):
         tdsig = self.mdl().driveSignal()
         if tdsig!=None:
             tdsig.setValue(not tdsig.value())
+        else: #not connected or input
+            idsig = self.mdl().intSignal()
+            idsig.setValue(not idsig.value())
  
 
     def mousePressEvent(self, event): #QGraphicsSceneMouseEvent

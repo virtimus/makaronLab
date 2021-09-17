@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
     #res = c6502.testAttr
 
-    print(res)
+    #print(res)
 
     res = c6502.init({
         'empty':"dupa"

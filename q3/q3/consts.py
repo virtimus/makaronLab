@@ -1,5 +1,5 @@
 
-import wx
+#import wx
 
 Q3_IMPL_QT="ui.pyqt5"
 Q3_IMPL_WX="ui.wx"
@@ -13,8 +13,11 @@ Q3_IMPL_SIM='sim.default'
 
 
 
-from wx import ID_EXIT
-from wx import ID_ABOUT
+#from wx import ID_EXIT
+#from wx import ID_ABOUT
+
+ID_EXIT = 1
+ID_ABOUT = 2
 
 MAX_PINS = 256
 MAX_INPUTS = 256

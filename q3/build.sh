@@ -1,5 +1,7 @@
 #!/bin/bash
 
 #cd q3
-python -m pip install -e .
+pip3 install pyqtgraph
+
+python3 -m pip install -e .
 #cd ..

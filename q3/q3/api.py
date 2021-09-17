@@ -75,6 +75,9 @@ modvAdd = ed.modvAdd
 rc('moduleViewAdd',ed.moduleViewAdd,True)
 rc('modvAdd',ed.modvAdd,True)
 
+modAdd = ed.modAdd
+rc('modAdd',ed.modAdd,True)
+
 
 import sys
 from io import StringIO
@@ -158,7 +161,6 @@ from q3.Module import IoNode
 from q3.Module import Module 
 from q3.Module import ModuleType 
 from q3.Module import ModuleType as MType 
-
 from q3.Signal import Signal
 
 #imports 

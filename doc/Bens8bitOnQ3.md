@@ -46,6 +46,13 @@ Final 8bit register with buffered output:
 
 [source](../q3/q3/bootstrap/tests/benSAP1/cpu_D_latch_8bitreg_ei.py)
 
+## 3. ALU
+
+Based on info from videos here
+
+https://eater.net/8bit/alu
+
+and Spaghetti-based version - prepared code-based one:
 
 
 

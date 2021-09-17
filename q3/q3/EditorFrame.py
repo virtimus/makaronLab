@@ -178,7 +178,7 @@ class EditorFrame(MainWindow):
                 )
             tpanel.setOpenEasingCurve(qtc.QEasingCurve.Type.OutElastic);
             tpanel.setCloseEasingCurve(qtc.QEasingCurve.Type.InElastic);
-            tpanel.setPanelSize(300)
+            tpanel.setPanelSize(340)
             tpanel.init()
 
             label = qtw.QLabel("Left")
@@ -187,6 +187,7 @@ class EditorFrame(MainWindow):
             tw = qtw.QTableWidget()
             tw.setRowCount(10)
             tw.setColumnCount(2)
+            tw.verticalHeader().setVisible(False)
             self._propertiesTable = tw
             
             tpanel.setWidgetResizable(True)
@@ -286,6 +287,9 @@ class EditorFrame(MainWindow):
         result = self._consoleWidget._namespace if self._consoleWidget != None else None
         return result
 
+    def name(self):
+        return 'ed'
+
     #@api
     def app(self):
         return self._app
@@ -383,8 +387,11 @@ class EditorFrame(MainWindow):
         return self._waitForModuleViewWithToken(tokenId)
 
     #@api
-    def modvAdd(self,name:str =None):
+    def modvAdd(self,name:str = None):
         return self.moduleViewAdd(name)
+    
+    def modAdd(self, name:str = None):
+        return self.modvAdd(name).module()
 
     def heRequestNewModuleView(self, event):
         tokenId = event.props('tokenId')

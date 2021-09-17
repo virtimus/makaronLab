@@ -301,4 +301,4 @@ tm.sleepMs(3000)
 sRes.setValue(True)
 
 m.oAdd()
-m.mod('moduleOutputs').iAdd(dir=direction.LEFT)
+#m.mod('moduleOutputs').iAdd(dir=direction.LEFT)

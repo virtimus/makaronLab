@@ -193,7 +193,7 @@ class Q3Driver(Q3DriverBase):
             result.setWindowTitle(self._self._kwargs['title'])
 
         #result = qtw.QFrame()
-        result.resize(1200, 980)
+        result.resize(1400, 980)
         '''
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)

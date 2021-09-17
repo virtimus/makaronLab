@@ -29,4 +29,7 @@ class App(Object.Object):
     def exec_(self):
         return self._mainLoop()
 
+    def name(self):
+        return 'app'
+
        

@@ -22,7 +22,7 @@
             //"program":"/src/makaronLab/wq/cpx/test.py",
             "program":"/src/makaronLab/q3/q3/bootstrap/boot.py", //#current q3sim boot
             //"program":"/src/makaronLab/q3ds/tutorial/runapp.py",
-            //"args": ["run", "app3.py", ""],
+            "args": ["run", "app3.py", ""],
             //"cwd": "/src/makaronLab/q3ds/tutorial/lesson3",
             "console": "integratedTerminal"
         }

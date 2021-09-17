@@ -101,6 +101,7 @@ class ModuleImplGraph(ModuleImplElement):
         #self.m_elements.push_back(self._self)
         #self.setDefaultNewInputFlags(IoNodeFlags.defaultFlags)
         #self.setDefaultNewOutputFlags(IoNodeFlags.defaultFlags)
+        self._hasChanged = False
 
     def __del__(self):
         #SIZE = self.m_elements.size()
@@ -173,31 +174,51 @@ class ModuleImplGraph(ModuleImplElement):
 
 # --- HDR-END -------------------------------------
 
-    def calculate(self):
-        for node in self.mdl().nodes().values():
-            ds = node.driveSignal()
-            #ds = node.dvOutSignal()
-            isig = node.intSignal()
-            if ds == None: #disconnected
-                isig.setValue(False) #!TODO! P8-NoneValueHandler
+    #def hasChanged(self):
+    #    return self._hasChanged
+
+    def calculateNode(self,node):
+        ds = node.driveSignal()
+        #ds = node.dvOutSignal()
+        isig = node.intSignal()
+        previsig = isig.value()
+        if ds == None: #disconnected
+            isig.setValue(False) #!TODO! P8-NoneValueHandler
+        else:
+            if node.isSignalInverted(ds):
+                isig.setValue(not ds.value())
             else:
                 isig.setValue(ds.value())
-            '''
-            if ds != None and node.signals().size()>0:
-                dv = ds.value()
-                for ss in node.signals().values():
-                    ss.setValue(dv)
-            elif ds == None and node.signals().size()>0: #this means disconnected == False
-                dv = False
-                for ss in node.signals().values():
-                    ss.setValue(dv)
-            '''
+        isigValue = isig.value() 
+        self._hasChanged = self._hasChanged or previsig != isigValue
+        #if (previsig != isigValue):
+        #    self.consoleWrite(f'[calculateNode] nodePath:{node.mdlPath()} hasChanged:{self._hasChanged}\n')
 
-        for element in self.m_elements.values():
-            if (element == None or element == self._self):
-                continue
-            element.updateTiming(self.m_delta)
-            element.calculate()
+    def calculate(self):
+        self._hasChanged = False
+        isRoot = self.mdl().isRoot() 
+        for node in self.mdl().nodes().values():
+            self.calculateNode(node)
+
+
+        #if self.hasDSChanged():
+        if self._hasChanged or not self.mdl()._calculated:
+
+            #needed in expanded mode ?
+            if self.mdl().isRoot():
+                self.mdl().calculate()
+
+            for element in self.m_elements.values():
+                element._calculated = False
+                if (element == None or element == self._self):
+                    continue
+                element.updateTiming(self.m_delta)
+                element.calculate()
+                element._calculated = True
+            self.mdl()._calculated = True
+            #self._hasDSChanged = False
+        #for node in self.mdl().intNodes().values():
+        #    self.calculateNode(node)
 
     def calc(self):
         els = self.m_elements.values()
@@ -256,18 +277,22 @@ class ModuleImplGraph(ModuleImplElement):
         #auto last = clock_t::now() - ONE_MILLISECOND;
         clock_t = Timer()
         last = clock_t.now() - clock_t.ms(1)
+        i=0
         while not self.m_quit.on():
             NOW = clock_t.now()
             DELTA = NOW - last
             self.update(DELTA)
-            self.calculate()
-
+            i+=1
+            if i>10:
+                self.calculate()
+                i=0
+            #'''
             last = NOW
 
             WAIT_START = clock_t.now()
-            while ((clock_t.now() - WAIT_START) < clock_t.ms(1)):
+            while ((clock_t.now() - WAIT_START) < clock_t.ms(10)):
                 #std::this_thread::sleep_for(ONE_MILLISECOND);
-                clock_t.sleepMs(1)
+                clock_t.sleepMs(10)
 
             if (self.m_pause.on()):
                 self.m_paused.on(True)
@@ -275,12 +300,14 @@ class ModuleImplGraph(ModuleImplElement):
                     clock_t.sleepMs(0) #std::this_thread::yield();
                 self.m_paused.on(False)
                 #("Pause stopped..");
+            #'''    
 
     def startDispatchThread(self):
         if (self.m_dispatchThreadStarted.on()):
             return
         #("Starting dispatch thread..");
-        self.m_dispatchThread = threading.Thread(target=self.dispatchThreadFunction) #std::thread(&Package::dispatchThreadFunction, this);
+        self.m_dispatchThread = threading.Thread(target=self.dispatchThreadFunction) 
+        #std::thread(&Package::dispatchThreadFunction, this);
         self.m_dispatchThread.start()
         self.m_dispatchThreadStarted.on(True)
 

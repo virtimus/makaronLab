@@ -141,6 +141,8 @@ class GraphViewImpl(qtw.QGraphicsView):
             self.m_package.quitDispatchThread()
             del self.m_package
 
+    def setPos(self, ax: float, ay: float) -> None:
+        super.setPos(ax,ay)
 
     def s(self):
         return self._self 

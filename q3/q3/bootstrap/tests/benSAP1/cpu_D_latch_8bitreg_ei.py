@@ -14,7 +14,7 @@ def makeDlatch8bitregEI(name:str,parent:Module=None):
     #make root if parent is None
     m = parent.modAdd(name) if parent!=None else modvAdd(name).module()
     #nDA = {} # well - we use 8bit singal
-    n8D = m.iAdd('8D',
+    n8D = m.iAdd('D',
         size = 8
         )
 
@@ -22,10 +22,10 @@ def makeDlatch8bitregEI(name:str,parent:Module=None):
     nENABLEB = m.iAdd('ENABLEB')
     nCLK = m.iAdd('CLK')
 
-    n8O = m.oAdd('8O',
+    n8O = m.oAdd('O',
         size = 8
         )
-    n8I = m.oAdd('8I',
+    n8I = m.oAdd('I',
         size = 8
         )
 
@@ -72,6 +72,13 @@ def makeDlatch8bitregEI(name:str,parent:Module=None):
 
 
 
+
+
+def makeReg8bitEI(name:str,parent:Module=None):
+    return makeDlatch8bitregEI(name,parent)
+
+def makeReg4bitEI(name:str,parent:Module=None):
+    return makeDlatch8bitregEI(name,parent)
 
 if __name__ == '__main__':
     makeDlatch8bitregEI('cpu-D-latch-8bitreg-ei')

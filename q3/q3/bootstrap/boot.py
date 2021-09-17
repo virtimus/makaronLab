@@ -9,7 +9,8 @@ import q3.Timer as Timer
 
 from q3.ui.engine import qtw,qtc,qtg
 
-import threading
+import threading 
+import os
 
 
 keys = globals().keys()
@@ -41,7 +42,8 @@ if False and not 'c' in keys:
     runApp = True
 
 #c.registerCommand('rc',c.registerCommand)
-cPath='/src/makaronLab/q3/q3/'
+cPath = os.path.dirname(os.path.realpath(__file__))+'/'
+#cPath=dirPath+'/../' #'/src/makaronLab/q3/q3/'
 
 class encImpl:
     def __init__(self):
@@ -53,7 +55,7 @@ class encImpl:
 
     def process(self, _namespace):
         print('Hello world')        
-        exec(open(cPath+"bootstrap/regCommands.py").read())
+        exec(open(cPath+"regCommands.py").read())
         self._initialized = True
         #exec(open("/src/makaronLab/q3/q3/bootstrap/startup.py").read())        
 
@@ -76,7 +78,7 @@ while (not tga._initialized):
 
 #frm.console().registerCommand('execF',execF,True) 
 
-fileName = cPath+"bootstrap/beforeShow.py"
+fileName = cPath+"beforeShow.py"
 s=c.execF(fileName)
 #cw.write(repr(s.getvalue()) + '\n')   
 cw.write('\n===bootstrap/beforeShow.py:\n'+s + '\n') 
@@ -111,7 +113,7 @@ th2.start()
 frm._afterShowThread = th2
 
 '''
-fileName = cPath+"bootstrap/afterShow.py"
+fileName = cPath+"afterShow.py"
 s=c.execF(fileName)
 #cw.write(repr(s.getvalue()) + '\n')   
 cw.write('\n===bootstrap/afterShow.py:\n'+s + '\n')

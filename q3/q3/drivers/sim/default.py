@@ -37,12 +37,16 @@ class Q3Driver(Q3DriverBase):
             #result.newIO(name="T",ioType=IoType.INPUT)
         elif self.s().moduleType() in [ModuleType.IO]:
             result = ModuleImplIO(moduleType=self.s().moduleType())
-            result._self = self.s()    
+            result._self = self.s()
+            #result._self._impl = result  
             result.m_package = self.s().parent().impl()          
+            #result.m_package.add(result._self) # add moduleInputs/outputs to m_elements
         else: #!TODO! impl for non root module (element) or maybe chace if atomic and exception unhandled?
             result = ModuleImplElement(moduleType=self.s().moduleType())
             result._self = self.s()
+            #result._self._impl = result
             result.m_package = self.s().parent().impl()
+            #result.m_package.add(result._self) # add moduleInputs/outputs to m_elements
             pass
         result._self = self.s()
         self.callAfterInit(result)

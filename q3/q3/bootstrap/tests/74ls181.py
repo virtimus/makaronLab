@@ -10,8 +10,6 @@ if not os.path.isfile(path74LS181):
 
 
 
-print('dupa!!!!!')
-
 
 #@refs:https://github.com/PyHDI/Pyverilog/blob/develop/examples/example_parser.py
 

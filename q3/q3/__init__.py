@@ -43,12 +43,15 @@ from .sidePanel.SidePanel import SidePanel
 
 
 
-from wx import OK
-from wx import ICON_INFORMATION
+#from wx import OK
+OK = 1
+#from wx import ICON_INFORMATION
+ICON_INFORMATION = 2
 
-from wx import EVT_MENU
+#from wx import EVT_MENU
+EVT_MENU = 3
 #from wx import BoxSizer
-from wx import SizerFlags
+#from wx import SizerFlags
 from .MessageBox import MessageBox
 
 __all__ = [
@@ -57,7 +60,7 @@ __all__ = [
     "Object","Element",
     "Panel","MdiPanel","TabPanel","Tab",
     "Label", "StaticText",
-    "BoxSizer","SizerFlags",
+    "BoxSizer",
     "Menu", "MenuBar",
     "MessageBox",
     "SidePanel",

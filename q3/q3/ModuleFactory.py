@@ -28,7 +28,7 @@ class ModuleFactory:
             The Library class itself.
         """
 
-        def inner_wrapper(wrapped_class: ModuleLibraryBase) -> Callable:
+        def inner_wrapper(wrapped_class: 'ModuleLibraryBase') -> Callable:
             if name in cls._registeredLibraries:
                 log.warn('Library %s already exists. Will replace it', name)
             cls._registeredLibraries[name] = wrapped_class
@@ -151,9 +151,29 @@ class ModuleImplBase(metaclass=ABCMeta):
         self._dtwProps = None
         self._customProperties = {}
         self._centralWidget = None
+        #self._hasDSChanged = False
+        self._calculated = False
+        self._props = {}
         #self._defaultOutputFlags = IoNodeFlags(max=consts.MAX_OUTPUTS)
         #self._defaultDynamicFlags = IoNodeFlags(max=consts.MAX_DYNAMICS)    
         pass
+    
+    #def hasDSChanged(self):
+    #    return self._hasDSChanged
+    
+    def prop(self,propName):
+        result = self._props[propName] if propName in self._props else None
+        return result
+    
+    def props(self,propName=None):
+        if propName == None:
+            return self._props
+        else:
+            return self.prop(propName)
+    
+    def setProp(self, propName, propValue):
+        self._props[propName] = propValue
+        return self
 
     def customProperties(self):
         return self._customProperties
@@ -278,7 +298,10 @@ class ModuleImplBase(metaclass=ABCMeta):
 
     def nodesByDir(self, dir:direction.Dir):
         return self.nodes().filterBy('dir',dir)
-
+    
+    def allNodesByDir(self, dir:direction.Dir):
+        return self.allNodes().filterBy('dir',dir)
+    
     def modules(self,by=None):
         return self.mdl().modules(by)
 
@@ -373,13 +396,13 @@ class And4GateModule(ModuleImplBaseLocal):
             'D':d
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
-        v3 = s.sig('C').value()
-        v4 = s.sig('D').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
+        v3 = self.sig('C').value()
+        v4 = self.sig('D').value()
         vY = v1 and v2 and v3 and v4
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( vY )
         #print(f'sY={sY.value()}')   
         # 
@@ -415,11 +438,11 @@ class AndGateModule(ModuleImplBaseLocal):
             'B':b
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
         v3 = v1 and v2
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( v3 )
         #print(f'sY={sY.value()}')   
         # 
@@ -454,11 +477,11 @@ class NandGateModule(ModuleImplBaseLocal):
             'B':b
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
         v3 = not (v1 and v2)
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( v3 )
         #print(f'sY={sY.value()}')   
         # 
@@ -508,14 +531,14 @@ class Nand4GateModule(ModuleImplBaseLocal):
             'E':e
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
-        v3 = s.sig('C').value()
-        v4 = s.sig('D').value()
-        v5 = s.sig('E').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
+        v3 = self.sig('C').value()
+        v4 = self.sig('D').value()
+        v5 = self.sig('E').value()
         vY = not (v1 and v2 and v3 and v4 and v5)
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( vY )
         #print(f'sY={sY.value()}')   
         # 
@@ -550,11 +573,11 @@ class NorGateModule(ModuleImplBaseLocal):
             'B':b
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
         v3 = True if not (v1 or v2) else False
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( v3 )
         #print(f'sY={sY.value()}')   
         # 
@@ -599,13 +622,13 @@ class Nor4GateModule(ModuleImplBaseLocal):
             'D':d
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
-        v3 = s.sig('C').value()
-        v4 = s.sig('D').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
+        v3 = self.sig('C').value()
+        v4 = self.sig('D').value()
         vY = True if not (v1 or v2 or v3 or v4) else False
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( vY )
         #print(f'sY={sY.value()}')   
         # 
@@ -640,11 +663,11 @@ class OrGateModule(ModuleImplBaseLocal):
             'B':b
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
         v3 = True if (v1 or v2) else False
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( v3 )
         #print(f'sY={sY.value()}')   
         # 
@@ -679,14 +702,65 @@ class XorGateModule(ModuleImplBaseLocal):
             'B':b
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        v2 = s.sig('B').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
         vY = True if xor(v1,v2) else False
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( vY )
         #print(f'sY={sY.value()}')   
-        #   
+
+class Xor4GateModule(ModuleImplBaseLocal):
+    def echo(self):
+        print("Hello World from XorGateModule")
+
+    def init(self,**kwargs):
+        return {
+            'name':'XOR',
+            'info':'XOR logic gate'    
+        }
+
+    def open(self,**kwargs):
+        #result = AndGateModule()
+        y = self.newIO(
+            name='Y',
+            ioType = IoType.OUTPUT
+            )
+        a = self.newIO(
+            name='A',
+            ioType=IoType.INPUT
+        )   
+        b = self.newIO(
+            name='B',
+            ioType=IoType.INPUT
+        )
+        c = self.newIO(
+            name='C',
+            ioType=IoType.INPUT
+        )
+        d = self.newIO(
+            name='D',
+            ioType=IoType.INPUT
+        )
+        return {
+            'Y':y,
+            'A':a,
+            'B':b,
+            'C':c,
+            'D':d
+        }
+
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        v2 = self.sig('B').value()
+        v3 = self.sig('C').value()
+        v4 = self.sig('D').value()
+        vY = v1 ^ v2 ^ v3 ^ v4
+        sY = self.sig('Y')
+        sY.setValue( vY )
+        #print(f'sY={sY.value()}')   
+        #        
+
 class NotGateModule(ModuleImplBaseLocal):
     def echo(self):
         print("Hello World from NotGateModule")
@@ -712,10 +786,10 @@ class NotGateModule(ModuleImplBaseLocal):
             'A':a
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
         v3 = not v1 
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( v3 )
         #print(f'sY={sY.value()}') 
         # 
@@ -758,10 +832,10 @@ class TestGModule(ModuleImplBaseLocal):
             'C':c
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
         v3 = not v1 
-        sY = s.sig('Y')
+        sY = self.sig('Y')
         sY.setValue( v3 )
         #print(f'sY={sY.value()}')   
 
@@ -794,15 +868,15 @@ class CRIEDModule(ModuleImplBaseLocal):
             'A':a,
         }
 
-    def calc(s, **kwargs):
-        v1 = s.sig('A').value()
-        sY = s.sig('Y')
+    def calc(self, **kwargs):
+        v1 = self.sig('A').value()
+        sY = self.sig('Y')
         #we need single output  impulse on input change
-        if v1 and v1 != s._prevA:
+        if v1 and v1 != self._prevA:
             sY.setValue(True)
         else:
             sY.setValue( False )
-        s._prevA = v1
+        self._prevA = v1
         
         
 
@@ -818,6 +892,7 @@ class LocalModuleLibrary(ModuleLibraryBase):
         "NOR4":Nor4GateModule,
         "OR":OrGateModule,
         "XOR":XorGateModule,
+        "XOR4":Xor4GateModule,
         'NAND':NandGateModule,
         'NAND4':Nand4GateModule,
        # "TESTG":TestGModule,
