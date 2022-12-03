@@ -46,7 +46,7 @@ If You're stucked with Windows (like I was for many years ...) it's really a goo
 ```
 sudo docker run -d -p 6389:3389 --rm --name mlab-usr virtimus/mlab-usr
 ```
-Running container "mlab-usr" can be accesses by standard rdp client (like mstsc under Windows)
+Running container "mlab-usr" can be accessed by standard rdp client (like mstsc under Windows) on port 6389
 
 Default user/password is "ths/pass"
 
